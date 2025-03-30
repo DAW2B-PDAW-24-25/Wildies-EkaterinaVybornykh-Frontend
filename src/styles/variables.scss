@@ -1,0 +1,31 @@
+@font-face {
+    font-family: 'Sofia-pro';
+    src: url('./fonts/sofia-pro/Sofia\ Pro\ Light\ Az.otf');
+}
+@font-face {
+    font-family: 'Sofia-pro-title';
+    src: url('./fonts/sofia-pro/Sofia\ Pro\ Semi\ Bold\ Az.otf');
+}
+
+@font-face {
+    font-family: 'Kranky';
+    src: url('./fonts/kranky/Kranky-Regular.ttf');
+}
+
+$font-text: 'Sofia-pro';
+$font-title: 'Sofia-pro-title';
+$font-web: 'Kranky';
+
+// 🎨 Colores
+$primary-color: #D0D5D4ff;
+$secondary-color: #D0D5D4ff;
+$background-color: #FCFCFDff;
+$text-color: #7b7979;
+$title-color:  #C8936Eff;
+$border-color: rgb(193, 203, 207);
+
+$buff: #C8936Eff;
+$white: #FCFCFDff;
+$timberwolf: #D0D5D4ff;
+$slate-gray: #77878Eff;
+$timberwolf-2: #D0D5D4ff;
