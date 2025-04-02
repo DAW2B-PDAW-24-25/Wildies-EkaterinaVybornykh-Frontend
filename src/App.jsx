@@ -5,6 +5,7 @@ import './App.scss'
 import Footer from './Footer'
 import Inicio from './Components/Inicio';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+export const API_URL = import.meta.env.VITE_BACKEND_URL;
 
 
 

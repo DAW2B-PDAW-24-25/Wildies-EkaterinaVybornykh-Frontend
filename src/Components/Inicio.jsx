@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import UsuariosInicio from './UsuariosInicio';
+import {API_URL} from './App.jsx';
 
 function Inicio() {
 
@@ -12,7 +13,7 @@ function Inicio() {
 
     async function cargarUsuarios() {
         try {
-            let response = await fetch(`http://localhost:8000/api/usuarios/usuariosCerca/${usuario}`);
+            let response = await fetch(`${API_URL}/api/usuarios/usuariosCerca/${usuario}`);
 
             if (!response.ok) {
                 throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
