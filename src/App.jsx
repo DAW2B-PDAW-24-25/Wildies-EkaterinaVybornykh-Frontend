@@ -3,30 +3,43 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Navbar from './Navbar'
 import './App.scss'
 import Footer from './Footer'
+import Inicio from './Components/Inicio';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 
 
 
 function App() {
 
-  return (
+  const theme = createTheme({
+    typography: {
+      fontFamily: '$font-text',
+    },
+    palette: {
+      text: {
+        primary: '$text-color'
+      },
+    },
+  });
 
-    <BrowserRouter>
-      <div className='d-flex'>
-        <Navbar />
-        <div className="main w-100">
-          <h1>Hola</h1>
-          <Routes>
-            <Route path="/"/>
-            <Route path="/perfil"/>
-          </Routes>
-          <Footer/>
+  return (
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <div className='d-flex'>
+          <Navbar />
+          <div className="main w-100">
+            <Routes>
+              <Route path="/" element={<Inicio />} />
+              <Route path="/perfil" />
+            </Routes>
+            <Footer />
+          </div>
+
         </div>
-        
-      </div>
-      
-      
-    </BrowserRouter>
+
+
+      </BrowserRouter>
+    </ThemeProvider>
 
   )
 }
