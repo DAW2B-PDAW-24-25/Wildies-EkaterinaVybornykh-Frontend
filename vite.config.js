@@ -7,4 +7,7 @@ export default defineConfig({
   optimizeDeps: {
     include: ['@mui/material', '@mui/icons-material'],
   },
+  build: {
+    outDir: '/app/build',  // Especifica el directorio de salida
+  },
 })
