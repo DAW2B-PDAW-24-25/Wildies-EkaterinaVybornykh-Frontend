@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
@@ -9,8 +9,13 @@ import { FaRegSquarePlus } from "react-icons/fa6";
 import { FiMapPin } from "react-icons/fi";
 import { MdLogout } from "react-icons/md";
 import { CgBorderBottom, CgProfile } from "react-icons/cg";
+import UsuariosInicio from './Components/EventosInicio';
+import { AppContext } from './Context/AppProvider';
+
 
 function Navbar() {
+  const {usuarioLogueado}=useContext(AppContext);
+
   const Enlace = styled(Nav.Link)`
   display: flex;
   `
@@ -30,24 +35,24 @@ function Navbar() {
               <IoSearch style={{ fontSize: "25px", marginRight: "10px"}} /> 
               <p className='d-none d-sm-block'>Buscar</p>
             </Enlace>
-            <Enlace as={Link} to="/perfil">
+            <Enlace as={Link} to="/">
               <LiaUserFriendsSolid style={{ fontSize: "25px", marginRight: "10px" }} /> <p className='d-none d-sm-block'>Mis wildies</p>
             </Enlace>
             <Enlace as={Link} to="/configuracion">
-              <FaRegCalendar style={{ fontSize: "25px", marginRight: "10px" }} /> <p className='d-none d-sm-block'>Próximas aventuras</p> 
+              <FaRegCalendar style={{ fontSize: "25px", marginRight: "10px" }} /> <p className='d-none d-sm-block'>Próximas aventuras</p>      
+            </Enlace>
+            <Enlace as={Link} to="/configuracion">                                             
+             <FaRegSquarePlus style={{ fontSize: "25px", marginRight: "10px" }}/><p className='d-none d-sm-block'>Crear aventura</p>
             </Enlace>
             <Enlace as={Link} to="/configuracion">
-              <FaRegSquarePlus style={{ fontSize: "25px", marginRight: "10px" }} /> <p className='d-none d-sm-block'>Crear aventura</p>
-            </Enlace>
-            <Enlace as={Link} to="/configuracion">
-              <FiMapPin style={{ fontSize: "25px", marginRight: "10px" }} /> <p className='d-none d-sm-block'>Mapa</p>
+              <FiMapPin style={{ fontSize: "25px", marginRight: "10px" }} className='d-none d-sm-block'/> <p className='d-none d-sm-block'>Mapa</p>
             </Enlace>
           </div>
           <div className='linkContainer'>
             <Enlace as={Link} to="/configuracion">
-              <MdLogout style={{ fontSize: "25px", marginRight: "10px" }} /> <p className='d-none d-sm-block'>Cerrar sesión</p>
+              <MdLogout style={{ fontSize: "25px", marginRight: "10px" }} className='d-none d-sm-block'/> <p className='d-none d-sm-block'>Cerrar sesión</p>
             </Enlace>
-            <Enlace as={Link} to="/configuracion">
+            <Enlace as={Link} to={`/perfil/${usuarioLogueado.id}`}>
               <CgProfile style={{ fontSize: "25px", marginRight: "10px" }} /> <p className='d-none d-sm-block'>Perfil</p>
             </Enlace>
           </div>

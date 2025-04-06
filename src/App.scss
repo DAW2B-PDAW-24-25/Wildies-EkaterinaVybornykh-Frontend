@@ -4,6 +4,7 @@ body {
     font-family: $font-text;
     background-color: $background-color;
     color: $text-color;
+    line-height: 1.1;
 }
 
 a {
@@ -13,6 +14,7 @@ a {
 .title {
     font-family: $font-title;
     color: $title-color;
+    line-height: 0.8;
 }
 
 .border-right {
@@ -24,23 +26,37 @@ a {
     font-size: 30px;
 }
 
-.main{
+.main {
     margin-left: 250px;
     margin-right: 0;
+
     @media (max-width: 576px) {
         margin-left: 0;
     }
 }
 
-.navContainer{
+.navContainer {
     display: flex;
     height: 100vh;
     flex-wrap: nowrap;
     padding-bottom: 2vh;
+
     @media (max-width: 576px) {
         align-items: flex-end;
 
     }
+}
+
+.bg-seccion{
+    background-color: $primary-color;
+}
+
+.icono{
+    @media (max-width: 576px){            //TODO no funciona
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
 }
 
 .sidebar {
@@ -54,6 +70,9 @@ a {
     /* Asegura que los enlaces estén verticalmente alineados */
 
     @media (max-width: 576px) {
+        position: fixed;
+        bottom: 0;
+      
         flex-direction: row;
         width: 100%;
         flex-wrap: nowrap;
@@ -65,17 +84,21 @@ a {
         margin: 0 !important;
         height: 50px;
         justify-content: center;
-        
-        .linkContainer{
+        z-index: 1000;
+        background-color: $background-color;
+
+        .linkContainer {
             display: flex;
             flex-direction: row;
             padding: 0 !important;
             flex-wrap: nowrap;
             justify-content: center;
-            
+
         }
+        
     }
-.footer{
-    background-color: $title-color;
-}
+
+    .footer {
+        background-color: $title-color;
+    }
 }

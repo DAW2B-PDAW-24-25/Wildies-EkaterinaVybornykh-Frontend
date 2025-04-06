@@ -5,7 +5,10 @@ import './App.scss'
 import Footer from './Footer'
 import Inicio from './Components/Inicio';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import AppProvider from './Context/AppProvider';
+import Perfil from './Components/Perfil';
 export const API_URL = import.meta.env.VITE_BACKEND_URL;
+export const GOOGLE_API_KEY = "AIzaSyBLNBtVh6RVdXhPX2mPA5hQct1zv_axmkY";
 
 
 
@@ -24,23 +27,26 @@ function App() {
   });
 
   return (
-    <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <div className='d-flex'>
-          <Navbar />
-          <div className="main w-100">
-            <Routes>
-              <Route path="/" element={<Inicio />} />
-              <Route path="/perfil" />
-            </Routes>
-            <Footer />
+    <AppProvider>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+          <div className='d-flex'>
+            <Navbar />
+            <div className="main w-100">
+              <Routes>
+                <Route path="/" element={<Inicio />} />
+                <Route path="/perfil/:idUsuario" element={<Perfil />}/>
+                <Route path="/detalleEvento/:idEvento" />
+              </Routes>
+              <Footer />
+            </div>
+
           </div>
 
-        </div>
 
-
-      </BrowserRouter>
-    </ThemeProvider>
+        </BrowserRouter>
+      </ThemeProvider>
+    </AppProvider>
 
   )
 }
