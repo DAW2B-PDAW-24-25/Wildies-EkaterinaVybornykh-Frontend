@@ -11,7 +11,7 @@ function Buscador() {
 
         <InputGroup className="mb-3">
         <InputGroup.Text id="basic-addon1" className='rounded-start-pill'><FaGear className='title'/></InputGroup.Text>
-        <Form.Control className='rounded-end-pill'
+        <Form.Control className='rounded-end-pill opacity-75'
           placeholder="Buscar wildies..."
           aria-label="buscador"
         />

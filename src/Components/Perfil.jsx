@@ -50,14 +50,14 @@ function Perfil() {
         </div>
       </div>
       <div className='row bg-seccion p-3 rounded shadow d-flex ms-3 me-3 mt-4'>
-        <h3>Sobre mí</h3>
+        <h3 className='title'>Sobre mí</h3>
         <hr />
         <div>
           <p>{usuarioLogueado.descripcion}</p>
         </div>
       </div>
       <div className='row bg-seccion p-3 rounded shadow d-flex ms-3 me-3 mt-4 mb-5'>
-        <h3>¿Por qué estoy en wildies?</h3>
+        <h3 className='title'>¿Por qué estoy en wildies?</h3>
         <hr />
         <div>
           <p>{usuarioLogueado.por_que}</p>

@@ -52,7 +52,7 @@ function Navbar() {
             <Enlace as={Link} to="/configuracion">
               <MdLogout style={{ fontSize: "25px", marginRight: "10px" }} className='d-none d-sm-block'/> <p className='d-none d-sm-block'>Cerrar sesión</p>
             </Enlace>
-            <Enlace as={Link} to={`/perfil/${usuarioLogueado.id}`}>
+            <Enlace as={Link} to={`/perfil/1`}>
               <CgProfile style={{ fontSize: "25px", marginRight: "10px" }} /> <p className='d-none d-sm-block'>Perfil</p>
             </Enlace>
           </div>

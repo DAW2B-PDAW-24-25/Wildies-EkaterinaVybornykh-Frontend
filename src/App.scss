@@ -11,6 +11,10 @@ a {
     color: inherit !important;
 }
 
+p {
+    color: $text-color !important;
+}
+
 .title {
     font-family: $font-title;
     color: $title-color;

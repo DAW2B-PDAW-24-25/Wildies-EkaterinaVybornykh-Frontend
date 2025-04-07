@@ -35,7 +35,7 @@ function App() {
             <div className="main w-100">
               <Routes>
                 <Route path="/" element={<Inicio />} />
-                <Route path="/perfil/:idUsuario" element={<Perfil />}/>
+                <Route path="/perfil/:idUsuario" element={<Perfil />} />
                 <Route path="/detalleEvento/:idEvento" />
               </Routes>
               <Footer />

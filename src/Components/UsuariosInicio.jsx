@@ -39,12 +39,12 @@ function UsuariosInicio({ usuarios }) {
 
                         <Card.Body>
                             <Card.Text>
-                                {usuario.longitud_domicilio}
+                                {usuario.localidad}
                             </Card.Text>
                             <div className='d-flex flex-wrap'>
                                 <h5 className='title me-1'>Deportes: </h5>
                                 {usuario.deportes.map((deporte, index) => {
-                                    return <p className='me-1'>{deporte.deporte} {index<usuario.deportes.length-1 ? ',': ''} </p>
+                                    return <p className='me-1 texto'>{deporte.deporte} {index<usuario.deportes.length-1 ? ',': ''} </p>
                                 })}
 
                             </div>
