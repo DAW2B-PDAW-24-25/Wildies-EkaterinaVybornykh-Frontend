@@ -6,6 +6,7 @@ export const AppContext = createContext();
 import { API_URL } from '../App';
 
 
+
 function AppProvider({ children }) {
     const [usuarioLogueado, setUsuarioLogueado]=useState(() => JSON.parse(localStorage.getItem('usuario')));
     const [token, setToken]=useState(() => localStorage.getItem('token'));
@@ -19,7 +20,7 @@ function AppProvider({ children }) {
  
     return (
         <AppContext.Provider value={{
-            usuarioLogueado, login, token
+            usuarioLogueado, setUsuarioLogueado, login, token
         }}>
             {children}
         </AppContext.Provider>

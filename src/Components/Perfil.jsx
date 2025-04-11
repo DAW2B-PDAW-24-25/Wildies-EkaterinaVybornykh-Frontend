@@ -1,11 +1,11 @@
 import React from 'react';
-import { Image } from 'react-bootstrap';
+import { Button, Image} from 'react-bootstrap';
 import { useContext } from 'react';
 import { AppContext } from '../Context/AppProvider';
-import { Button } from 'react-bootstrap';
 import { BiLeaf } from "react-icons/bi";
 import { GoBriefcase } from "react-icons/go";
 import { LuLanguages } from "react-icons/lu";
+import { Link } from 'react-router-dom';
 
 function Perfil() {
   const { usuarioLogueado } = useContext(AppContext);
@@ -20,7 +20,9 @@ function Perfil() {
         <div className='d-flex flex-column col-9 text-center justify-content-between'>
           <h1 className='mt-2'>{usuarioLogueado.nombre} {usuarioLogueado.apellidos}</h1>
           <div className='d-flex justify-content-center mb-md-5'>
-            <Button variant="outline-secondary" className=' me-2'>Editar Perfil</Button>
+            <Link to={`/actualizarPerfil/${usuarioLogueado.id}`}>
+              <Button variant="outline-secondary" className=' me-2'>Editar Perfil</Button>
+            </Link>
             <Button variant="outline-secondary" className=' me-2'>Deportes</Button>
             <Button variant="outline-secondary">Fotos</Button>
           </div>
@@ -41,10 +43,10 @@ function Perfil() {
         </div>
         <div className='col-md-6'>
           <div>
-            {usuarioLogueado.deportes.map((deporte, index)=>{
+            {usuarioLogueado.deportes.map((deporte, index) => {
               return <p key={index}>
-              {deporte.deporte}: nivel {deporte.nivel}
-            </p>
+                {deporte.deporte}: nivel {deporte.nivel}
+              </p>
             })}
           </div>
         </div>
