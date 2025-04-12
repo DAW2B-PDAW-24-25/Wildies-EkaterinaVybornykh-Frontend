@@ -63,29 +63,35 @@ function ActualizarPerfil() {
 
     async function enviarDatos(e) {
         const form = e.currentTarget.form;
+        if (!formData.fecha_nacimiento || calcularEdad(formData.fecha_nacimiento) < 18) {
+            e.preventDefault();
+            e.stopPropagation();
+            setValidated(true);
+            return;
+        }
         if (form.checkValidity() === false) {
             e.preventDefault();
             e.stopPropagation();
             setValidated(true);
             return;
         }
-    
+
         let datos = {
             nombre: formData.nombre,
             apellidos: formData.apellidos,
             fecha_nacimiento: formData.fecha_nacimiento,
-            sexo: formData.sexo,
-            profesion: formData.profesion,
-            idiomas: formData.idiomas,
-            longitud_domicilio: formData.longitud_domicilio,
-            latitud_domicilio: formData.latitud_domicilio,
-            foto_perfil: formData.foto_perfil,
+            sexo: formData.sexo || '',
+            profesion: formData.profesion || '',
+            idiomas: formData.idiomas || '',
+            longitud_domicilio: formData.longitud_domicilio || '',
+            latitud_domicilio: formData.latitud_domicilio || '',
+            foto_perfil: formData.foto_perfil || '',
             descripcion: formData.descripcion,
             por_que: formData.por_que
         };
         try {
             let respuesta = await fetch(`${API_URL}/usuarios/${usuarioLogueado.id}`, {
-                method: 'PATCH',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -108,6 +114,17 @@ function ActualizarPerfil() {
             setFotoPerfil(file);
             setFotoUrl(URL.createObjectURL(file));
         }
+    }
+
+    function calcularEdad(fechaNacimiento) {
+        const hoy = new Date();
+        const nacimiento = new Date(fechaNacimiento);
+        let edad = hoy.getFullYear() - nacimiento.getFullYear();
+        const mes = hoy.getMonth();
+        if (mes < nacimiento.getMonth() || (mes === nacimiento.getMonth() && hoy.getDate() < nacimiento.getDate())) {
+            edad--;
+        }
+        return edad;
     }
 
     const enviarFoto = async () => {
@@ -185,14 +202,13 @@ function ActualizarPerfil() {
                             <div className='col-md-6 mt-3'>
                                 <Form.Group className="mb-3 texto" controlId="nombre">
                                     <Form.Label>Nombre</Form.Label>
-                                    <Form.Control 
-                                        className='texto' 
-                                        type="text" 
-                                        name='nombre' 
-                                        value={formData.nombre} 
-                                        onChange={handleFormChange} 
-                                        required 
-                                        
+                                    <Form.Control
+                                        className='texto'
+                                        type="text"
+                                        name='nombre'
+                                        value={formData.nombre}
+                                        onChange={handleFormChange}
+                                        required
                                         isInvalid={validated && !formData.nombre}
                                     />
                                     <Form.Control.Feedback type="invalid">
@@ -203,14 +219,14 @@ function ActualizarPerfil() {
                             <div className='col-md-6 mt-3 texto'>
                                 <Form.Group className="mb-3" controlId="apellidos">
                                     <Form.Label>Apellidos</Form.Label>
-                                    <Form.Control 
-                                        className='texto' 
-                                        type="text" 
-                                        name='apellidos' 
-                                        value={formData.apellidos} 
-                                        onChange={handleFormChange} 
-                                        required 
-                                        
+                                    <Form.Control
+                                        className='texto'
+                                        type="text"
+                                        name='apellidos'
+                                        value={formData.apellidos}
+                                        onChange={handleFormChange}
+                                        required
+
                                         isInvalid={validated && !formData.apellidos}
                                     />
                                     <Form.Control.Feedback type="invalid">
@@ -221,28 +237,27 @@ function ActualizarPerfil() {
                             <div className='col-md-6 texto'>
                                 <Form.Group className="mb-3 texto" controlId="fecha_nacimiento">
                                     <Form.Label>Fecha de nacimiento</Form.Label>
-                                    <Form.Control 
-                                        type="date" 
-                                        name='fecha_nacimiento' 
-                                        value={formData.fecha_nacimiento} 
-                                        className='texto' 
-                                        onChange={handleFormChange} 
-                                        required 
-                                        
-                                        isInvalid={validated && !formData.fecha_nacimiento}
+                                    <Form.Control
+                                        type="date"
+                                        name='fecha_nacimiento'
+                                        value={formData.fecha_nacimiento}
+                                        className='texto'
+                                        onChange={handleFormChange}
+                                        required
+                                        isInvalid={validated && (!formData.fecha_nacimiento || calcularEdad(formData.fecha_nacimiento) < 18)}
                                     />
                                     <Form.Control.Feedback type="invalid">
-                                        Este campo es obligatorio.
+                                        {formData.fecha_nacimiento ? 'Debes ser mayor de 18 años.' : 'Este campo es obligatorio.'}
                                     </Form.Control.Feedback>
                                 </Form.Group>
                             </div>
                             <div className='col-md-6 texto'>
                                 <Form.Label>Sexo</Form.Label>
-                                <Form.Select 
-                                    className="mb-3 texto" 
-                                    aria-label="Sexo" 
-                                    name='sexo' 
-                                    value={formData.sexo} 
+                                <Form.Select
+                                    className="mb-3 texto"
+                                    aria-label="Sexo"
+                                    name='sexo'
+                                    value={formData.sexo}
                                     onChange={handleFormChange}
                                 >
                                     <option>Selecciona...</option>
@@ -261,45 +276,55 @@ function ActualizarPerfil() {
                             <div className='col-md-6 texto'>
                                 <Form.Group className="mb-3" controlId="profesion">
                                     <Form.Label>Profesión</Form.Label>
-                                    <Form.Control 
-                                        type="text" 
-                                        name='profesion' 
-                                        value={formData.profesion} 
-                                        onChange={handleFormChange} 
-                                        className='texto' 
+                                    <Form.Control
+                                        type="text"
+                                        name='profesion'
+                                        value={formData.profesion}
+                                        onChange={handleFormChange}
+                                        className='texto'
                                     />
                                 </Form.Group>
                             </div>
                             <div className='col-12 texto'>
                                 <Form.Group className="mb-3" controlId="idiomas">
                                     <Form.Label>Idiomas que hablo</Form.Label>
-                                    <Form.Control 
-                                        type="text" 
-                                        name='idiomas' 
-                                        value={formData.idiomas} 
-                                        onChange={handleFormChange} 
-                                        className='texto' 
+                                    <Form.Control
+                                        type="text"
+                                        name='idiomas'
+                                        value={formData.idiomas}
+                                        onChange={handleFormChange}
+                                        className='texto'
                                     />
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="descripcion">
                                     <Form.Label>Sobre mi</Form.Label>
-                                    <Form.Control 
-                                        type="textarea" 
-                                        name='descripcion' 
-                                        value={formData.descripcion} 
-                                        onChange={handleFormChange} 
-                                        className='texto' 
+                                    <Form.Control
+                                        type="textarea"
+                                        name='descripcion'
+                                        value={formData.descripcion}
+                                        onChange={handleFormChange}
+                                        className='texto'
+                                        required
+                                        isInvalid={validated && !formData.descripcion}
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        Este campo es obligatorio.
+                                    </Form.Control.Feedback>
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="por_que">
                                     <Form.Label>¿Por qué estoy en Wildies?</Form.Label>
-                                    <Form.Control 
-                                        type="text" 
-                                        name='por_que' 
-                                        value={formData.por_que} 
-                                        onChange={handleFormChange} 
-                                        className='texto' 
+                                    <Form.Control
+                                        type="text"
+                                        name='por_que'
+                                        value={formData.por_que}
+                                        onChange={handleFormChange}
+                                        className='texto'
+                                        required
+                                        isInvalid={validated && !formData.por_que}
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        Este campo es obligatorio.
+                                    </Form.Control.Feedback>
                                 </Form.Group>
                             </div>
                             <Link to={`/perfil/${usuarioLogueado.id}`} className='d-flex justify-content-center mt-3' style={{ textDecoration: "none" }}>
