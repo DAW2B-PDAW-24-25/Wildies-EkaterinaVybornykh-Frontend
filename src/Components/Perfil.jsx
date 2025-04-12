@@ -14,13 +14,13 @@ function Perfil() {
     <div className='container-fluid'>
       <div className='row m-3'>
         <div className='col-3 text-center'>
-          <Image src={usuarioLogueado.foto_perfil} roundedCircle className='image-fluid w-100 mb-2' />
+          <Image src={usuarioLogueado.foto_perfil} className='avatar mb-3' />
           <p>{usuarioLogueado.localidad}</p>
         </div>
         <div className='d-flex flex-column col-9 text-center justify-content-between'>
           <h1 className='mt-2'>{usuarioLogueado.nombre} {usuarioLogueado.apellidos}</h1>
           <div className='d-flex justify-content-center mb-md-5'>
-            <Link to={`/actualizarPerfil/${usuarioLogueado.id}`}>
+            <Link to={`/editarPerfil/${usuarioLogueado.id}`}>
               <Button variant="outline-secondary" className=' me-2'>Editar Perfil</Button>
             </Link>
             <Button variant="outline-secondary" className=' me-2'>Deportes</Button>

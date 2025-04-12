@@ -8,16 +8,38 @@ import { API_URL } from '../App';
 
 
 function AppProvider({ children }) {
-    const [usuarioLogueado, setUsuarioLogueado]=useState(() => JSON.parse(localStorage.getItem('usuario')));
-    const [token, setToken]=useState(() => localStorage.getItem('token'));
+    const [usuarioLogueado, setUsuarioLogueado] = useState("");
+    const [idUsuarioLogueado, setIdUsuarioLogueado] = useState(() => JSON.parse(localStorage.getItem('idUsuario')))
+    const [token, setToken] = useState(() => localStorage.getItem('token'));
 
-    function login(datosUsuario, token){
+    function login(datosUsuario, token) {
+        setIdUsuarioLogueado(datosUsuario.id);
         setUsuarioLogueado(datosUsuario);
         setToken(token);
-        localStorage.setItem('usuario', JSON.stringify(datosUsuario));
+        localStorage.setItem('idUsuario', JSON.stringify(datosUsuario.id));
         localStorage.setItem('token', token);
-      };
- 
+    };
+
+    useEffect(() => {
+        if (idUsuarioLogueado) {
+            cargarUsuario();
+        }
+    }, [idUsuarioLogueado]);
+
+    async function cargarUsuario() {
+        try {
+            let respuesta = await fetch(`${API_URL}/usuarios/${idUsuarioLogueado}`);
+            if (!respuesta === 'OK') {
+                console.log("Error al cargar usuario registrado");
+            } else {
+                let data = await respuesta.json();
+                setUsuarioLogueado(data.data);
+            }
+        } catch (error) {
+            console.error("Error usuarios:", error);
+        }
+    }
+
     return (
         <AppContext.Provider value={{
             usuarioLogueado, setUsuarioLogueado, login, token

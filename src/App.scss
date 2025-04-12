@@ -15,7 +15,7 @@ p {
     color: $text-color !important;
 }
 
-.texto{
+.texto {
     color: $text-color !important;
 }
 
@@ -55,16 +55,17 @@ p {
     }
 }
 
-.bg-seccion{
+.bg-seccion {
     background-color: $primary-color;
 }
 
-.icono{
-    @media (max-width: 576px){            //TODO no funciona
+.icono {
+    @media (max-width: 576px) {
+        //TODO no funciona
         padding: 0 !important;
         margin: 0 !important;
     }
-    
+
 }
 
 .sidebar {
@@ -80,7 +81,7 @@ p {
     @media (max-width: 576px) {
         position: fixed;
         bottom: 0;
-      
+
         flex-direction: row;
         width: 100%;
         flex-wrap: nowrap;
@@ -103,10 +104,33 @@ p {
             justify-content: center;
 
         }
-        
+
     }
 
     .footer {
         background-color: $title-color;
+    }
+
+
+
+}
+
+@media (min-width: 576px) {
+    .w-sm-75 {
+        width: 75% !important;
+    }
+}
+
+.avatar {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+
+    @media (min-width: 576px) {
+
+        width: 200px;
+        height: 200px;
+
     }
 }
