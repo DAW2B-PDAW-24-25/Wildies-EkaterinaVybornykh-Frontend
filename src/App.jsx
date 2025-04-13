@@ -8,6 +8,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import AppProvider from './Context/AppProvider';
 import Perfil from './Components/Perfil';
 import ActualizarPerfil from './Components/ActualizarPerfil';
+import InicioSesion from './Components/InicioSesion';
+import DeportesUsuario from './Components/DeportesUsuario';
 export const API_URL = import.meta.env.VITE_BACKEND_URL;
 export const GOOGLE_API_KEY = "AIzaSyBLNBtVh6RVdXhPX2mPA5hQct1zv_axmkY";
 
@@ -28,27 +30,26 @@ function App() {
   });
 
   return (
-    <AppProvider>
-      <ThemeProvider theme={theme}>
-        <BrowserRouter>
+    <BrowserRouter>
+      <AppProvider>
+        <ThemeProvider theme={theme}>
           <div className='d-flex'>
             <AppNavbar />
             <div className="main w-100">
               <Routes>
+                <Route path='/inicioSesion' element={<InicioSesion />} />
                 <Route path="/" element={<Inicio />} />
                 <Route path="/perfil/:idUsuario" element={<Perfil />} />
-                <Route path='/editarPerfil/:idUsuario' element={<ActualizarPerfil/>}/>
+                <Route path='/editarPerfil/:idUsuario' element={<ActualizarPerfil />} />
                 <Route path="/detalleEvento/:idEvento" />
+                <Route path='/deportesUsuario/:idUsuario' element={<DeportesUsuario/>}/>
               </Routes>
               <Footer />
             </div>
-
           </div>
-
-
-        </BrowserRouter>
-      </ThemeProvider>
-    </AppProvider>
+        </ThemeProvider>
+      </AppProvider>
+    </BrowserRouter>
 
   )
 }

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { CgSmartHomeBoiler } from 'react-icons/cg';
 export const AppContext = createContext();
 import { API_URL } from '../App';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -11,14 +12,25 @@ function AppProvider({ children }) {
     const [usuarioLogueado, setUsuarioLogueado] = useState("");
     const [idUsuarioLogueado, setIdUsuarioLogueado] = useState(() => JSON.parse(localStorage.getItem('idUsuario')))
     const [token, setToken] = useState(() => localStorage.getItem('token'));
+    const navigate=useNavigate();
 
     function login(datosUsuario, token) {
         setIdUsuarioLogueado(datosUsuario.id);
         setUsuarioLogueado(datosUsuario);
         setToken(token);
-        localStorage.setItem('idUsuario', JSON.stringify(datosUsuario.id));
+        localStorage.setItem('idUsuario', datosUsuario.id);
         localStorage.setItem('token', token);
     };
+
+    function logout(){
+        setIdUsuarioLogueado("");
+        setUsuarioLogueado("");
+        setToken("");
+        localStorage.removeItem('idUsuario');
+        localStorage.removeItem('token');
+        navigate("/inicioSesion");
+    }
+
 
     useEffect(() => {
         if (idUsuarioLogueado) {
@@ -42,7 +54,7 @@ function AppProvider({ children }) {
 
     return (
         <AppContext.Provider value={{
-            usuarioLogueado, setUsuarioLogueado, login, token
+            usuarioLogueado, setUsuarioLogueado, login, token, logout
         }}>
             {children}
         </AppContext.Provider>
