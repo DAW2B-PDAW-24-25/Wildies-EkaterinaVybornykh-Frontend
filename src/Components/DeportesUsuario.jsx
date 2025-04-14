@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useContext, useState } from 'react';
 import { AppContext } from '../Context/AppProvider';
 import { Button } from 'react-bootstrap';
@@ -11,9 +11,10 @@ function DeportesUsuario() {
     const [modalTipo, setModalTipo] = useState("");
     const [modalHeader, setModalHeader] = useState("");
     const [deporte, setDeporte] = useState("");
-
+    const [parametros, setParametros] = useState({})
     const [usuarioDeporteId, setUsuarioDeporteId] = useState("");
     const [idDeporte, setIdDeporte] = useState("");
+    const [parametrosDeporte, setParametrosDeporte] = useState([]);
 
     function modalEliminar(e) {
         setModalTipo("eliminar");
@@ -26,8 +27,11 @@ function DeportesUsuario() {
         setModalShow(false);
         const response = await fetch(`${API_URL}/usuarios/${usuarioLogueado.id}/${usuarioDeporteId}`, {
             method: "DELETE",
-            "Content-Type": "application/json",
-            //"Authorization": `Bearer ${token}` 
+            headers: {
+                "Content-Type": "application/json",
+                // "Authorization": `Bearer ${token}`
+            },
+             
         });
         if (!response.ok) {
             mostrarModalError();
@@ -57,18 +61,22 @@ function DeportesUsuario() {
     async function agregarDeporte() {
         const response = await fetch(`${API_URL}/usuarios/${usuarioLogueado.id}/${idDeporte}`, {
             method: "POST",
-            "Content-Type": "application/json",
-            //"Authorization": `Bearer ${token}` 
+            headers: {
+                "Content-Type": "application/json",
+                // "Authorization": `Bearer ${token}`
+            },
         })
         if (!response.ok) {
             mostrarModalError();
         } else {
             const data = await response.json();
-            setUsuarioLogueado(data.data);
+            setUsuarioLogueado(data.usuario);
+            console.log("UsuarioLogueado: ", usuarioLogueado)
+            setUsuarioDeporteId(data.usuario_deporte.id)
             cargarDeporte();
             setModalTipo("deporteForm");
             setModalHeader("Contesta a este breve cuestionario");
-            setModalShow(true);         
+            setModalShow(true);
         }
     }
 
@@ -80,6 +88,88 @@ function DeportesUsuario() {
             const data = await response.json();
             setDeporte(data.data);
         }
+    }
+
+    useEffect(() => {             //cuando se cambia el deporte, se construye objeto parametros con sus parametros y valores vacíos
+        if (deporte) {
+            const form = {};
+            deporte.parametros.forEach(parametro => {
+                 if (modalTipo === "editar") {
+                     let parametroDeporte = parametrosDeporte.find(p => p.parametro_id === parametro.id);
+                     form[parametro.id] = parametroDeporte ? parametroDeporte.valor : "";
+                 } else {
+                form[parametro.id] = "";
+                 }
+            });
+            setParametros(form);
+        }
+
+    }, [deporte]);
+
+    async function enviarParametros() {
+        const datos = [];
+        for (let clave in parametros) {
+            datos.push({
+                "parametro_id": clave,
+                "valor": parametros[clave]
+            })
+        }
+        const response = await fetch(`${API_URL}/usuarios/${usuarioLogueado.id}/deportes/${usuarioDeporteId}`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    // "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(datos)
+                //"Authorization": `Bearer ${token}` 
+            });
+        if (!response.ok) {
+            mostrarModalError();
+        } else {
+            const data = await response.json();
+            setUsuarioLogueado(data.data)
+            setModalTipo("exito");
+            setModalHeader("Se han actualizado tus datos de deporte!");
+            setModalShow(true);
+        }
+
+    }
+
+    async function cargarParametrosDeporte() {
+        const response = await fetch(`${API_URL}/parametrosDeporteUsuario/${usuarioDeporteId}`);
+        if (!response.ok) {
+            mostrarModalError();
+        } else {
+            const data = await response.json();
+            setParametrosDeporte(data);
+        }
+    }
+
+    useEffect(() => {
+        if (usuarioDeporteId) {
+            cargarParametrosDeporte();
+        }
+
+    }, [usuarioDeporteId])
+
+    useEffect(() => {
+        if (idDeporte) {
+            cargarDeporte();
+        }
+
+    }, [idDeporte]);
+
+    function modalEditar(e) {
+        setModalTipo("editar");
+        setUsuarioDeporteId(e.currentTarget.id);
+        
+
+        let idDep = e.currentTarget.getAttribute("data-deporteid");
+        setIdDeporte(idDep)
+        
+        setModalHeader("Edita tu deporte");
+        setModalShow(true);
     }
 
     return (
@@ -95,7 +185,7 @@ function DeportesUsuario() {
             </div>
 
             <hr />
-            {usuarioLogueado.deportes.length === 0 &&
+            {usuarioLogueado?.deportes?.length === 0 &&
                 <div className='row bg-seccion p-3 rounded shadow d-flex ms-3 me-3 mt-4'>
                     <h3>Todavía no has añadido deportes</h3>
                 </div>
@@ -121,7 +211,7 @@ function DeportesUsuario() {
                                 <Button variant='outline-secondary' className='me-2'>Realizar Test</Button>
                             }
 
-                            <Button variant='outline-secondary' className='me-2' id={deporte.usuario_deporte_id}>Editar</Button>
+                            <Button variant='outline-secondary' className='me-2' id={deporte.usuario_deporte_id} data-deporteid={deporte.deporte_id} onClick={modalEditar}>Editar</Button>
                             <Button variant='outline-secondary' id={deporte.usuario_deporte_id} className='me-2' onClick={modalEliminar}>Eliminar</Button>
                         </div>
                     </div>
@@ -143,6 +233,11 @@ function DeportesUsuario() {
                 usuarioLogueado={usuarioLogueado}
                 deporte={deporte}
                 setDeporte={setDeporte}
+                parametros={parametros}
+                setParametros={setParametros}
+                enviarParametros={enviarParametros}
+                setUsuarioDeporteId={setUsuarioDeporteId}
+                parametrosDeporte={parametrosDeporte}
             />
         </div>
     )

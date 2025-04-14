@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
-import DeporteForm from './DeporteForm';
+import { Form } from 'react-bootstrap';
 
 function ModalDeportes({
     onHide,
@@ -16,11 +16,32 @@ function ModalDeportes({
     setIdDeporte,
     usuarioLogueado,
     deporte,
-    setDeporte }) {
+    parametros,
+    setParametros,
+    enviarParametros,
+    parametrosDeporte
+}) {
+
+
 
     function cambiarDeporte(value) {
         setIdDeporte(value);
     }
+
+   
+
+    function handleParametros(e) {
+        setParametros({ ...parametros, [e.currentTarget.id]: e.currentTarget.value })
+        console.log(parametros)
+    }
+
+    function handleEnviar() {
+        enviarParametros();
+    }
+
+    
+
+
     return (
         <Modal
             show={show}
@@ -59,17 +80,25 @@ function ModalDeportes({
                     </ToggleButtonGroup>
                 }
                 {
-                    tipo === "deporteForm" &&
-                    <DeporteForm
-                        deporte={deporte}
-                    />
+                    (tipo === "deporteForm" || tipo === "editar") &&
+                    <Form>
+                        {deporte?.parametros?.map((parametro, index) => {
+                           
+                            return <Form.Group key={index} className="mb-3">
+                                <Form.Label>{parametro.nombre}: </Form.Label>
+                                <Form.Control type="text" id={parametro.id} value={parametros[parametro.id]} onChange={handleParametros} />
+                            </Form.Group>
+                        })}
+
+                    </Form>
                 }
+               
             </Modal.Body>
             <Modal.Footer>
                 {tipo === "eliminar" &&
                     <Button variant='outline-secondary' onClick={eliminarDeporte}>Eliminar</Button>
                 }
-                {tipo === "error" || tipo === "exito" &&
+                {(tipo === "error" || tipo === "exito") &&
                     <Button variant='outline-secondary' onClick={onHide}>Aceptar</Button>
                 }
                 {tipo === "nuevo" &&
@@ -77,6 +106,9 @@ function ModalDeportes({
                         <Button variant='outline-secondary' onClick={agregarDeporte}>Añadir</Button>
                         <Button variant='outline-secondary' onClick={onHide}>Cancelar</Button>
                     </>
+                }
+                {(tipo === "deporteForm" || tipo === "editar") &&
+                    <Button variant='outline-secondary' onClick={handleEnviar}>Enviar</Button>
                 }
             </Modal.Footer>
         </Modal>
