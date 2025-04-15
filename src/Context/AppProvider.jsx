@@ -41,7 +41,7 @@ function AppProvider({ children }) {
     async function cargarUsuario() {
         try {
             let respuesta = await fetch(`${API_URL}/usuarios/${idUsuarioLogueado}`);
-            if (!respuesta === 'OK') {
+            if (!respuesta.ok) {
                 console.log("Error al cargar usuario registrado");
             } else {
                 let data = await respuesta.json();

@@ -52,7 +52,7 @@ function Perfil() {
   }
 
   return (
-    <div className='container-fluid'>
+    <div className='container-fluid min-vh-100'>
       <div className='row m-3'>
         <div className='col-3 text-center'>
           <Image src={usuarioLogueado.foto_perfil} className='avatar mb-3' />
@@ -87,9 +87,10 @@ function Perfil() {
         <div className='col-md-6'>
           <div>
             {usuarioLogueado.deportes.map((deporte, index) => {
-              return <p key={index}>
-                {deporte.deporte}: nivel {deporte.nivel}
-              </p>
+              
+                return <p key={index}>
+                  {deporte.deporte} {deporte.nivel && `: nivel ${deporte.nivel}`}
+                </p>
             })}
           </div>
         </div>

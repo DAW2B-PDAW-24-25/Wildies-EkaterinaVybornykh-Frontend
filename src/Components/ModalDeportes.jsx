@@ -19,27 +19,41 @@ function ModalDeportes({
     parametros,
     setParametros,
     enviarParametros,
-    parametrosDeporte
+    preguntas,
+    respuestas,
+    setRespuestas,
+    enviarResultados
 }) {
 
-
+    const [validated, setValidated] = useState(false);
 
     function cambiarDeporte(value) {
         setIdDeporte(value);
     }
 
-   
-
     function handleParametros(e) {
         setParametros({ ...parametros, [e.currentTarget.id]: e.currentTarget.value })
-        console.log(parametros)
     }
 
     function handleEnviar() {
         enviarParametros();
     }
 
-    
+    function handleRespuestas(e) {
+        setRespuestas({ ...respuestas, [e.currentTarget.name]: parseInt(e.currentTarget.value) })
+    }
+
+    function handleResultado(e) {
+        e.preventDefault();
+        const form = e.currentTarget;
+        if (form.checkValidity() === false) {
+            e.preventDefault();
+            e.stopPropagation();
+            setValidated(true);
+            return;
+        }
+         enviarResultados();
+    }
 
 
     return (
@@ -51,7 +65,7 @@ function ModalDeportes({
             centered
         >
             <Modal.Header closeButton>
-                <Modal.Title id="contained-modal-title-vcenter">
+                <Modal.Title id="contained-modal-title-vcenter" className='title'>
                     {header}
                 </Modal.Title>
             </Modal.Header>
@@ -66,7 +80,7 @@ function ModalDeportes({
                         className="d-flex flex-wrap row"
                     >
                         {
-                            usuarioLogueado.no_practica.map((deporte) => {
+                            usuarioLogueado?.no_practica?.map((deporte) => {
                                 return <ToggleButton
                                     id={deporte.id}
                                     value={deporte.id}
@@ -83,16 +97,49 @@ function ModalDeportes({
                     (tipo === "deporteForm" || tipo === "editar") &&
                     <Form>
                         {deporte?.parametros?.map((parametro, index) => {
-                           
+
                             return <Form.Group key={index} className="mb-3">
                                 <Form.Label>{parametro.nombre}: </Form.Label>
                                 <Form.Control type="text" id={parametro.id} value={parametros[parametro.id]} onChange={handleParametros} />
                             </Form.Group>
                         })}
+                    </Form>
+                }
+                {
+                    (tipo === "test") &&
+                    <Form onSubmit={handleResultado}>
+                        {preguntas?.map((pregunta, index) => (
+                            <div key={index} >
+                                <h5>{pregunta.pregunta}</h5>
+                                <div className="mb-3">
+                                    {pregunta.respuestas.map((respuesta, i) => {
+                                        return <>
+                                            <Form.Check
+                                                key={i}
+                                                type="radio"
+                                                id={respuesta.id}
+                                                name={pregunta.id}
+                                                label={respuesta.texto}
+                                                value={respuesta.id}
+                                                onChange={handleRespuestas}
+                                                required={i === 0}
+                                                isInvalid={validated && !respuestas[pregunta.id]}
+
+                                            />
+                                        </>
+                                    })}
+
+                                </div>
+                            </div>
+                        ))}
+                        <div className='d-flex justify-content-between ms-4 me-4 mt-3'>
+                            <Button type='submit' variant='outline-secondary'>Obtener resultado</Button>
+                            <Button variant='outline-secondary' onClick={onHide}>Cancelar</Button>
+                        </div>
 
                     </Form>
                 }
-               
+
             </Modal.Body>
             <Modal.Footer>
                 {tipo === "eliminar" &&
@@ -110,6 +157,7 @@ function ModalDeportes({
                 {(tipo === "deporteForm" || tipo === "editar") &&
                     <Button variant='outline-secondary' onClick={handleEnviar}>Enviar</Button>
                 }
+
             </Modal.Footer>
         </Modal>
     );

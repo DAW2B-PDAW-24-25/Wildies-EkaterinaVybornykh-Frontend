@@ -27,7 +27,7 @@ function AppNavbar() {
       <div className='navContainer d-none d-sm-block'>
         <Nav defaultActiveKey="/home" className="sidebar pt-sm-5">
           <div className='d-none d-sm-block'>
-            <img src={logo} alt="logo" className='img-fluid w-75 opacity-75' />
+            <Link to={'/'}><img src={logo} alt="logo" className='img-fluid w-75 opacity-75' /></Link>
           </div>
           <div className='linkContainer p-0 pb-sm-5 pt-sm-5'>
             <Enlace as={Link} to="/">

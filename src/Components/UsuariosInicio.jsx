@@ -44,7 +44,7 @@ function UsuariosInicio({ usuarios }) {
                             <div className='d-flex flex-wrap'>
                                 <h5 className='title me-1'>Deportes: </h5>
                                 {usuario.deportes.map((deporte, index) => {
-                                    return <p className='me-1 texto'>{deporte.deporte} {index<usuario.deportes.length-1 ? ',': ''} </p>
+                                    return <p key={index} className='me-1 texto'>{deporte.deporte} {index<usuario.deportes.length-1 ? ',': ''} </p>
                                 })}
 
                             </div>

@@ -15,6 +15,9 @@ function DeportesUsuario() {
     const [usuarioDeporteId, setUsuarioDeporteId] = useState("");
     const [idDeporte, setIdDeporte] = useState("");
     const [parametrosDeporte, setParametrosDeporte] = useState([]);
+    const [preguntas, setPreguntas] = useState([]);
+    const [respuestas, setRespuestas] = useState([]);
+
 
     function modalEliminar(e) {
         setModalTipo("eliminar");
@@ -31,7 +34,7 @@ function DeportesUsuario() {
                 "Content-Type": "application/json",
                 // "Authorization": `Bearer ${token}`
             },
-             
+
         });
         if (!response.ok) {
             mostrarModalError();
@@ -41,9 +44,15 @@ function DeportesUsuario() {
 
             const data = await response.json();
             setUsuarioLogueado(data.data);
+
             setModalShow(true);
         }
     }
+
+    useEffect(() => {
+
+    }, [usuarioLogueado]);
+
 
     function mostrarModalError() {
         setModalTipo("error");
@@ -71,7 +80,6 @@ function DeportesUsuario() {
         } else {
             const data = await response.json();
             setUsuarioLogueado(data.usuario);
-            console.log("UsuarioLogueado: ", usuarioLogueado)
             setUsuarioDeporteId(data.usuario_deporte.id)
             cargarDeporte();
             setModalTipo("deporteForm");
@@ -94,12 +102,12 @@ function DeportesUsuario() {
         if (deporte) {
             const form = {};
             deporte.parametros.forEach(parametro => {
-                 if (modalTipo === "editar") {
-                     let parametroDeporte = parametrosDeporte.find(p => p.parametro_id === parametro.id);
-                     form[parametro.id] = parametroDeporte ? parametroDeporte.valor : "";
-                 } else {
-                form[parametro.id] = "";
-                 }
+                if (modalTipo === "editar") {
+                    let parametroDeporte = parametrosDeporte.find(p => p.parametro_id === parametro.id);
+                    form[parametro.id] = parametroDeporte ? parametroDeporte.valor : "";
+                } else {
+                    form[parametro.id] = "";
+                }
             });
             setParametros(form);
         }
@@ -149,6 +157,7 @@ function DeportesUsuario() {
     useEffect(() => {
         if (usuarioDeporteId) {
             cargarParametrosDeporte();
+            cargarPreguntas();
         }
 
     }, [usuarioDeporteId])
@@ -163,12 +172,66 @@ function DeportesUsuario() {
     function modalEditar(e) {
         setModalTipo("editar");
         setUsuarioDeporteId(e.currentTarget.id);
-        
-
         let idDep = e.currentTarget.getAttribute("data-deporteid");
         setIdDeporte(idDep)
-        
         setModalHeader("Edita tu deporte");
+        setModalShow(true);
+    }
+
+    async function cargarPreguntas() {
+        const response = await fetch(`${API_URL}/preguntas/${usuarioDeporteId}`);
+        if (!response.ok) {
+            mostrarModalError();
+        } else {
+            const data = await response.json();
+            setPreguntas(data.data);
+        }
+    }
+
+    useEffect(() => {
+        if (preguntas) {
+            const form = {};
+            preguntas.forEach(pregunta => {
+                form[pregunta.id] = "";
+            });
+            setRespuestas(form);
+
+        }
+
+    }, [preguntas]);
+
+    async function enviarResultados() {
+        let datos = [];
+        for (let clave in respuestas) {
+            datos.push({
+                "pregunta_id": parseInt(clave),
+                "respuesta_id": respuestas[clave]
+            });
+        }
+        let response = await fetch(`${API_URL}/asignarNivel/${usuarioDeporteId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                // "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(datos)
+        });
+        if (!response.ok) {
+            mostrarModalError();
+        } else {
+            const data = await response.json();
+            setUsuarioLogueado(data.usuario);
+            setModalTipo("exito");
+            setModalHeader(`Tienes nivel ${data.nivel} en ${data.deporte}`)
+            setModalShow(true);
+        }
+    }
+
+
+    function modalTest(e) {
+        setModalTipo("test");
+        setUsuarioDeporteId(e.currentTarget.id);
+        setModalHeader(`Contesta a las preguntas del test`);
         setModalShow(true);
     }
 
@@ -190,8 +253,8 @@ function DeportesUsuario() {
                     <h3>Todavía no has añadido deportes</h3>
                 </div>
             }
-            {usuarioLogueado.deportes.map((deporte) => {
-                return <div className='row bg-seccion p-3 rounded shadow d-flex ms-3 me-3 mt-4'>
+            {usuarioLogueado?.deportes?.map((deporte, index) => {
+                return <div key={index} className='row bg-seccion p-3 rounded shadow d-flex ms-3 me-3 mt-4'>
                     <div className='d-flex m-2 justify-content-between'>
                         <h3 className='title'>{deporte.deporte}</h3>
                         {deporte.nivel &&
@@ -200,25 +263,21 @@ function DeportesUsuario() {
                     <hr />
                     <div className='d-flex justify-content-between'>
                         <div>
-                            {deporte.parametros.map((parametro) => {
-                                return <div className='d-flex'>
+                            {deporte.parametros.map((parametro, index) => {
+                                return <div key={index} className='d-flex'>
                                     <p><strong>{parametro.nombre}:</strong> {parametro.valor}</p>
                                 </div>
                             })}
                         </div>
                         <div>
                             {!deporte.nivel &&
-                                <Button variant='outline-secondary' className='me-2'>Realizar Test</Button>
+                                <Button variant='outline-secondary' className='me-2' id={deporte.usuario_deporte_id} onClick={modalTest}>Realizar Test</Button>
                             }
-
                             <Button variant='outline-secondary' className='me-2' id={deporte.usuario_deporte_id} data-deporteid={deporte.deporte_id} onClick={modalEditar}>Editar</Button>
                             <Button variant='outline-secondary' id={deporte.usuario_deporte_id} className='me-2' onClick={modalEliminar}>Eliminar</Button>
                         </div>
                     </div>
-
-
                 </div>
-
             })}
 
             <ModalDeportes
@@ -237,7 +296,10 @@ function DeportesUsuario() {
                 setParametros={setParametros}
                 enviarParametros={enviarParametros}
                 setUsuarioDeporteId={setUsuarioDeporteId}
-                parametrosDeporte={parametrosDeporte}
+                preguntas={preguntas}
+                respuestas={respuestas}
+                setRespuestas={setRespuestas}
+                enviarResultados={enviarResultados}
             />
         </div>
     )

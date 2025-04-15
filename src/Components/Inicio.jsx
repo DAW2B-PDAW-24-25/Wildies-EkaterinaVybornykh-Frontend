@@ -41,7 +41,7 @@ function Inicio() {
 
     async function cargarUsuarios() {
         try {
-            let response = await fetch(`${API_URL}/usuarios/usuariosCerca/1`);        //todo cambiar 1 por usuarioLogeado.id
+            let response = await fetch(`${API_URL}/usuarios/usuariosCercaConLimite/1`);        //todo cambiar 1 por usuarioLogeado.id
 
             if (!response.ok) {
                 throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
@@ -56,7 +56,7 @@ function Inicio() {
     }
     async function cargarEventos() {
         try {
-            let response = await fetch(`${API_URL}/eventos/eventosCerca/1`);     //todo cambiar 1 por usuarioLogeado.id
+            let response = await fetch(`${API_URL}/eventos/eventosCercaConLimite/1`);     //todo cambiar 1 por usuarioLogeado.id
 
             if (!response.ok) {
                 throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
