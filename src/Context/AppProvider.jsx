@@ -11,8 +11,12 @@ import { useNavigate } from 'react-router-dom';
 function AppProvider({ children }) {
     const [usuarioLogueado, setUsuarioLogueado] = useState("");
     const [idUsuarioLogueado, setIdUsuarioLogueado] = useState(() => JSON.parse(localStorage.getItem('idUsuario')))
+    const [idUsuario, setIdUsuario] = useState("");    // otro usuario
     const [token, setToken] = useState(() => localStorage.getItem('token'));
-    const navigate=useNavigate();
+    const [usuarios, setUsuarios] = useState([]);     //otros usuarios
+    const [eventos, setEventos] = useState([]);
+    const [deportes, setDeportes] = useState([]);
+    const navigate = useNavigate();
 
     function login(datosUsuario, token) {
         setIdUsuarioLogueado(datosUsuario.id);
@@ -22,7 +26,7 @@ function AppProvider({ children }) {
         localStorage.setItem('token', token);
     };
 
-    function logout(){
+    function logout() {
         setIdUsuarioLogueado("");
         setUsuarioLogueado("");
         setToken("");
@@ -32,11 +36,88 @@ function AppProvider({ children }) {
     }
 
 
+    /*     useEffect(() => {
+            if (idUsuarioLogueado) {
+                cargarUsuario();
+            }
+        }, [idUsuarioLogueado]); */
+
     useEffect(() => {
-        if (idUsuarioLogueado) {
-            cargarUsuario();
+        cargarUsuarioLogueado();
+    }, []);
+
+    useEffect(() => {
+        cargarDeportes();
+    }, [])
+
+    useEffect(() => {
+        cargarEventosInicio();
+    }, []);
+
+    async function cargarDeportes() {
+        try {
+            let response = await fetch(`${API_URL}/deportes`);
+            if (!response.ok) {
+                throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
+            }
+            let data = await response.json();
+            setDeportes(data)
         }
-    }, [idUsuarioLogueado]);
+        catch (error) {
+            console.error("Error usuarios:", error);
+        }
+    }
+
+    useEffect(()=>{
+        console.log(deportes)
+    }, [deportes])
+
+
+    async function cargarUsuarioLogueado() {             // TODO pasar al formulario de login
+        try {
+            let response = await fetch(`${API_URL}/usuarios/1`);
+            if (!response.ok) {
+                throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
+            }
+            let data = await response.json();
+            let usuario = await data.data;
+            login(usuario, "123");
+        }
+        catch (error) {
+            console.error("Error usuarios:", error);
+        }
+    }
+
+    async function cargarUsuariosInicio() {
+        try {
+            let response = await fetch(`${API_URL}/usuarios/usuariosCercaConLimite/1`);        //todo cambiar 1 por usuarioLogeado.id
+
+            if (!response.ok) {
+                throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
+            }
+
+            let data = await response.json();
+            setUsuarios(data.data);
+
+        } catch (error) {
+            console.error("Error usuarios:", error);
+        }
+    }
+    async function cargarEventosInicio() {
+        try {
+            let response = await fetch(`${API_URL}/eventos/eventosCercaConLimite/1`);     //todo cambiar 1 por usuarioLogeado.id
+
+            if (!response.ok) {
+                throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
+            }
+
+            let data = await response.json();
+            setEventos(data.data);
+
+        } catch (error) {
+            console.error("Error usuarios:", error);
+        }
+    }
 
     async function cargarUsuario() {
         try {
@@ -52,9 +133,54 @@ function AppProvider({ children }) {
         }
     }
 
+    async function cargarUsuariosCerca() {
+        try {
+            let response = await fetch(`${API_URL}/usuarios/usuariosCerca/1`);        //todo cambiar 1 por usuarioLogeado.id
+
+            if (!response.ok) {
+                throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
+            }
+
+            let data = await response.json();
+            setUsuarios(data.data);
+
+        } catch (error) {
+            console.error("Error usuarios:", error);
+        }
+    }
+
+    async function cargarEventosCerca() {
+        try {
+            let response = await fetch(`${API_URL}/eventos/eventosCerca/1`);     //todo cambiar 1 por usuarioLogeado.id
+
+            if (!response.ok) {
+                throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
+            }
+
+            let data = await response.json();
+            setEventos(data.data);
+
+        } catch (error) {
+            console.error("Error usuarios:", error);
+        }
+    }
+
     return (
         <AppContext.Provider value={{
-            usuarioLogueado, setUsuarioLogueado, login, token, logout
+            usuarioLogueado,
+            setUsuarioLogueado,
+            login,
+            token,
+            logout,
+            cargarUsuariosInicio,
+            cargarEventosInicio,
+            cargarUsuariosCerca,
+            cargarEventosCerca,
+            usuarios,
+            setUsuarios,
+            eventos,
+            setEventos,
+            deportes
         }}>
             {children}
         </AppContext.Provider>

@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
+import { AppContext } from '../Context/AppProvider';
 
-function UsuariosInicio({ eventos }) {
+function EventosInicio() {
+
+    const { eventos, cargarEventosCerca } = useContext(AppContext);
     return (
 
         <div className='container-fluid'>
@@ -29,12 +32,12 @@ function UsuariosInicio({ eventos }) {
 
             </div>
             <div>
-            <div>
-                <Link to="/eventosCerca"  className='text-decoration-none'>Descubrir mas...</Link>
-            </div>
+                <div>
+                    <Link to="/eventosCerca" className='text-decoration-none'>Descubrir mas...</Link>
+                </div>
             </div>
         </div>
     )
 }
 
-export default UsuariosInicio
+export default EventosInicio

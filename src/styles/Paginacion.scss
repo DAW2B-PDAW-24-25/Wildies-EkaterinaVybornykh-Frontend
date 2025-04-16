@@ -1,0 +1,16 @@
+@import 'variables.scss';
+
+.pagination {
+    .page-link {
+        color: $title-color !important; 
+        background-color: transparent;
+    }
+
+    .page-item.active .page-link,
+    .page-item:hover .page-link {
+        background-color: $title-color !important;
+        border-color: $title-color !important;
+        color: white !important;
+    }
+}
+

@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 
 
 
+
 function ActualizarPerfil() {
 
     const { usuarioLogueado, setUsuarioLogueado } = useContext(AppContext);
@@ -226,7 +227,6 @@ function ActualizarPerfil() {
                                         value={formData.apellidos}
                                         onChange={handleFormChange}
                                         required
-
                                         isInvalid={validated && !formData.apellidos}
                                     />
                                     <Form.Control.Feedback type="invalid">
@@ -271,7 +271,13 @@ function ActualizarPerfil() {
                                     formData={formData}
                                     setFormData={setFormData}
                                     handleFormChange={handleFormChange}
+                                    required
+                                    isInvalid={validated && !formData.localidad}
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    Este campo es obligatorio.
+                                </Form.Control.Feedback>
+
                             </div>
                             <div className='col-md-6 texto'>
                                 <Form.Group className="mb-3" controlId="profesion">

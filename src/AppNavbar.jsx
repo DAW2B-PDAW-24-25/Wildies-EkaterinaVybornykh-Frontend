@@ -1,5 +1,5 @@
-import React, { useContext } from 'react'
-import { Nav, Navbar, Container } from 'react-bootstrap';
+import React, { useContext, useState } from 'react'
+import { Nav, Navbar, Container, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { IoSearch } from "react-icons/io5";
@@ -12,14 +12,38 @@ import { CgBorderBottom, CgProfile } from "react-icons/cg";
 import UsuariosInicio from './Components/EventosInicio';
 import { AppContext } from './Context/AppProvider';
 import logo from './styles/images/logo4.png';
+import ModalFiltro from './Components/ModalFiltro';
 
 
 function AppNavbar() {
+
+  const {deportes}=useContext(AppContext);
   const { usuarioLogueado } = useContext(AppContext);
+  const [show, setShow] = useState(false);
+  const [tipoModal, setTipoModal] = useState("");
+  const [modalHeader, setModalHeader] = useState("");
+  const [formData, setFormData]=useState({});
+  const [opcion, setOpcion]=useState("");
+  
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const Enlace = styled(Nav.Link)`
   display: flex;
   `
+
+  function handleBuscar() {
+    setTipoModal("opcion");
+    setModalHeader("Elige que quieres buscar");
+    setShow(true);
+  }
+
+  function handleFormChange(e) {
+    setFormData({
+        ...formData,
+        [e.target.name]: e.target.value
+    });
+}
 
   return (
     <div className='p-0 ps-sm-5'>
@@ -30,10 +54,10 @@ function AppNavbar() {
             <Link to={'/'}><img src={logo} alt="logo" className='img-fluid w-75 opacity-75' /></Link>
           </div>
           <div className='linkContainer p-0 pb-sm-5 pt-sm-5'>
-            <Enlace as={Link} to="/">
+            <Button variant="link" className='boton-link d-flex' onClick={handleBuscar}>
               <IoSearch style={{ fontSize: "25px", marginRight: "10px" }} />
               <p className='d-none d-sm-block'>Buscar</p>
-            </Enlace>
+            </Button>
             <Enlace as={Link} to="/">
               <LiaUserFriendsSolid style={{ fontSize: "25px", marginRight: "10px" }} /> <p className='d-none d-sm-block'>Mis wildies</p>
             </Enlace>
@@ -60,7 +84,7 @@ function AppNavbar() {
       <Navbar bg="light" data-bs-theme="light" className="d-sm-none" fixed="bottom">
 
         <Nav className="d-flex justify-content-around w-100">
-        <Enlace as={Link} to={`/perfil/1`}>
+          <Enlace as={Link} to={`/perfil/1`}>
             <CgProfile style={{ fontSize: "25px", marginRight: "10px" }} />
           </Enlace>
           <Enlace as={Link} to="/">
@@ -75,10 +99,23 @@ function AppNavbar() {
           <Enlace as={Link} to="/configuracion">
             <MdLogout style={{ fontSize: "25px", marginRight: "10px" }} />
           </Enlace>
-          
         </Nav>
-
       </Navbar>
+      <ModalFiltro
+        show={show}
+        onHide={handleClose}
+        header={modalHeader}
+        setHeader={setModalHeader}
+        tipo={tipoModal}
+        setTipo={setTipoModal}
+        setShow={setShow}
+        formData={formData}
+        setFormData={setFormData}
+        handleFormChange={handleFormChange}
+        opcion={opcion}
+        setOpcion={setOpcion}
+        deportes={deportes}
+      />
     </div>
 
 

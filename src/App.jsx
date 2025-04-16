@@ -10,8 +10,10 @@ import Perfil from './Components/Perfil';
 import ActualizarPerfil from './Components/ActualizarPerfil';
 import InicioSesion from './Components/InicioSesion';
 import DeportesUsuario from './Components/DeportesUsuario';
+import ResultadosUsuarios from './Components/ResultadosUsuarios';
 export const API_URL = import.meta.env.VITE_BACKEND_URL;
 export const GOOGLE_API_KEY = "AIzaSyBLNBtVh6RVdXhPX2mPA5hQct1zv_axmkY";
+import UsuariosInicio from './Components/UsuariosInicio';
 
 
 
@@ -42,7 +44,8 @@ function App() {
                 <Route path="/perfil/:idUsuario" element={<Perfil />} />
                 <Route path='/editarPerfil/:idUsuario' element={<ActualizarPerfil />} />
                 <Route path="/detalleEvento/:idEvento" />
-                <Route path='/deportesUsuario/:idUsuario' element={<DeportesUsuario/>}/>
+                <Route path='/deportesUsuario/:idUsuario' element={<DeportesUsuario />} />
+                <Route path='/resultadosUsuarios/:idUsuario' element={<ResultadosUsuarios />}></Route>
               </Routes>
               <Footer />
             </div>
