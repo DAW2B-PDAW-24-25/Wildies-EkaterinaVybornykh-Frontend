@@ -10,13 +10,17 @@ import { useNavigate } from 'react-router-dom';
 
 function AppProvider({ children }) {
     const [usuarioLogueado, setUsuarioLogueado] = useState("");
-    const [idUsuarioLogueado, setIdUsuarioLogueado] = useState(() => JSON.parse(localStorage.getItem('idUsuario')))
-    const [idUsuario, setIdUsuario] = useState("");    // otro usuario
+    const [idUsuarioLogueado, setIdUsuarioLogueado] = useState(() => JSON.parse(localStorage.getItem('idUsuario')));
+    const [idPerfil, setIdPerfil] = useState("");
     const [token, setToken] = useState(() => localStorage.getItem('token'));
-    const [usuarios, setUsuarios] = useState([]);     //otros usuarios
+    const [wildies, setWildies] = useState([]);     //otros usuarios
     const [eventos, setEventos] = useState([]);
     const [deportes, setDeportes] = useState([]);
+    const [tipoUsuarios, setTipoUsuarios] = useState("");
     const navigate = useNavigate();
+    const [formData, setFormData] = useState({});          //filtro usuario, eventos //todo cuidad con usar en otros sitios
+    const [opcion, setOpcion] = useState("");
+    const [ageDisabled, setAgeDisabled] = useState(false);
 
     function login(datosUsuario, token) {
         setIdUsuarioLogueado(datosUsuario.id);
@@ -54,6 +58,10 @@ function AppProvider({ children }) {
         cargarEventosInicio();
     }, []);
 
+    useEffect(() => {
+        cargarUsuariosInicio();
+    }, []);
+
     async function cargarDeportes() {
         try {
             let response = await fetch(`${API_URL}/deportes`);
@@ -68,7 +76,7 @@ function AppProvider({ children }) {
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         console.log(deportes)
     }, [deportes])
 
@@ -97,7 +105,7 @@ function AppProvider({ children }) {
             }
 
             let data = await response.json();
-            setUsuarios(data.data);
+            setWildies(data.data);
 
         } catch (error) {
             console.error("Error usuarios:", error);
@@ -142,7 +150,7 @@ function AppProvider({ children }) {
             }
 
             let data = await response.json();
-            setUsuarios(data.data);
+            setWildies(data.data);
 
         } catch (error) {
             console.error("Error usuarios:", error);
@@ -165,6 +173,53 @@ function AppProvider({ children }) {
         }
     }
 
+    async function aplicarFiltros() {
+        const { localidad, ...datos } = formData;
+        let response = "";
+        console.log("formData en aplicarFiltros", formData)
+        if (opcion === "wildies") {
+            console.log("datos dentro de if wildies", datos)
+            response = await fetch(`${API_URL}/usuariosFiltrados/${usuarioLogueado.id}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    // "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(datos)
+            });
+        } else {
+            response = await fetch(`${API_URL}/eventosFiltrados/${usuarioLogueado.id}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    // "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(datos)
+            });
+        }
+
+        if (!response.ok) {
+            console.log("Error al recibir usuarios filtrados");
+            setTipoModal("error");
+            setModalHeader("Ha ocurrido un error");
+            setShow(true);
+
+        } else {
+            const data = await response.json();
+
+            if (opcion === "wildies") {
+                setWildies(data.data)
+                console.log("data", data.data)
+
+
+            } else {
+                setEventos(data.data)           //añadir navigate
+            }
+        }
+        setAgeDisabled(false);
+        setOpcion("");
+    }
+
     return (
         <AppContext.Provider value={{
             usuarioLogueado,
@@ -176,11 +231,22 @@ function AppProvider({ children }) {
             cargarEventosInicio,
             cargarUsuariosCerca,
             cargarEventosCerca,
-            usuarios,
-            setUsuarios,
+            wildies,
+            setWildies,
             eventos,
             setEventos,
-            deportes
+            deportes,
+            tipoUsuarios,
+            setTipoUsuarios,
+            aplicarFiltros,
+            formData,
+            setFormData,
+            opcion,
+            setOpcion,
+            ageDisabled,
+            setAgeDisabled,
+            idPerfil,
+            setIdPerfil
         }}>
             {children}
         </AppContext.Provider>

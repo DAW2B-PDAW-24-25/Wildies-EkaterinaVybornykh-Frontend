@@ -1,18 +1,27 @@
 import React from 'react';
 import { Button, Image, Modal } from 'react-bootstrap';
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { AppContext } from '../Context/AppProvider';
 import { BiLeaf } from "react-icons/bi";
 import { GoBriefcase } from "react-icons/go";
 import { LuLanguages } from "react-icons/lu";
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { API_URL } from '../App';
 
 function Perfil() {
-  const { usuarioLogueado, logout } = useContext(AppContext);
+  const { id } = useParams();
+  const { usuarioLogueado, logout, setIdPerfil } = useContext(AppContext);
   const [show, setShow] = useState(false);
   const [modalMensaje, setModalMensaje] = useState("");
   const [modalTipo, setModalTipo] = useState("");
+
+  useEffect(() => {
+    setIdPerfil(id);
+    console.log("id", id)
+    console.log("idLogueado", usuarioLogueado.id)
+  }, [id]);
+
+  const esMiPerfil = usuarioLogueado?.id == id;
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -61,12 +70,17 @@ function Perfil() {
         <div className='d-flex flex-column col-9 text-center justify-content-between'>
           <h1 className='mt-2'>{usuarioLogueado.nombre} {usuarioLogueado.apellidos}</h1>
           <div className='d-flex justify-content-center mb-md-5'>
-            <Link to={`/deportesUsuario/${usuarioLogueado.id}`}><Button variant="outline-secondary" className=' me-2'>Deportes</Button></Link>
+            <Link to={`/deportesUsuario/${id}`}><Button variant="outline-secondary" className=' me-2'>Deportes</Button></Link>
             <Button variant="outline-secondary" className=' me-2'>Fotos</Button>
-            <Link to={`/editarPerfil/${usuarioLogueado.id}`}>
-              <Button variant="outline-secondary" className=' me-2'>Editar Perfil</Button>
-            </Link>
-            <Button variant="outline-secondary" onClick={modalEliminar}>Eliminar perfil</Button>
+            {esMiPerfil &&
+              <>
+                <Link to={`/editarPerfil/${usuarioLogueado.id}`}>
+                  <Button variant="outline-secondary" className=' me-2'>Editar Perfil</Button>
+                </Link>
+                <Button variant="outline-secondary" onClick={modalEliminar}>Eliminar perfil</Button>
+              </>
+            }
+
 
           </div>
         </div>
@@ -87,10 +101,10 @@ function Perfil() {
         <div className='col-md-6'>
           <div>
             {usuarioLogueado.deportes.map((deporte, index) => {
-              
-                return <p key={index}>
-                  {deporte.deporte} {deporte.nivel && `: nivel ${deporte.nivel}`}
-                </p>
+
+              return <p key={index}>
+                {deporte.deporte} {deporte.nivel && `: nivel ${deporte.nivel}`}
+              </p>
             })}
           </div>
         </div>

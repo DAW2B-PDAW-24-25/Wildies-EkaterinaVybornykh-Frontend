@@ -41,11 +41,11 @@ function App() {
               <Routes>
                 <Route path='/inicioSesion' element={<InicioSesion />} />
                 <Route path="/" element={<Inicio />} />
-                <Route path="/perfil/:idUsuario" element={<Perfil />} />
-                <Route path='/editarPerfil/:idUsuario' element={<ActualizarPerfil />} />
-                <Route path="/detalleEvento/:idEvento" />
-                <Route path='/deportesUsuario/:idUsuario' element={<DeportesUsuario />} />
-                <Route path='/resultadosUsuarios/:idUsuario' element={<ResultadosUsuarios />}></Route>
+                <Route path="/perfil/:id" element={<Perfil />} />
+                <Route path='/editarPerfil/:id' element={<ActualizarPerfil />} />
+                <Route path="/detalleEvento/:id" />
+                <Route path='/deportesUsuario/:id' element={<DeportesUsuario />} />
+                <Route path='/resultadosUsuarios/:id' element={<ResultadosUsuarios />}></Route>
               </Routes>
               <Footer />
             </div>

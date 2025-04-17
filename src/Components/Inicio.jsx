@@ -11,19 +11,13 @@ import { Button } from 'react-bootstrap';
 
 function Inicio() {
 
-    const { usuarioLogueado, eventos, cargarUsuariosCerca, cargarUsuariosInicio } = useContext(AppContext);
+    const { usuarioLogueado, eventos, setTipoUsuarios } = useContext(AppContext);
     let navigate = useNavigate();
-    //const [usuarios, setUsuarios] = useState([]);
-    // const [eventos, setEventos] = useState([]);
 
-  /*   useEffect(() => {
-        cargarUsuariosInicio();
-    }, []) */
-
-  /*   async function handleUsuarios() {
-        await cargarUsuariosCerca();
+    async function handleUsuarios() {
+        setTipoUsuarios("cerca")
         navigate(`/resultadosUsuarios/${usuarioLogueado.id}`);
-    } */
+    }
 
 
     return (
@@ -35,7 +29,7 @@ function Inicio() {
 
             <div className='bg-seccion p-3 rounded shadow d-flex ms-3 me-3 flex-column' >
                 <UsuariosInicio />
-                <Link to={`/resultadosUsuarios/${usuarioLogueado.id}`} className='text-decoration-none'>Descubrir mas...</Link>
+                <Button variant="link" className='boton-link d-flex' onClick={handleUsuarios}>Descubrir mas...</Button>
             </div>
             <div className='bg-seccion p-3 rounded shadow d-flex ms-3 me-3 mt-5'>
                 <EventosInicio eventos={eventos} />

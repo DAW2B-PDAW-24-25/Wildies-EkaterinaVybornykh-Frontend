@@ -1,6 +1,6 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { Nav, Navbar, Container, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { IoSearch } from "react-icons/io5";
 import { LiaUserFriendsSolid } from "react-icons/lia";
@@ -13,18 +13,20 @@ import UsuariosInicio from './Components/EventosInicio';
 import { AppContext } from './Context/AppProvider';
 import logo from './styles/images/logo4.png';
 import ModalFiltro from './Components/ModalFiltro';
+import { API_URL } from './App';
 
 
 function AppNavbar() {
 
-  const {deportes}=useContext(AppContext);
-  const { usuarioLogueado } = useContext(AppContext);
+  const { deportes, usuarioLogueado, setUsuarios, setEventos, usuarios, formData, setFormData } = useContext(AppContext);
   const [show, setShow] = useState(false);
   const [tipoModal, setTipoModal] = useState("");
   const [modalHeader, setModalHeader] = useState("");
-  const [formData, setFormData]=useState({});
-  const [opcion, setOpcion]=useState("");
-  
+  //const [formData, setFormData] = useState({});
+  //const [opcion, setOpcion] = useState("");
+  //const [ageDisabled, setAgeDisabled] = useState(false);
+  const navigate = useNavigate();
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -40,10 +42,21 @@ function AppNavbar() {
 
   function handleFormChange(e) {
     setFormData({
-        ...formData,
-        [e.target.name]: e.target.value
+      ...formData,
+      [e.target.name]: e.target.value
     });
-}
+  }
+
+  
+
+ /*  useEffect(() => {
+    console.log("usuarios despues de set", usuarios)
+    navigate(`/resultadosUsuarios/${usuarioLogueado.id}`)
+  }, [usuarios]) */
+
+  useEffect(() => {
+    console.log(formData)
+  }, [formData])
 
   return (
     <div className='p-0 ps-sm-5'>
@@ -112,9 +125,12 @@ function AppNavbar() {
         formData={formData}
         setFormData={setFormData}
         handleFormChange={handleFormChange}
-        opcion={opcion}
-        setOpcion={setOpcion}
+       // opcion={opcion}
+        //setOpcion={setOpcion}
         deportes={deportes}
+        
+        //ageDisabled={ageDisabled}
+        //setAgeDisabled={setAgeDisabled}
       />
     </div>
 

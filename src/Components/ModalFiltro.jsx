@@ -6,6 +6,7 @@ import BuscadorLocalidad from './BuscadorLocalidad';
 import Slider, { SliderThumb } from '@mui/material/Slider';
 import { styled } from '@mui/material/styles';
 import { AppContext } from '../Context/AppProvider';
+import { useNavigate } from 'react-router-dom';
 
 
 function ModalFiltro({
@@ -16,34 +17,41 @@ function ModalFiltro({
     setTipo,
     setHeader,
     setShow,
-    formData,
-    setFormData,
+    //formData,
+    //setFormData,
     handleFormChange,
-    opcion,
-    setOpcion
+    //opcion,
+    //setOpcion,
+    aplicarFiltros, 
+    //ageDisabled,
+    //setAgeDisabled,
+    
 }) {
 
-    const [ageDisabled, setAgeDisabled] = useState(false);
-    const { deportes } = useContext(AppContext)
+    const { deportes, usuarioLogueado, setTipoUsuarios, formData, setFormData, opcion, setOpcion, ageDisabled, setAgeDisabled } = useContext(AppContext)
+    const navigate=useNavigate();
 
     function handleSwitchEdad() {
         if (ageDisabled) {
             setAgeDisabled(false);
+            setFormData({...formData, edad_min: 30, edad_max: 60})
         } else {
             setAgeDisabled(true);
+            setFormData({...formData, edad_min: 18, edad_max: 100})
         }
     }
 
     function handleOpcion() {
-        setFormData({      //antes de enviar al back eliminar localidad
+        setFormData({     
             edad_min: 30,
             edad_max: 60,
             sexo: "",
             deportes: [],
-            nivel: "",
-            longitud_domicilio: "",         //antes de enviar al back quitar domicilio, solo longitud
+            nivel: 0,
+            longitud_domicilio: "",
             latitud_domicilio: "",
-            distanciaMax: ""
+            distanciaMax: "",
+            localidad: ""
         })
         setTipo("form");
         setHeader("Preferencias de búsqueda");
@@ -60,8 +68,11 @@ function ModalFiltro({
         };
     };
 
-    function handleFiltrar(){
-
+    async function handleFiltrar(e) {
+        e.preventDefault();
+        setTipoUsuarios("filtro");
+        navigate(`/resultadosUsuarios/${usuarioLogueado.id}`)
+        onHide();
     }
 
     return (
@@ -86,7 +97,7 @@ function ModalFiltro({
                 }
 
                 {tipo === "form" &&
-                    <Form>
+                    <Form onSubmit={handleFiltrar}>
                         <BuscadorLocalidad
                             formData={formData}
                             setFormData={setFormData}
@@ -131,9 +142,9 @@ function ModalFiltro({
                             </div>
                         </Form.Group>
                         <hr />
-                        <Form.Group controlId="edad-range">
+                        <Form.Group controlId="sexo">
                             <Form.Label>Sexo</Form.Label>
-                            <ToggleButtonGroup type="radio" name="tipo" value={formData.sexo} onChange={(val) => setFormData({ ...formData, sexo: val })} className='d-flex justify-content-center'>
+                            <ToggleButtonGroup type="radio" name="sexo" value={formData.sexo} onChange={(val) => setFormData({ ...formData, sexo: val })} className='d-flex justify-content-center'>
                                 <ToggleButton id="tbg-btn-1" value={"mujer"} className='rounded-pill me-2' variant='outline-secondary'>
                                     Mujer
                                 </ToggleButton>
@@ -151,18 +162,34 @@ function ModalFiltro({
                             <Form.Label>Deporte</Form.Label>
                             <ToggleButtonGroup
                                 type="checkbox"
+                                name='deporte'
                                 value={formData.deportes}
                                 onChange={(val) => setFormData({ ...formData, deportes: val })}
                                 className="d-flex flex-wrap row ms-2"
                             >
                                 {deportes?.map((deporte) => {
-                                    return <ToggleButton id={deporte.id} value={deporte.id} className="me-1 mb-2 rounded-pill col-3" variant='outline-secondary'>
+                                    return <ToggleButton key={deporte.id} id={`deporte-${deporte.id}`} value={deporte.id} className="me-1 mb-2 rounded-pill col-3" variant='outline-secondary'>
                                         {deporte.nombre}
                                     </ToggleButton>
                                 })}
                             </ToggleButtonGroup>
                         </Form.Group>
-
+                        <hr />
+                        <Form.Group controlId="nivel">
+                            <Form.Label>Nivel mínimo</Form.Label>
+                            <ToggleButtonGroup type="radio" name="nivel" value={formData.nivel} onChange={(val) => setFormData({ ...formData, nivel: val })} className='d-flex justify-content-center'>
+                                {
+                                    [0, 1, 2, 3, 4, 5].map((nivel) => {
+                                        return <ToggleButton key={nivel} id={`nivel-${nivel}`} value={nivel} className='rounded-pill me-2 p-0' variant='outline-secondary'>
+                                            {nivel}
+                                        </ToggleButton>
+                                    })
+                                }
+                            </ToggleButtonGroup>
+                        </Form.Group>
+                        <Button variant="secondary" type='submit' className='mt-3'>
+                            Aceptar
+                        </Button>
                     </Form>
                 }
 
@@ -174,9 +201,8 @@ function ModalFiltro({
                         Aceptar
                     </Button>
                 }
-
-                {tipo === "form" &&
-                    <Button variant="secondary" onClick={handleFiltrar}>
+                {tipo === "error" &&
+                    <Button variant="secondary" onClick={onHide}>
                         Aceptar
                     </Button>
                 }

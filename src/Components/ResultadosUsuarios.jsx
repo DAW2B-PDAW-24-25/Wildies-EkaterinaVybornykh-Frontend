@@ -8,38 +8,38 @@ import Pagination from 'react-bootstrap/Pagination';
 import '../styles/Paginacion.scss'
 
 function ResultadosUsuarios() {
-    const { usuarios, cargarUsuariosCerca } = useContext(AppContext);
+    const { wildies, cargarUsuariosCerca, tipoUsuarios, aplicarFiltros } = useContext(AppContext);
     const [cargando, setCargando] = useState(true);
     const [paginaActual, setPaginaActual] = useState(1);
     const [usuariosPorPagina] = useState(12);
 
-     // Calculamos los índices para los usuarios visibles en la página actual
-     const indiceUltimo = paginaActual * usuariosPorPagina;
-     const indicePrimero = indiceUltimo - usuariosPorPagina;
- 
-     // Solo mostramos los usuarios que corresponden a la página actual
-     const usuariosPagina = usuarios.slice(indicePrimero, indiceUltimo);
- 
-     // Total de páginas
-     const totalPaginas = Math.ceil(usuarios.length / usuariosPorPagina);
-     
-     const paginacion = [];
- 
-     // Generamos los botones de la paginación
-     for (let number = 1; number <= totalPaginas; number++) {
-         paginacion.push(
-             <Pagination.Item
-                 key={number}
-                 active={number === paginaActual}
-                 onClick={() => setPaginaActual(number)} // Cambia la página activa
-             >
-                 {number}
-             </Pagination.Item>
-         );
-     }
+    // Calculamos los índices para los usuarios visibles en la página actual
+    const indiceUltimo = paginaActual * usuariosPorPagina;
+    const indicePrimero = indiceUltimo - usuariosPorPagina;
 
-     useEffect(() => {
-        window.scrollTo(0, 0); 
+    // Solo mostramos los usuarios que corresponden a la página actual
+    const usuariosPagina = wildies.slice(indicePrimero, indiceUltimo);
+
+    // Total de páginas
+    const totalPaginas = Math.ceil(wildies.length / usuariosPorPagina);
+
+    const paginacion = [];
+
+    // Generamos los botones de la paginación
+    for (let number = 1; number <= totalPaginas; number++) {
+        paginacion.push(
+            <Pagination.Item
+                key={number}
+                active={number === paginaActual}
+                onClick={() => setPaginaActual(number)} // Cambia la página activa
+            >
+                {number}
+            </Pagination.Item>
+        );
+    }
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
     }, [paginaActual]);
 
 
@@ -47,9 +47,23 @@ function ResultadosUsuarios() {
         cargar();
     }, []);
 
+    useEffect(() => {
+        if (tipoUsuarios === "filtro") {
+            setCargando(true);
+            aplicarFiltros();
+            setCargando(false);
+        }
+    }, [tipoUsuarios]);
+
     async function cargar() {
         setCargando(true);
-        await cargarUsuariosCerca();
+        if (tipoUsuarios === "cerca") {
+            await cargarUsuariosCerca();
+        }
+        if (tipoUsuarios === "filtro") {
+            await aplicarFiltros();
+        }
+
         setCargando(false);
     }
 
@@ -98,7 +112,7 @@ function ResultadosUsuarios() {
             </div>
             <div className="d-flex justify-content-center">
                 <Pagination className='pagination'>
-                    <Pagination.Prev  onClick={() => paginaActual > 1 && setPaginaActual(paginaActual - 1)} />
+                    <Pagination.Prev onClick={() => paginaActual > 1 && setPaginaActual(paginaActual - 1)} />
                     {paginacion}
                     <Pagination.Next onClick={() => paginaActual < totalPaginas && setPaginaActual(paginaActual + 1)} />
                 </Pagination>

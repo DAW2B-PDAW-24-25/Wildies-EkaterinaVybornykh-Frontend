@@ -4,6 +4,7 @@ import { AppContext } from '../Context/AppProvider';
 import { Button } from 'react-bootstrap';
 import ModalDeportes from './ModalDeportes';
 import { API_URL } from '../App';
+import { useParams } from 'react-router-dom';
 
 function DeportesUsuario() {
     const { usuarioLogueado, setUsuarioLogueado } = useContext(AppContext);
@@ -17,7 +18,9 @@ function DeportesUsuario() {
     const [parametrosDeporte, setParametrosDeporte] = useState([]);
     const [preguntas, setPreguntas] = useState([]);
     const [respuestas, setRespuestas] = useState([]);
+    const { id } = useParams();
 
+    const esMiPerfil = usuarioLogueado?.id == id;
 
     function modalEliminar(e) {
         setModalTipo("eliminar");
@@ -241,9 +244,12 @@ function DeportesUsuario() {
                 <div>
                     <h1>Deportes que practico</h1>
                 </div>
-                <div className='me-3'>
-                    <Button variant='outline-secondary' onClick={modalAgregarDeporte}>Añadir deporte</Button>
-                </div>
+                {esMiPerfil &&
+                    <div className='me-3'>
+                        <Button variant='outline-secondary' onClick={modalAgregarDeporte}>Añadir deporte</Button>
+                    </div>
+                }
+
 
             </div>
 
@@ -269,13 +275,15 @@ function DeportesUsuario() {
                                 </div>
                             })}
                         </div>
-                        <div>
-                            {!deporte.nivel &&
-                                <Button variant='outline-secondary' className='me-2' id={deporte.usuario_deporte_id} onClick={modalTest}>Realizar Test</Button>
-                            }
-                            <Button variant='outline-secondary' className='me-2' id={deporte.usuario_deporte_id} data-deporteid={deporte.deporte_id} onClick={modalEditar}>Editar</Button>
-                            <Button variant='outline-secondary' id={deporte.usuario_deporte_id} className='me-2' onClick={modalEliminar}>Eliminar</Button>
-                        </div>
+                        {esMiPerfil &&
+                            <div>
+                                {!deporte.nivel &&
+                                    <Button variant='outline-secondary' className='me-2' id={deporte.usuario_deporte_id} onClick={modalTest}>Realizar Test</Button>
+                                }
+                                <Button variant='outline-secondary' className='me-2' id={deporte.usuario_deporte_id} data-deporteid={deporte.deporte_id} onClick={modalEditar}>Editar</Button>
+                                <Button variant='outline-secondary' id={deporte.usuario_deporte_id} className='me-2' onClick={modalEliminar}>Eliminar</Button>
+                            </div>
+                        }
                     </div>
                 </div>
             })}

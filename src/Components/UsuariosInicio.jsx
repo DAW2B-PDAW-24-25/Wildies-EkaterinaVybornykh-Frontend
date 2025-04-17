@@ -11,7 +11,7 @@ import SpinnerWave from './SpinnerWave';
 
 function UsuariosInicio() {
 
-    const { usuarios, cargarUsuariosInicio } = useContext(AppContext);
+    const { wildies, cargarUsuariosInicio } = useContext(AppContext);
      const [cargando, setCargando] = useState(true);
 
     useEffect(() => {
@@ -37,7 +37,7 @@ function UsuariosInicio() {
             <h3 className='pb-3'>Wildies cerca</h3>
             <hr></hr>
             <div className='row pt-3'>
-                {usuarios.map((usuario) => {
+                {wildies.map((usuario) => {
                     return <Link to={`/perfil/${usuario.id}`} className='col-md-3 mb-3 me-5 text-decoration-none'>
                         <Card key={usuario.id} className='rounded-0 p-0 border-0 bg-transparent'>
                             <Card.Img variant="top" src={usuario.foto_perfil} className="img-fluid w-100 rounded-0">
