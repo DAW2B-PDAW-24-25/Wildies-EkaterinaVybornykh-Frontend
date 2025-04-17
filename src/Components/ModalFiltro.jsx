@@ -22,27 +22,38 @@ function ModalFiltro({
     handleFormChange,
     //opcion,
     //setOpcion,
-    aplicarFiltros, 
+    aplicarFiltros,
     //ageDisabled,
     //setAgeDisabled,
-    
+
 }) {
 
-    const { deportes, usuarioLogueado, setTipoUsuarios, formData, setFormData, opcion, setOpcion, ageDisabled, setAgeDisabled } = useContext(AppContext)
-    const navigate=useNavigate();
+    const { deportes,
+        usuarioLogueado,
+        setTipoUsuarios,
+        formData,
+        setFormData,
+        opcion,
+        setOpcion,
+        ageDisabled,
+        setAgeDisabled,
+        setTipoEventos
+    } = useContext(AppContext)
+
+    const navigate = useNavigate();
 
     function handleSwitchEdad() {
         if (ageDisabled) {
             setAgeDisabled(false);
-            setFormData({...formData, edad_min: 30, edad_max: 60})
+            setFormData({ ...formData, edad_min: 30, edad_max: 60 })
         } else {
             setAgeDisabled(true);
-            setFormData({...formData, edad_min: 18, edad_max: 100})
+            setFormData({ ...formData, edad_min: 18, edad_max: 100 })
         }
     }
 
     function handleOpcion() {
-        setFormData({     
+        setFormData({
             edad_min: 30,
             edad_max: 60,
             sexo: "",
@@ -70,8 +81,14 @@ function ModalFiltro({
 
     async function handleFiltrar(e) {
         e.preventDefault();
-        setTipoUsuarios("filtro");
-        navigate(`/resultadosUsuarios/${usuarioLogueado.id}`)
+        if (opcion === "wildies") {
+            setTipoUsuarios("filtro");
+            navigate(`/resultadosUsuarios/${usuarioLogueado.id}`)
+        } else {
+            setTipoEventos("filtro");
+            navigate(`/resultadosEventos/${usuarioLogueado.id}`)
+        }
+        
         onHide();
     }
 

@@ -15,12 +15,15 @@ function AppProvider({ children }) {
     const [token, setToken] = useState(() => localStorage.getItem('token'));
     const [wildies, setWildies] = useState([]);     //otros usuarios
     const [eventos, setEventos] = useState([]);
+    const [evento, setEvento] = useState({});
     const [deportes, setDeportes] = useState([]);
     const [tipoUsuarios, setTipoUsuarios] = useState("");
     const navigate = useNavigate();
     const [formData, setFormData] = useState({});          //filtro usuario, eventos //todo cuidad con usar en otros sitios
     const [opcion, setOpcion] = useState("");
     const [ageDisabled, setAgeDisabled] = useState(false);
+    const [tipoEventos, setTipoEventos] = useState("");
+
 
     function login(datosUsuario, token) {
         setIdUsuarioLogueado(datosUsuario.id);
@@ -40,11 +43,7 @@ function AppProvider({ children }) {
     }
 
 
-    /*     useEffect(() => {
-            if (idUsuarioLogueado) {
-                cargarUsuario();
-            }
-        }, [idUsuarioLogueado]); */
+   
 
     useEffect(() => {
         cargarUsuarioLogueado();
@@ -213,7 +212,8 @@ function AppProvider({ children }) {
 
 
             } else {
-                setEventos(data.data)           //añadir navigate
+                setEventos(data.data)
+                console.log("data", data.data)         //añadir navigate
             }
         }
         setAgeDisabled(false);
@@ -246,7 +246,11 @@ function AppProvider({ children }) {
             ageDisabled,
             setAgeDisabled,
             idPerfil,
-            setIdPerfil
+            setIdPerfil,
+            tipoEventos,
+            setTipoEventos,
+            evento,
+            setEvento
         }}>
             {children}
         </AppContext.Provider>

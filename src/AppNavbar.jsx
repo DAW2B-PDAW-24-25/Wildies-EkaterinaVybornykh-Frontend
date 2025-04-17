@@ -47,13 +47,6 @@ function AppNavbar() {
     });
   }
 
-  
-
- /*  useEffect(() => {
-    console.log("usuarios despues de set", usuarios)
-    navigate(`/resultadosUsuarios/${usuarioLogueado.id}`)
-  }, [usuarios]) */
-
   useEffect(() => {
     console.log(formData)
   }, [formData])
@@ -95,7 +88,6 @@ function AppNavbar() {
         </Nav>
       </div>
       <Navbar bg="light" data-bs-theme="light" className="d-sm-none" fixed="bottom">
-
         <Nav className="d-flex justify-content-around w-100">
           <Enlace as={Link} to={`/perfil/1`}>
             <CgProfile style={{ fontSize: "25px", marginRight: "10px" }} />

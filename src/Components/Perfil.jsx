@@ -21,6 +21,10 @@ function Perfil() {
     console.log("idLogueado", usuarioLogueado.id)
   }, [id]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const esMiPerfil = usuarioLogueado?.id == id;
 
   const handleClose = () => setShow(false);

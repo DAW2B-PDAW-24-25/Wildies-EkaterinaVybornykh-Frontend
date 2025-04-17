@@ -12,7 +12,7 @@ import SpinnerWave from './SpinnerWave';
 function UsuariosInicio() {
 
     const { wildies, cargarUsuariosInicio } = useContext(AppContext);
-     const [cargando, setCargando] = useState(true);
+    const [cargando, setCargando] = useState(true);
 
     useEffect(() => {
         cargar();

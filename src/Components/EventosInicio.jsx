@@ -1,11 +1,30 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../Context/AppProvider';
+import SpinnerWave from './SpinnerWave';
 
 function EventosInicio() {
 
-    const { eventos, cargarEventosCerca } = useContext(AppContext);
+    const { eventos, cargarEventosCerca, cargarEventosInicio } = useContext(AppContext);
+    const [cargando, setCargando] = useState(true);
+
+    useEffect(() => {
+        cargar();
+    }, []);
+
+    async function cargar() {
+        setCargando(true);
+        await cargarEventosInicio();
+        setCargando(false);
+    }
+
+    if (cargando) {
+
+        return <div className='container-fluid min-vh-100'>
+            <SpinnerWave />
+        </div>
+    }
     return (
 
         <div className='container-fluid'>
@@ -30,11 +49,6 @@ function EventosInicio() {
                     </Link>
                 })}
 
-            </div>
-            <div>
-                <div>
-                    <Link to="/eventosCerca" className='text-decoration-none'>Descubrir mas...</Link>
-                </div>
             </div>
         </div>
     )
