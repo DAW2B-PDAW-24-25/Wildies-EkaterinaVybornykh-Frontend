@@ -14,6 +14,7 @@ function AppProvider({ children }) {
     const [idPerfil, setIdPerfil] = useState("");
     const [token, setToken] = useState(() => localStorage.getItem('token'));
     const [wildies, setWildies] = useState([]);     //otros usuarios
+   const [wildie, setWildie]=useState([]);
     const [eventos, setEventos] = useState([]);
     const [evento, setEvento] = useState({});
     const [deportes, setDeportes] = useState([]);
@@ -74,11 +75,6 @@ function AppProvider({ children }) {
             console.error("Error usuarios:", error);
         }
     }
-
-    useEffect(() => {
-        console.log(deportes)
-    }, [deportes])
-
 
     async function cargarUsuarioLogueado() {             // TODO pasar al formulario de login
         try {
@@ -220,6 +216,8 @@ function AppProvider({ children }) {
         setOpcion("");
     }
 
+   
+
     return (
         <AppContext.Provider value={{
             usuarioLogueado,
@@ -250,7 +248,9 @@ function AppProvider({ children }) {
             tipoEventos,
             setTipoEventos,
             evento,
-            setEvento
+            setEvento,
+            wildie,
+            setWildie
         }}>
             {children}
         </AppContext.Provider>

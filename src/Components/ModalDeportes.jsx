@@ -63,6 +63,8 @@ function ModalDeportes({
             size="md"
             aria-labelledby="contained-modal-title-vcenter"
             centered
+            scrollable 
+            backdrop="static"
         >
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter" className='title'>
@@ -85,7 +87,7 @@ function ModalDeportes({
                                     id={deporte.id}
                                     value={deporte.id}
                                     variant='outline-secondary'
-                                    className="me-2 mb-2 rounded-pill col-3"
+                                    className="me-2 mb-2 rounded-pill shadow col-3"
                                 >
                                     {deporte.nombre}
                                 </ToggleButton>

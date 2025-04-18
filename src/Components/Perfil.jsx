@@ -7,13 +7,17 @@ import { GoBriefcase } from "react-icons/go";
 import { LuLanguages } from "react-icons/lu";
 import { Link, useParams } from 'react-router-dom';
 import { API_URL } from '../App';
+import SpinnerWave from './SpinnerWave';
+import PerfilWildie from './PerfilWildie';
+import PerfilLogueado from './PerfilLogueado';
 
 function Perfil() {
   const { id } = useParams();
-  const { usuarioLogueado, logout, setIdPerfil } = useContext(AppContext);
-  const [show, setShow] = useState(false);
+  const { usuarioLogueado, logout, setIdPerfil, wildie, setWildie } = useContext(AppContext);
   const [modalMensaje, setModalMensaje] = useState("");
   const [modalTipo, setModalTipo] = useState("");
+  
+  const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
     setIdPerfil(id);
@@ -25,21 +29,14 @@ function Perfil() {
     window.scrollTo(0, 0);
   }, []);
 
+  useEffect(() => {
+   // if (!esMiPerfil) {
+   console.log("estoy en useEf cargar wildie")
+      cargarWildie();
+    //}
+  }, [])
+
   const esMiPerfil = usuarioLogueado?.id == id;
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
-  function modalEliminar() {
-    setModalTipo("eliminar");
-    setModalMensaje("Atención! Se va a eliminar el perfil");
-    setShow(true);
-  }
-
-  function borrarDatos() {
-    setShow(false);
-    logout();
-  }
 
   async function eliminarPerfil() {
     setShow(false);
@@ -64,102 +61,40 @@ function Perfil() {
     }
   }
 
-  return (
-    <div className='container-fluid min-vh-100'>
-      <div className='row m-3'>
-        <div className='col-3 text-center'>
-          <Image src={usuarioLogueado.foto_perfil} className='avatar mb-3' />
-          <p>{usuarioLogueado.localidad}</p>
-        </div>
-        <div className='d-flex flex-column col-9 text-center justify-content-between'>
-          <h1 className='mt-2'>{usuarioLogueado.nombre} {usuarioLogueado.apellidos}</h1>
-          <div className='d-flex justify-content-center mb-md-5'>
-            <Link to={`/deportesUsuario/${id}`}><Button variant="outline-secondary" className=' me-2'>Deportes</Button></Link>
-            <Button variant="outline-secondary" className=' me-2'>Fotos</Button>
-            {esMiPerfil &&
-              <>
-                <Link to={`/editarPerfil/${usuarioLogueado.id}`}>
-                  <Button variant="outline-secondary" className=' me-2'>Editar Perfil</Button>
-                </Link>
-                <Button variant="outline-secondary" onClick={modalEliminar}>Eliminar perfil</Button>
-              </>
-            }
+  async function cargarWildie() {
+    setCargando(true);
+    try {
+      let response = await fetch(`${API_URL}/usuarios/${id}`);
+      if (!response.ok) {
+        throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
+      }
+      let data = await response.json();
+      setWildie(data.data);
 
+    }
+    catch (error) {
+      console.error("Error usuarios:", error);
+    }
+    setCargando(false);
+  }
 
-          </div>
-        </div>
-      </div>
-      <hr />
-      <div className='row bg-seccion p-3 rounded shadow d-flex ms-3 me-3'>
-        <div className='d-flex flex-column justify-content-center col-md-6'>
-          <div className='d-flex justify-content-start'>
-            <BiLeaf className='me-2' /><p>Edad: {usuarioLogueado.edad} años</p>
-          </div>
-          <div className='d-flex justify-content-start'>
-            <GoBriefcase className='me-2' /><p>Profesión: {usuarioLogueado.profesion}</p>
-          </div>
-          <div className='d-flex justify-content-start'>
-            <LuLanguages className='me-2' /><p>Hablo: {usuarioLogueado.idiomas}</p>
-          </div>
-        </div>
-        <div className='col-md-6'>
-          <div>
-            {usuarioLogueado.deportes.map((deporte, index) => {
-
-              return <p key={index}>
-                {deporte.deporte} {deporte.nivel && `: nivel ${deporte.nivel}`}
-              </p>
-            })}
-          </div>
-        </div>
-      </div>
-      <div className='row bg-seccion p-3 rounded shadow d-flex ms-3 me-3 mt-4'>
-        <h3 className='title'>Sobre mí</h3>
-        <hr />
-        <div>
-          <p>{usuarioLogueado.descripcion}</p>
-        </div>
-      </div>
-      <div className='row bg-seccion p-3 rounded shadow d-flex ms-3 me-3 mt-4 mb-5'>
-        <h3 className='title'>¿Por qué estoy en wildies?</h3>
-        <hr />
-        <div>
-          <p>{usuarioLogueado.por_que}</p>
-        </div>
-      </div>
-      <Modal show={show} onHide={handleClose}>
-
-        <Modal.Header>
-          <Modal.Title>{modalMensaje}</Modal.Title>
-        </Modal.Header>
-
-        {modalTipo === "eliminar" &&
-          <Modal.Body>Si eliminas el perfil vas a perder todos los datos asociados a la cuenta</Modal.Body>
-        }
-        <Modal.Footer>
-          {modalTipo === "eliminar" &&
-            <>
-              <Button variant="secondary" onClick={eliminarPerfil}>
-                Eliminar
-              </Button>
-              <Button variant="secondary" onClick={handleClose}>
-                Cancelar
-              </Button>
-            </>
-          }
-          {modalTipo === "error" &&
-            <Button variant="secondary" onClick={handleClose}>
-              Aceptar
-            </Button>
-          }
-          {modalTipo === "exito" &&
-            <Button variant="secondary" onClick={borrarDatos}>
-              Aceptar
-            </Button>
-          }
-        </Modal.Footer>
-      </Modal>
+  if (cargando && !esMiPerfil) {
+    return <div className='container-fluid min-vh-100'>
+      <SpinnerWave />
     </div>
+  }
+
+  return (
+    esMiPerfil ? <PerfilLogueado
+      usuario={usuarioLogueado}
+      eliminarPerfil={eliminarPerfil}
+      logout={logout}
+      modalTipo={modalTipo}
+      modalMensaje={modalMensaje}
+      setModalTipo={setModalTipo}
+      setModalMensaje={setModalMensaje}
+    /> 
+    : <PerfilWildie usuario={wildie} />
   )
 }
 

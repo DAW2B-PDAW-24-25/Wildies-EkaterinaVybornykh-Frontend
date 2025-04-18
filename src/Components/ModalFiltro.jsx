@@ -88,7 +88,7 @@ function ModalFiltro({
             setTipoEventos("filtro");
             navigate(`/resultadosEventos/${usuarioLogueado.id}`)
         }
-        
+
         onHide();
     }
 
@@ -96,18 +96,21 @@ function ModalFiltro({
 
         <Modal show={show}
             onHide={onHide}
+            scrollable
+            centered
+            backdrop="static"
         >
             <Modal.Header closeButton>
                 <Modal.Title>{header}</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body className='modal-body'>
                 {tipo === "opcion" &&
 
                     <ToggleButtonGroup type="radio" name="tipo" value={opcion} onChange={(val) => setOpcion(val)} className='d-flex justify-content-center'>
-                        <ToggleButton id="tbg-btn-1" value={"wildies"} className='rounded-pill me-4' variant='outline-secondary'>
+                        <ToggleButton id="tbg-btn-1" value={"wildies"} className='rounded-pill me-4 shadow' variant='outline-secondary'>
                             Wildies
                         </ToggleButton>
-                        <ToggleButton id="tbg-btn-2" value={"eventos"} className='rounded-pill' variant='outline-secondary'>
+                        <ToggleButton id="tbg-btn-2" value={"eventos"} className='rounded-pill shadow' variant='outline-secondary'>
                             Aventuras
                         </ToggleButton>
                     </ToggleButtonGroup>
@@ -162,13 +165,13 @@ function ModalFiltro({
                         <Form.Group controlId="sexo">
                             <Form.Label>Sexo</Form.Label>
                             <ToggleButtonGroup type="radio" name="sexo" value={formData.sexo} onChange={(val) => setFormData({ ...formData, sexo: val })} className='d-flex justify-content-center'>
-                                <ToggleButton id="tbg-btn-1" value={"mujer"} className='rounded-pill me-2' variant='outline-secondary'>
+                                <ToggleButton id="tbg-btn-1" value={"mujer"} className='rounded-pill me-2 shadow' variant='outline-secondary'>
                                     Mujer
                                 </ToggleButton>
-                                <ToggleButton id="tbg-btn-2" value={"hombre"} className='rounded-pill me-2' variant='outline-secondary'>
+                                <ToggleButton id="tbg-btn-2" value={"hombre"} className='rounded-pill me-2 shadow' variant='outline-secondary'>
                                     Hombre
                                 </ToggleButton>
-                                <ToggleButton id="tbg-btn-3" value={"indiferente"} className='rounded-pill' variant='outline-secondary'>
+                                <ToggleButton id="tbg-btn-3" value={"indiferente"} className='rounded-pill shadow' variant='outline-secondary'>
                                     Indiferente
                                 </ToggleButton>
                             </ToggleButtonGroup>
@@ -185,7 +188,7 @@ function ModalFiltro({
                                 className="d-flex flex-wrap row ms-2"
                             >
                                 {deportes?.map((deporte) => {
-                                    return <ToggleButton key={deporte.id} id={`deporte-${deporte.id}`} value={deporte.id} className="me-1 mb-2 rounded-pill col-3" variant='outline-secondary'>
+                                    return <ToggleButton key={deporte.id} id={`deporte-${deporte.id}`} value={deporte.id} className="me-1 mb-2 rounded-pill shadow col-3" variant='outline-secondary'>
                                         {deporte.nombre}
                                     </ToggleButton>
                                 })}
@@ -197,20 +200,22 @@ function ModalFiltro({
                             <ToggleButtonGroup type="radio" name="nivel" value={formData.nivel} onChange={(val) => setFormData({ ...formData, nivel: val })} className='d-flex justify-content-center'>
                                 {
                                     [0, 1, 2, 3, 4, 5].map((nivel) => {
-                                        return <ToggleButton key={nivel} id={`nivel-${nivel}`} value={nivel} className='rounded-pill me-2 p-0' variant='outline-secondary'>
+                                        return <ToggleButton key={nivel} id={`nivel-${nivel}`} value={nivel} className='rounded-pill me-2 p-0 shadow' variant='outline-secondary'>
                                             {nivel}
                                         </ToggleButton>
                                     })
                                 }
                             </ToggleButtonGroup>
                         </Form.Group>
-                        <Button variant="secondary" type='submit' className='mt-3'>
-                            Aceptar
-                        </Button>
+                        <div className='d-flex justify-content-end'>
+                            <Button variant="secondary" type='submit' className='mt-4'>
+                                Aceptar
+                            </Button>
+                        </div>
+
                     </Form>
                 }
 
-                {tipo === "eventos"}
             </Modal.Body>
             <Modal.Footer>
                 {tipo === "opcion" &&

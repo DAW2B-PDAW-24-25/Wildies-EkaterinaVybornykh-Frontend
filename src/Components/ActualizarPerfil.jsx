@@ -178,7 +178,7 @@ function ActualizarPerfil() {
                                     : <Image src={formData.foto_perfil}
                                         className='avatar mb-3 '
                                     />}
-                                <Button variant="outline-secondary" onClick={handleShow}>Cambiar foto</Button>
+                                <Button variant="link" className='text-decoration-none boton-link' onClick={handleShow}>Cambiar foto</Button>
                             </div>
                             <div></div>
                             <Modal show={show} onHide={handleClose}>
