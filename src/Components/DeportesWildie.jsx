@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import { AppContext } from '../Context/AppProvider'
+import { Button } from 'react-bootstrap';
 
 function DeportesWildie() {
 
@@ -7,15 +8,8 @@ function DeportesWildie() {
     return (
         <div className='container-fluid min-vh-100'>
             <div className='d-flex justify-content-between m-4 align-items-center'>
-                <div className='d-flex justify-content-between'>
-                    <div>
-                        <h1>Deportes que practico</h1>
-                    </div>
-                    <div>
-                        <Button variant="secondary" className="shadow" onClick={() => navigate(-1)}>Volver atrás</Button>
-                    </div>
-                </div>
-
+                <h1>Deportes que practico</h1>
+                <Button variant="secondary" className="shadow" onClick={() => navigate(-1)}>Volver atrás</Button>
             </div>
             <hr />
             {wildie?.deportes?.length === 0 &&
