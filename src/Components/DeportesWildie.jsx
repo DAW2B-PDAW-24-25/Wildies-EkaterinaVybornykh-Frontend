@@ -1,10 +1,12 @@
 import React, { useContext } from 'react'
 import { AppContext } from '../Context/AppProvider'
 import { Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 function DeportesWildie() {
 
     const { wildie } = useContext(AppContext)
+    const navigate = useNavigate();
     return (
         <div className='container-fluid min-vh-100'>
             <div className='d-flex justify-content-between m-4 align-items-center'>
