@@ -9,9 +9,11 @@ import '../styles/Paginacion.scss'
 
 function ResultadosUsuarios() {
     const { wildies, cargarUsuariosCerca, tipoUsuarios, aplicarFiltros } = useContext(AppContext);
-    const [cargando, setCargando] = useState(true);
+    const [cargando, setCargando] = useState(false);
     const [paginaActual, setPaginaActual] = useState(1);
     const [usuariosPorPagina] = useState(12);
+
+    const hayResultados = wildies.length !== 0;
 
     // Calculamos los índices para los usuarios visibles en la página actual
     const indiceUltimo = paginaActual * usuariosPorPagina;
@@ -43,19 +45,19 @@ function ResultadosUsuarios() {
     }, [paginaActual]);
 
 
-    useEffect(() => {
+    /*  useEffect(() => {
         cargar();
-    }, []);
+    }, [wildies]);  */
 
-    useEffect(() => {
+   /*  useEffect(() => {
         if (tipoUsuarios === "filtro") {
             setCargando(true);
-            aplicarFiltros();
+           aplicarFiltros();
             setCargando(false);
         }
-    }, [tipoUsuarios]);
+    }, [tipoUsuarios, wildies]); */
 
-    async function cargar() {
+    /* async function cargar() {
         setCargando(true);
         if (tipoUsuarios === "cerca") {
             await cargarUsuariosCerca();
@@ -65,7 +67,7 @@ function ResultadosUsuarios() {
         }
 
         setCargando(false);
-    }
+    } */
 
     if (cargando) {
 
@@ -75,50 +77,57 @@ function ResultadosUsuarios() {
     }
 
     return (
-        <div className='container-fluid min-vh-100'>
-            <div className='row pt-3 m-5'>
-                {usuariosPagina.map((usuario) => {
-                    return <Link to={`/perfil/${usuario.id}`} className='col-md-3 mb-3 me-5 text-decoration-none'>
-                        <Card key={usuario.id} className='rounded-0 p-0 border-0 bg-transparent'>
-                            <Card.Img variant="top" src={usuario.foto_perfil} className="img-fluid w-100 rounded-0">
+        hayResultados ? (
+            <div className='container-fluid min-vh-100'>
+                <div className='row pt-3 m-5'>
+                    {usuariosPagina.map((usuario) => {
+                        return <Link to={`/perfil/${usuario.id}`} className='col-md-3 mb-3 me-5 text-decoration-none'>
+                            <Card key={usuario.id} className='rounded-0 p-0 border-0 bg-transparent'>
+                                <Card.Img variant="top" src={usuario.foto_perfil} className="img-fluid w-100 rounded-0">
 
-                            </Card.Img>
-                            <Card.ImgOverlay>
-                                <div >
-                                    <h5 className='text-light opacity-75'>{usuario.nombre}</h5>
-                                </div>
-                            </Card.ImgOverlay>
+                                </Card.Img>
+                                <Card.ImgOverlay>
+                                    <div >
+                                        <h5 className='text-light opacity-75'>{usuario.nombre}</h5>
+                                    </div>
+                                </Card.ImgOverlay>
 
-                            <Card.Body>
-                                <Card.Text>
-                                    {usuario.localidad}
-                                </Card.Text>
-                                <div className='d-flex flex-wrap'>
-                                    <h5 className='title me-1'>Deportes: </h5>
-                                    {usuario.deportes.map((deporte, index) => {
-                                        return <p key={index} className='me-1 texto'>{deporte.deporte} {index < usuario.deportes.length - 1 ? ',' : ''} </p>
-                                    })}
+                                <Card.Body>
+                                    <Card.Text>
+                                        {usuario.localidad}
+                                    </Card.Text>
+                                    <div className='d-flex flex-wrap'>
+                                        <h5 className='title me-1'>Deportes: </h5>
+                                        {usuario.deportes.map((deporte, index) => {
+                                            return <p key={index} className='me-1 texto'>{deporte.deporte} {index < usuario.deportes.length - 1 ? ',' : ''} </p>
+                                        })}
 
-                                </div>
+                                    </div>
 
-                                <Card.Text>
-                                    {usuario.descripcion.split(' ').slice(0, 15).join(' ') + "..."}
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Link>
-                })}
+                                    <Card.Text>
+                                        {usuario.descripcion.split(' ').slice(0, 15).join(' ') + "..."}
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>
+                        </Link>
+                    })}
+
+                </div>
+                <div className="d-flex justify-content-center">
+                    <Pagination className='pagination'>
+                        <Pagination.Prev onClick={() => paginaActual > 1 && setPaginaActual(paginaActual - 1)} />
+                        {paginacion}
+                        <Pagination.Next onClick={() => paginaActual < totalPaginas && setPaginaActual(paginaActual + 1)} />
+                    </Pagination>
+                </div>
 
             </div>
-            <div className="d-flex justify-content-center">
-                <Pagination className='pagination'>
-                    <Pagination.Prev onClick={() => paginaActual > 1 && setPaginaActual(paginaActual - 1)} />
-                    {paginacion}
-                    <Pagination.Next onClick={() => paginaActual < totalPaginas && setPaginaActual(paginaActual + 1)} />
-                </Pagination>
+        ) : (<div className='container-fluid min-vh-100'>
+            <div className='m-5 text-center'>
+                <h3>No se han encontrado resultados para esta búsqueda</h3>
             </div>
 
-        </div>
+        </div>)
 
     )
 }

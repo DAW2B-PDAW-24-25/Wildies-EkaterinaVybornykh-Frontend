@@ -6,7 +6,7 @@ import SpinnerWave from './SpinnerWave';
 
 function EventosInicio() {
 
-    const { eventos, cargarEventosCerca, cargarEventosInicio } = useContext(AppContext);
+    const { eventos, cargarEventosCerca, cargarEventosInicio, tipoEventos } = useContext(AppContext);
     const [cargando, setCargando] = useState(true);
 
     useEffect(() => {
@@ -14,9 +14,11 @@ function EventosInicio() {
     }, []);
 
     async function cargar() {
-        setCargando(true);
-        await cargarEventosInicio();
-        setCargando(false);
+        if (tipoEventos === "inicio") {
+            setCargando(true);
+            await cargarEventosInicio();
+            setCargando(false);
+        }
     }
 
     if (cargando) {

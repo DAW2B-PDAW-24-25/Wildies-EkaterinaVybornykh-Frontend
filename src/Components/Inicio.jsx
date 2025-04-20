@@ -8,20 +8,37 @@ import { useContext, useState } from 'react';
 import { BiLogIn } from 'react-icons/bi';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
+import SpinnerWave from './SpinnerWave.jsx';
 
 function Inicio() {
 
-    const { usuarioLogueado, eventos, setTipoUsuarios, setTipoEventos } = useContext(AppContext);
+    const { usuarioLogueado, eventos, setTipoUsuarios, setTipoEventos, cargarEventosCerca, cargarUsuariosCerca, wildies } = useContext(AppContext);
     let navigate = useNavigate();
+    const [cargando, setCargando] = useState(false);
 
     async function handleUsuarios() {
+        window.scrollTo(0, 0);
+        setCargando(true);
         setTipoUsuarios("cerca")
+        await cargarUsuariosCerca();
+        setCargando(false);
         navigate(`/resultadosUsuarios/${usuarioLogueado.id}`);
     }
 
     async function handleEventos() {
+        window.scrollTo(0, 0);
+        setCargando(true);
         setTipoEventos("cerca")
+        await cargarEventosCerca();
+        setCargando(false);
         navigate(`/resultadosEventos/${usuarioLogueado.id}`);
+    }
+
+    if (cargando) {
+
+        return <div className='container-fluid min-vh-100'>
+            <SpinnerWave />
+        </div>
     }
 
     return (

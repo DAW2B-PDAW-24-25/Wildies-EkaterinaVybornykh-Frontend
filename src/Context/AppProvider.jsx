@@ -18,12 +18,12 @@ function AppProvider({ children }) {
     const [eventos, setEventos] = useState([]);
     const [evento, setEvento] = useState({});
     const [deportes, setDeportes] = useState([]);
-    const [tipoUsuarios, setTipoUsuarios] = useState("");
+    const [tipoUsuarios, setTipoUsuarios] = useState("inicio");
     const navigate = useNavigate();
     const [formData, setFormData] = useState({});          //filtro usuario, eventos //todo cuidad con usar en otros sitios
     const [opcion, setOpcion] = useState("");
     const [ageDisabled, setAgeDisabled] = useState(false);
-    const [tipoEventos, setTipoEventos] = useState("");
+    const [tipoEventos, setTipoEventos] = useState("inicio");
 
 
     function login(datosUsuario, token) {
@@ -137,14 +137,16 @@ function AppProvider({ children }) {
     }
 
     async function cargarUsuariosCerca() {
+        console.log("estoy en cargarUsuariosCerca")
         try {
             let response = await fetch(`${API_URL}/usuarios/usuariosCerca/1`);        //todo cambiar 1 por usuarioLogeado.id
 
             if (!response.ok) {
                 throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
             }
-
+            console.log("respuesta ok")
             let data = await response.json();
+            console.log("data", data)
             setWildies(data.data);
 
         } catch (error) {
@@ -159,7 +161,6 @@ function AppProvider({ children }) {
             if (!response.ok) {
                 throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
             }
-
             let data = await response.json();
             setEventos(data.data);
 
@@ -168,12 +169,14 @@ function AppProvider({ children }) {
         }
     }
 
+    useEffect(()=>{
+console.log("Wildies en appProvider", wildies)
+    }, [wildies])
+
     async function aplicarFiltros() {
         const { localidad, ...datos } = formData;
         let response = "";
-        console.log("formData en aplicarFiltros", formData)
         if (opcion === "wildies") {
-            console.log("datos dentro de if wildies", datos)
             response = await fetch(`${API_URL}/usuariosFiltrados/${usuarioLogueado.id}`, {
                 method: "POST",
                 headers: {
@@ -201,15 +204,10 @@ function AppProvider({ children }) {
 
         } else {
             const data = await response.json();
-
             if (opcion === "wildies") {
                 setWildies(data.data)
-                console.log("data", data.data)
-
-
             } else {
                 setEventos(data.data)
-                console.log("data", data.data)         //añadir navigate
             }
         }
         setAgeDisabled(false);

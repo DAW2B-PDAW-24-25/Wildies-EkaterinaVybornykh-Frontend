@@ -7,6 +7,7 @@ import Slider, { SliderThumb } from '@mui/material/Slider';
 import { styled } from '@mui/material/styles';
 import { AppContext } from '../Context/AppProvider';
 import { useNavigate } from 'react-router-dom';
+import SpinnerWave from './SpinnerWave';
 
 
 function ModalFiltro({
@@ -22,9 +23,9 @@ function ModalFiltro({
     handleFormChange,
     //opcion,
     //setOpcion,
-    aplicarFiltros,
     //ageDisabled,
     //setAgeDisabled,
+    //setCargando
 
 }) {
 
@@ -37,10 +38,13 @@ function ModalFiltro({
         setOpcion,
         ageDisabled,
         setAgeDisabled,
-        setTipoEventos
+        setTipoEventos,
+        aplicarFiltros
     } = useContext(AppContext)
 
     const navigate = useNavigate();
+
+    const [cargando, setCargando] = useState(false);
 
     function handleSwitchEdad() {
         if (ageDisabled) {
@@ -81,15 +85,27 @@ function ModalFiltro({
 
     async function handleFiltrar(e) {
         e.preventDefault();
+        setCargando(true);
         if (opcion === "wildies") {
             setTipoUsuarios("filtro");
+            await aplicarFiltros();
+            setCargando(false);
+            onHide();
             navigate(`/resultadosUsuarios/${usuarioLogueado.id}`)
         } else {
             setTipoEventos("filtro");
+            await aplicarFiltros();
+            setCargando(false);
+            onHide();
             navigate(`/resultadosEventos/${usuarioLogueado.id}`)
-        }
+        } 
+    }
 
-        onHide();
+    if (cargando) {
+
+        return <div className='container-fluid min-vh-100'>
+            <SpinnerWave />
+        </div>
     }
 
     return (

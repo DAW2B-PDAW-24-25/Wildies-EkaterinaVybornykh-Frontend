@@ -13,6 +13,8 @@ function ResultadosEventos() {
     const [paginaActual, setPaginaActual] = useState(1);
     const [eventosPorPagina] = useState(12);
 
+    const hayResultados = eventos.length !== 0;
+
     const indiceUltimo = paginaActual * eventosPorPagina;
     const indicePrimero = indiceUltimo - eventosPorPagina;
     const eventosPagina = eventos.slice(indicePrimero, indiceUltimo);
@@ -23,7 +25,7 @@ function ResultadosEventos() {
             <Pagination.Item
                 key={number}
                 active={number === paginaActual}
-                onClick={() => setPaginaActual(number)} 
+                onClick={() => setPaginaActual(number)}
             >
                 {number}
             </Pagination.Item>
@@ -59,6 +61,10 @@ function ResultadosEventos() {
         setCargando(false);
     }
 
+    useEffect(() => {
+        console.log("Eventos: ", eventos)
+    }, [eventos])
+
     if (cargando) {
 
         return <div className='container-fluid min-vh-100'>
@@ -67,36 +73,43 @@ function ResultadosEventos() {
     }
 
     return (
-        <div className='container-fluid min-vh-100'>
-            <div className='row pt-3 m-5'>
-                {eventosPagina.map((evento) => {
-                    return <Link to={`/detalleEvento/${evento.id}`} className='col-md-3 mb-3 me-5 text-decoration-none'><Card key={evento.id} className='rounded-0 p-0 border-0 bg-transparent'>
-                        <Card.Img variant="top" src={evento.foto_portada} className="img-fluid w-100 rounded-0" />
-                        <Card.Body>
-                            <div>
-                                <h5 className='title'>{evento.deporte} (nivel {evento.nivel})</h5>
-                            </div>
-                            <div className='d-flex'>
-                                <h5 className='title me-1'>Fecha :</h5> <p>{evento.fecha}</p>
-                            </div>
-                            <Card.Text>
-                                <h5 className='title'>Donde :</h5> {evento.localidad}
-                            </Card.Text>
-                        </Card.Body>
-                    </Card>
-                    </Link>
-                })}
+        hayResultados ? (
+            <div className='container-fluid min-vh-100'>
+                <div className='row pt-3 m-5'>
+                    {eventosPagina.map((evento) => {
+                        return <Link to={`/detalleEvento/${evento.id}`} className='col-md-3 mb-3 me-5 text-decoration-none'><Card key={evento.id} className='rounded-0 p-0 border-0 bg-transparent'>
+                            <Card.Img variant="top" src={evento.foto_portada} className="img-fluid w-100 rounded-0" />
+                            <Card.Body>
+                                <div>
+                                    <h5 className='title'>{evento.deporte} (nivel {evento.nivel})</h5>
+                                </div>
+                                <div className='d-flex'>
+                                    <h5 className='title me-1'>Fecha :</h5> <p>{evento.fecha}</p>
+                                </div>
+                                <Card.Text>
+                                    <h5 className='title'>Donde :</h5> {evento.localidad}
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
+                        </Link>
+                    })}
+
+                </div>
+                <div className="d-flex justify-content-center">
+                    <Pagination className='pagination'>
+                        <Pagination.Prev onClick={() => paginaActual > 1 && setPaginaActual(paginaActual - 1)} />
+                        {paginacion}
+                        <Pagination.Next onClick={() => paginaActual < totalPaginas && setPaginaActual(paginaActual + 1)} />
+                    </Pagination>
+                </div>
 
             </div>
-            <div className="d-flex justify-content-center">
-                <Pagination className='pagination'>
-                    <Pagination.Prev onClick={() => paginaActual > 1 && setPaginaActual(paginaActual - 1)} />
-                    {paginacion}
-                    <Pagination.Next onClick={() => paginaActual < totalPaginas && setPaginaActual(paginaActual + 1)} />
-                </Pagination>
+        ) : (<div className='container-fluid min-vh-100'>
+            <div className='m-5 text-center'>
+                <h3>No se han encontrado resultados para esta búsqueda</h3>
             </div>
 
-        </div>
+        </div>)
 
     )
 }

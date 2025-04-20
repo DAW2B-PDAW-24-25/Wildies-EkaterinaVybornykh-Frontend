@@ -11,7 +11,7 @@ import SpinnerWave from './SpinnerWave';
 
 function UsuariosInicio() {
 
-    const { wildies, cargarUsuariosInicio } = useContext(AppContext);
+    const { wildies, cargarUsuariosInicio, tipoUsuarios } = useContext(AppContext);
     const [cargando, setCargando] = useState(true);
 
     useEffect(() => {
@@ -19,9 +19,12 @@ function UsuariosInicio() {
     }, []);
 
     async function cargar() {
-        setCargando(true);
-        await cargarUsuariosInicio();
-        setCargando(false);
+        if (tipoUsuarios ==="inicio") {
+            setCargando(true);
+            await cargarUsuariosInicio();
+            setCargando(false);
+        }
+
     }
 
     if (cargando) {

@@ -7,9 +7,15 @@ function DeportesWildie() {
     return (
         <div className='container-fluid min-vh-100'>
             <div className='d-flex justify-content-between m-4 align-items-center'>
-                <div>
-                    <h1>Deportes que practico</h1>
+                <div className='d-flex justify-content-between'>
+                    <div>
+                        <h1>Deportes que practico</h1>
+                    </div>
+                    <div>
+                        <Button variant="secondary" className="shadow" onClick={() => navigate(-1)}>Volver atrás</Button>
+                    </div>
                 </div>
+
             </div>
             <hr />
             {wildie?.deportes?.length === 0 &&

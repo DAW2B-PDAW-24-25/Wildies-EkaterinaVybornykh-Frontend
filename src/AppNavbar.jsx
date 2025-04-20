@@ -18,7 +18,7 @@ import { API_URL } from './App';
 
 function AppNavbar() {
 
-  const { deportes, usuarioLogueado, setUsuarios, setEventos, usuarios, formData, setFormData } = useContext(AppContext);
+  const { deportes, usuarioLogueado, setUsuarios, setEventos, usuarios, formData, setFormData, setTipoUsuarios, setTipoEventos } = useContext(AppContext);
   const [show, setShow] = useState(false);
   const [tipoModal, setTipoModal] = useState("");
   const [modalHeader, setModalHeader] = useState("");
@@ -51,13 +51,19 @@ function AppNavbar() {
     console.log(formData)
   }, [formData])
 
+  function handleInicio() {
+    setTipoUsuarios('inicio');
+    setTipoEventos('inicio');
+    navigate('/');
+  }
+
   return (
     <div className='p-0 ps-sm-5'>
 
       <div className='navContainer d-none d-sm-block'>
         <Nav defaultActiveKey="/home" className="sidebar pt-sm-5">
-          <div className='d-none d-sm-block'>
-            <Link to={'/'}><img src={logo} alt="logo" className='img-fluid w-75 opacity-75' /></Link>
+          <div className='d-none d-sm-block'  role="button" onClick={handleInicio}>
+            <img src={logo} alt="logo" className='img-fluid w-75 opacity-75' />
           </div>
           <div className='linkContainer p-0 pb-sm-5 pt-sm-5'>
             <Button variant="link" className='boton-link d-flex' onClick={handleBuscar}>
@@ -117,12 +123,12 @@ function AppNavbar() {
         formData={formData}
         setFormData={setFormData}
         handleFormChange={handleFormChange}
-       // opcion={opcion}
+        // opcion={opcion}
         //setOpcion={setOpcion}
         deportes={deportes}
-        
-        //ageDisabled={ageDisabled}
-        //setAgeDisabled={setAgeDisabled}
+
+      //ageDisabled={ageDisabled}
+      //setAgeDisabled={setAgeDisabled}
       />
     </div>
 
