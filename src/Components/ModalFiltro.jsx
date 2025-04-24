@@ -18,14 +18,7 @@ function ModalFiltro({
     setTipo,
     setHeader,
     setShow,
-    //formData,
-    //setFormData,
     handleFormChange,
-    //opcion,
-    //setOpcion,
-    //ageDisabled,
-    //setAgeDisabled,
-    //setCargando
 
 }) {
 

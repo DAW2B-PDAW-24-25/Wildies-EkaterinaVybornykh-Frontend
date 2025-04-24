@@ -24,6 +24,7 @@ function AppProvider({ children }) {
     const [opcion, setOpcion] = useState("");
     const [ageDisabled, setAgeDisabled] = useState(false);
     const [tipoEventos, setTipoEventos] = useState("inicio");
+    const [accionEvento, setAccionEvento]=useState("");
 
 
     function login(datosUsuario, token) {
@@ -137,16 +138,16 @@ function AppProvider({ children }) {
     }
 
     async function cargarUsuariosCerca() {
-        console.log("estoy en cargarUsuariosCerca")
+       
         try {
             let response = await fetch(`${API_URL}/usuarios/usuariosCerca/1`);        //todo cambiar 1 por usuarioLogeado.id
 
             if (!response.ok) {
                 throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
             }
-            console.log("respuesta ok")
+          
             let data = await response.json();
-            console.log("data", data)
+          
             setWildies(data.data);
 
         } catch (error) {
@@ -168,10 +169,6 @@ function AppProvider({ children }) {
             console.error("Error usuarios:", error);
         }
     }
-
-    useEffect(()=>{
-console.log("Wildies en appProvider", wildies)
-    }, [wildies])
 
     async function aplicarFiltros() {
         const { localidad, ...datos } = formData;
@@ -248,7 +245,9 @@ console.log("Wildies en appProvider", wildies)
             evento,
             setEvento,
             wildie,
-            setWildie
+            setWildie,
+            accionEvento,
+            setAccionEvento
         }}>
             {children}
         </AppContext.Provider>

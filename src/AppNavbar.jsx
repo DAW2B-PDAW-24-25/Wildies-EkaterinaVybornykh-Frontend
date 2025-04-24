@@ -18,7 +18,18 @@ import { API_URL } from './App';
 
 function AppNavbar() {
 
-  const { deportes, usuarioLogueado, setUsuarios, setEventos, usuarios, formData, setFormData, setTipoUsuarios, setTipoEventos } = useContext(AppContext);
+  const { deportes, 
+    usuarioLogueado, 
+    setUsuarios, 
+    setEventos, 
+    usuarios, 
+    formData, 
+    setFormData, 
+    setTipoUsuarios, 
+    setTipoEventos,
+    setAccionEvento
+  
+  } = useContext(AppContext);
   const [show, setShow] = useState(false);
   const [tipoModal, setTipoModal] = useState("");
   const [modalHeader, setModalHeader] = useState("");
@@ -46,15 +57,17 @@ function AppNavbar() {
       [e.target.name]: e.target.value
     });
   }
-
-  useEffect(() => {
-    console.log(formData)
-  }, [formData])
+  
 
   function handleInicio() {
     setTipoUsuarios('inicio');
     setTipoEventos('inicio');
     navigate('/');
+  }
+
+  function handleCrear(){
+    setAccionEvento('crear');
+    navigate(`/crearEvento/${usuarioLogueado.id}`);
   }
 
   return (
@@ -73,12 +86,12 @@ function AppNavbar() {
             <Enlace as={Link} to="/">
               <LiaUserFriendsSolid style={{ fontSize: "25px", marginRight: "10px" }} /> <p className='d-none d-sm-block'>Mis wildies</p>
             </Enlace>
-            <Enlace as={Link} to="/configuracion">
+            <Button variant="link" className='boton-link d-flex' onClick={handleCrear}  >
               <FaRegCalendar style={{ fontSize: "25px", marginRight: "10px" }} /> <p className='d-none d-sm-block'>Próximas aventuras</p>
-            </Enlace>
-            <Enlace as={Link} to="/configuracion">
+            </Button>
+            <Button variant="link" className='boton-link d-flex' onClick={handleCrear}>
               <FaRegSquarePlus style={{ fontSize: "25px", marginRight: "10px" }} /><p className='d-none d-sm-block'>Crear aventura</p>
-            </Enlace>
+            </Button>
             <Enlace as={Link} to="/configuracion">
               <FiMapPin style={{ fontSize: "25px", marginRight: "10px" }} className='d-none d-sm-block' /> <p className='d-none d-sm-block'>Mapa</p>
             </Enlace>

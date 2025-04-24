@@ -16,6 +16,7 @@ export const GOOGLE_API_KEY = "AIzaSyBLNBtVh6RVdXhPX2mPA5hQct1zv_axmkY";
 import UsuariosInicio from './Components/UsuariosInicio';
 import ResultadosEventos from './Components/ResultadosEventos';
 import DetalleEvento from './Components/DetalleEvento';
+import EventoForm from './Components/EventoForm';
 
 
 
@@ -49,6 +50,8 @@ function App() {
                 <Route path='/deportesUsuario/:id' element={<DeportesUsuario />} />
                 <Route path='/resultadosUsuarios/:id' element={<ResultadosUsuarios />}/>
                 <Route path='/resultadosEventos/:id' element={<ResultadosEventos />}/>
+                <Route path='/crearEvento/:id' element={<EventoForm/>}/>
+                <Route path='/editarEvento/:id' element={<EventoForm/>}/>
               </Routes>
               <Footer />
             </div>
