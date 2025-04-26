@@ -32,7 +32,7 @@ function ProximosEventos() {
     }
 
     return (
-        <div className='container-fluid'>
+        <div className='container-fluid min-vh-100'>
             <div className='row p-3 rounded shadow d-flex ms-3 me-3 mt-4 w-sm-75 mb-5'>
                 <h3 className='title'>Mis próximas aventuras</h3>
                 <hr />

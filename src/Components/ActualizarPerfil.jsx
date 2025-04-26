@@ -160,7 +160,7 @@ function ActualizarPerfil() {
     };
 
     return (
-        <div className='container-fluid'>
+        <div className='container-fluid min-vh-100'>
             <div className='row p-3 rounded shadow d-flex ms-3 me-3 mt-4 w-sm-75 mb-5'>
                 <h3 className='title'>Editar perfil</h3>
                 <hr />
@@ -173,10 +173,10 @@ function ActualizarPerfil() {
                                     ? <Image src={fotoPerfil instanceof File
                                         ? URL.createObjectURL(fotoPerfil)
                                         : fotoPerfil}
-                                        className='avatar mb-3 '
+                                        className='avatar_big mb-3 '
                                     />
                                     : <Image src={formData.foto_perfil}
-                                        className='avatar mb-3 '
+                                        className='avatar_big mb-3 '
                                     />}
                                 <Button variant="link" className='text-decoration-none boton-link' onClick={handleShow}>Cambiar foto</Button>
                             </div>

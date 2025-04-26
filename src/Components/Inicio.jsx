@@ -43,10 +43,10 @@ function Inicio() {
 
     return (
 
-        <div className='container-fluid mt-3'>
-            <div className='col-md-8 mx-auto'>
+        <div className='container-fluid mt-3 min-vh-100'>
+           {/*  <div className='col-md-8 mx-auto'>
                 <Buscador />
-            </div>
+            </div> */}
 
             <div className='bg-seccion p-3 rounded shadow d-flex ms-3 me-3 mb-4 flex-column' >
                 <UsuariosInicio />

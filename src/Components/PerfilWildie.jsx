@@ -1,20 +1,127 @@
-import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { React, useContext, useEffect, useState } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Button } from 'react-bootstrap'
 import { BiLeaf } from "react-icons/bi";
 import { GoBriefcase } from "react-icons/go";
 import { LuLanguages } from "react-icons/lu";
 import { Image } from "react-bootstrap"
+import { AppContext } from '../Context/AppProvider';
+import { API_URL } from '../App';
 
 function PerfilWildie({ usuario }) {
 
-    const navigate=useNavigate();
+    const { amistades, setAmistades, usuarioLogueado } = useContext(AppContext);
+    const { id } = useParams();
+    const navigate = useNavigate();
+
+    const tipoAmistad = getTipoAmistad();
+    const idAmistad = getIdAmistad();
+
+    useEffect(() => {
+        console.log("amistades en perfil: ", amistades)
+    }, [])
+
+    function getIdAmistad() {
+        amistades.data.forEach((amistad) => {
+            if (amistad.solicitante_id == id || amistad.amigo_id == id) {
+                return amistad.id;
+            }
+        })
+    }
+
+    function getTipoAmistad() {
+        if (amistades && amistades.data.length !== 0) {
+            for (const amistad of amistades.data) {
+                if (amistad.solicitante_id == id && amistad.amigo_id == id && amistad.estado === "pendiente") {
+                    return "pendienteYo";
+                } else if (amistad.amigo_id == id && amistad.estado === "aceptado") {
+                    return "aceptado";
+                } else if (amistad.amigo_id == id && amistad.estado === "rechazado") {
+                    return "rechazado";
+                } else if (amistad.amigo_id == id && amistad.solicitante_id == usuarioLogueado.id && amistad.estado === "pendiente") {
+                    return "pendienteAmigo";
+                }
+            }
+        }
+        return "noSolicitado";
+    }
+
+
+
+    async function handleSolicitarAmistad() {
+        let data = { "amigo_id": id }
+        let response = await fetch(`${API_URL}/solicitarAmistad/${usuarioLogueado.id}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                //"Authorization": `Bearer ${token}`         //todo ACTIVAR TOKEN
+            },
+            body: JSON.stringify(data)
+        })
+        if (!response.ok) {
+            console.log("ERror al enviar solicitud de amistad")
+        } else {
+            let datos = await response.json();
+            setAmistades(datos);
+        }
+    }
+
+    async function handleEliminarAmistad() {
+        let response = await fetch(`${API_URL}/eliminarAmistad/${usuarioLogueado.id}/${idAmistad}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                //"Authorization": `Bearer ${token}`         //todo ACTIVAR TOKEN
+            },
+
+        })
+        if (!response.ok) {
+            console.log("ERror al enviar solicitud de amistad")
+        } else {
+            let datos = await response.json();
+            setAmistades(datos);
+        }
+    }
+
+    async function handleAceptarAmistad() {
+        let response = await fetch(`${API_URL}/aceptarAmistad/${usuarioLogueado.id}/${idAmistad}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                //"Authorization": `Bearer ${token}`         //todo ACTIVAR TOKEN
+            },
+
+        })
+        if (!response.ok) {
+            console.log("ERror al enviar solicitud de amistad")
+        } else {
+            let datos = await response.json();
+            setAmistades(datos);
+        }
+    }
+
+    async function handleRechazarAmistad() {
+        let response = await fetch(`${API_URL}/rechazarAmistad/${usuarioLogueado.id}/${idAmistad}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                //"Authorization": `Bearer ${token}`         //todo ACTIVAR TOKEN
+            },
+
+        })
+        if (!response.ok) {
+            console.log("ERror al enviar solicitud de amistad")
+        } else {
+            let datos = await response.json();
+            setAmistades(datos);
+        }
+    }
 
     return (
         <div className='container-fluid min-vh-100'>
             <div className='row m-3'>
                 <div className='col-3 text-center'>
-                    <Image src={usuario.foto_perfil} className='avatar mb-3' />
+                    <Image src={usuario.foto_perfil} className='avatar_big mb-3' />
                     <p>{usuario.localidad}</p>
                 </div>
                 <div className='d-flex flex-column col-9 text-center justify-content-between'>
@@ -23,7 +130,7 @@ function PerfilWildie({ usuario }) {
                             <h1 className='mt-2'>{usuario.nombre} {usuario.apellidos}</h1>
                         </div>
                         <div>
-                            <Button variant="secondary" className=' me-2  shadow' onClick={()=>navigate(-1)}>Volver atrás</Button>
+                            <Button variant="secondary" className=' me-2  shadow' onClick={() => navigate(-1)}>Volver atrás</Button>
                         </div>
                     </div>
 
@@ -34,8 +141,30 @@ function PerfilWildie({ usuario }) {
                             <Button variant="outline-secondary" className=' me-2 rounded-pill shadow'>Fotos</Button>
                         </div>
                         <div>
-                            <Button variant="outline-secondary" className=' me-2 rounded-pill shadow'>Solicitar amistad</Button>
+                            {
+                                tipoAmistad === "pendienteAmigo"
+                                    ? <h5 style={{ backgroundColor: "#bfff8a" }} className='rounded-pill shadow pt-2 pb-2 ps-3 pe-3 text-center'>Pendiente</h5>
+                                    : tipoAmistad === "rechazada"
+                                        ? <h5 style={{ backgroundColor: "#fadbd8" }} className='rounded-pill shadow p-2 text-center'>Amistad rechazada</h5>
+                                        : tipoAmistad === "aceptada"
+                                            ? <div>
+                                                <Button variant="outline-secondary" className=' me-2 rounded-pill shadow' onClick={handleEliminarAmistad}>Eliminar amistad</Button>
+                                            </div>
+                                            : tipoAmistad === "pendienteYo"
+                                                ? <div className="d-flex me-2">
+
+                                                    <Button variant="outline-secondary" className=' me-2 rounded-pill shadow' onClick={handleAceptarAmistad}>Aceptar amistad</Button>
+
+                                                    <Button variant="outline-secondary" className=' me-2 rounded-pill shadow' onClick={handleRechazarAmistad}>Rechazar amistad</Button>
+
+                                                </div>
+
+                                                : <div>
+                                                    <Button variant="outline-secondary" className=' me-2 rounded-pill shadow' onClick={handleSolicitarAmistad}>Solicitar amistad</Button>
+                                                </div>
+                            }
                         </div>
+
                     </div>
 
                 </div>

@@ -27,7 +27,7 @@ function PerfilLogueado({ usuario, logout, eliminarPerfil, modalTipo, modalMensa
         <div className='container-fluid min-vh-100'>
             <div className='row m-3'>
                 <div className='col-3 text-center'>
-                    <Image src={usuario.foto_perfil} className='avatar mb-3' />
+                    <Image src={usuario.foto_perfil} className='avatar_big mb-3' />
                     <p>{usuario.localidad}</p>
                 </div>
                 <div className='d-flex flex-column col-9 text-center justify-content-between'>

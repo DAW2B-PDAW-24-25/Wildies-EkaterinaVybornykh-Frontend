@@ -14,7 +14,7 @@ function AppProvider({ children }) {
     const [idPerfil, setIdPerfil] = useState("");
     const [token, setToken] = useState(() => localStorage.getItem('token'));
     const [wildies, setWildies] = useState([]);     //otros usuarios
-   const [wildie, setWildie]=useState([]);
+    const [wildie, setWildie] = useState([]);
     const [eventos, setEventos] = useState([]);
     const [evento, setEvento] = useState({});
     const [deportes, setDeportes] = useState([]);
@@ -24,8 +24,8 @@ function AppProvider({ children }) {
     const [opcion, setOpcion] = useState("");
     const [ageDisabled, setAgeDisabled] = useState(false);
     const [tipoEventos, setTipoEventos] = useState("inicio");
-    const [accionEvento, setAccionEvento]=useState("");
-
+    const [accionEvento, setAccionEvento] = useState("");
+    const [amistades, setAmistades] = useState({});
 
     function login(datosUsuario, token) {
         setIdUsuarioLogueado(datosUsuario.id);
@@ -44,14 +44,11 @@ function AppProvider({ children }) {
         navigate("/inicioSesion");
     }
 
-
-   
-
     useEffect(() => {
         cargarUsuarioLogueado();
     }, []);
 
-    useEffect(()=>{
+    useEffect(() => {
         console.log(usuarioLogueado)
     }, [usuarioLogueado])
 
@@ -66,6 +63,29 @@ function AppProvider({ children }) {
     useEffect(() => {
         cargarUsuariosInicio();
     }, []);
+
+    useEffect(() => {
+        if (usuarioLogueado) {
+            cargarAmistades();
+            const intervalId = setInterval(cargarAmistades, 10000);
+            return () => clearInterval(intervalId);
+        }
+
+    }, [usuarioLogueado])
+
+    useEffect(() => {
+        console.log("Amistades: ", amistades)
+    }, [amistades.data])
+
+    async function cargarAmistades() {
+        let response = await fetch(`${API_URL}/amistades/${usuarioLogueado.id}`);
+        if (!response.ok) {
+            console.log("Error al cargar amistades")
+        } else {
+            let data = await response.json();
+            setAmistades(data);
+        }
+    }
 
     async function cargarDeportes() {
         try {
@@ -142,16 +162,16 @@ function AppProvider({ children }) {
     }
 
     async function cargarUsuariosCerca() {
-       
+
         try {
             let response = await fetch(`${API_URL}/usuarios/usuariosCerca/1`);        //todo cambiar 1 por usuarioLogeado.id
 
             if (!response.ok) {
                 throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
             }
-          
+
             let data = await response.json();
-          
+
             setWildies(data.data);
 
         } catch (error) {
@@ -215,7 +235,7 @@ function AppProvider({ children }) {
         setOpcion("");
     }
 
-   
+
 
     return (
         <AppContext.Provider value={{
@@ -251,7 +271,9 @@ function AppProvider({ children }) {
             wildie,
             setWildie,
             accionEvento,
-            setAccionEvento
+            setAccionEvento,
+            amistades,
+            setAmistades
         }}>
             {children}
         </AppContext.Provider>

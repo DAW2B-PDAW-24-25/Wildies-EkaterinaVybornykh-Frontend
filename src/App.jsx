@@ -1,6 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import AppNavbar from './AppNavbar'
 import './App.scss'
 import Footer from './Footer'
 import Inicio from './Components/Inicio';
@@ -20,6 +19,9 @@ import EventoForm from './Components/EventoForm';
 import Mapa from './Components/Mapa';
 import { LoadScript } from '@react-google-maps/api';
 import ProximosEventos from './Components/ProximosEventos';
+import AppSidebar from './AppSidebar';
+import AppNavbar from './AppNavbar';
+import MisWildies from './Components/MisWildies';
 
 
 
@@ -39,11 +41,16 @@ function App() {
   return (
     <BrowserRouter>
       <AppProvider>
-      <LoadScript googleMapsApiKey={GOOGLE_API_KEY}>
+      <LoadScript 
+      googleMapsApiKey={GOOGLE_API_KEY} 
+      language="es"
+      libraries={["places"]}
+      >
         <ThemeProvider theme={theme}>
           <div className='d-flex'>
-            <AppNavbar />
+            <AppSidebar />
             <div className="main w-100">
+            <AppNavbar/>
               <Routes>
                 <Route path='/inicioSesion' element={<InicioSesion />} />
                 <Route path="/" element={<Inicio />} />
@@ -56,6 +63,7 @@ function App() {
                 <Route path='/evento/:id' element={<EventoForm />} />
                 <Route path='/mapa/:id' element={<Mapa />} />
                 <Route path='/proximosEventos/:id' element={<ProximosEventos/>}/>
+                <Route path='/misWildies/:id' element={<MisWildies/>}/>
               </Routes>
               <Footer />
             </div>

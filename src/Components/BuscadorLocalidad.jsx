@@ -1,18 +1,17 @@
 import React, { useRef } from 'react';
 import { Form } from 'react-bootstrap';
-import { Autocomplete, useJsApiLoader } from '@react-google-maps/api';
-import { GOOGLE_API_KEY } from '../App';
+import { Autocomplete } from '@react-google-maps/api';
 
 const libraries = ['places'];
 
 function BuscadorLocalidad({ formData, setFormData, handleFormChange }) {
   const autocompleteRef = useRef(null);
 
-  const { isLoaded } = useJsApiLoader({
+  /* const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: GOOGLE_API_KEY,
     libraries,
     language: 'es'
-  });
+  }); */
 
   const handleLocalidad = () => {
     const localidad = autocompleteRef.current.getPlace();
@@ -26,7 +25,7 @@ function BuscadorLocalidad({ formData, setFormData, handleFormChange }) {
     }
   };
 
-  if (!isLoaded) return <div>Cargando ubicaciones...</div>;
+ /*  if (!isLoaded) return <div>Cargando ubicaciones...</div>; */
 
   return (
     <Autocomplete
