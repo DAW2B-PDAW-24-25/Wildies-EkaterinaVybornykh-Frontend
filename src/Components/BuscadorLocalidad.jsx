@@ -33,7 +33,7 @@ function BuscadorLocalidad({ formData, setFormData, handleFormChange }) {
       onLoad={(autocomplete) => (autocompleteRef.current = autocomplete)}
       onPlaceChanged={handleLocalidad}
     >
-      <Form.Group className="mb-3" controlId="localidad">
+      <Form.Group className="mb-1" controlId="localidad">
         <Form.Label>Ubicación</Form.Label>
         <Form.Control
           type="text"

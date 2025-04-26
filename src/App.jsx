@@ -17,7 +17,9 @@ import UsuariosInicio from './Components/UsuariosInicio';
 import ResultadosEventos from './Components/ResultadosEventos';
 import DetalleEvento from './Components/DetalleEvento';
 import EventoForm from './Components/EventoForm';
-
+import Mapa from './Components/Mapa';
+import { LoadScript } from '@react-google-maps/api';
+import ProximosEventos from './Components/ProximosEventos';
 
 
 
@@ -37,6 +39,7 @@ function App() {
   return (
     <BrowserRouter>
       <AppProvider>
+      <LoadScript googleMapsApiKey={GOOGLE_API_KEY}>
         <ThemeProvider theme={theme}>
           <div className='d-flex'>
             <AppNavbar />
@@ -46,17 +49,19 @@ function App() {
                 <Route path="/" element={<Inicio />} />
                 <Route path="/perfil/:id" element={<Perfil />} />
                 <Route path='/editarPerfil/:id' element={<ActualizarPerfil />} />
-                <Route path="/detalleEvento/:id" element={<DetalleEvento/>}/>
+                <Route path="/detalleEvento/:id" element={<DetalleEvento />} />
                 <Route path='/deportesUsuario/:id' element={<DeportesUsuario />} />
-                <Route path='/resultadosUsuarios/:id' element={<ResultadosUsuarios />}/>
-                <Route path='/resultadosEventos/:id' element={<ResultadosEventos />}/>
-                <Route path='/crearEvento/:id' element={<EventoForm/>}/>
-                <Route path='/editarEvento/:id' element={<EventoForm/>}/>
+                <Route path='/resultadosUsuarios/:id' element={<ResultadosUsuarios />} />
+                <Route path='/resultadosEventos/:id' element={<ResultadosEventos />} />
+                <Route path='/evento/:id' element={<EventoForm />} />
+                <Route path='/mapa/:id' element={<Mapa />} />
+                <Route path='/proximosEventos/:id' element={<ProximosEventos/>}/>
               </Routes>
               <Footer />
             </div>
           </div>
         </ThemeProvider>
+        </LoadScript>
       </AppProvider>
     </BrowserRouter>
 

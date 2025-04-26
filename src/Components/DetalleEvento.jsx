@@ -12,17 +12,20 @@ function DetalleEvento() {
     const [eventoPasado, setEventoPasado] = useState(false);
     const [show, setShow] = useState(false);
     const [mensaje, setMensaje] = useState("");
+    const [tipoModal, setTipoModal] = useState("");
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const navigate = useNavigate();
+    const soyCreador = evento?.creador_id === usuarioLogueado.id;
+    const soyParticipante = evento?.participantes?.some((participante) => participante.id === usuarioLogueado.id) && !soyCreador;
     const sinPlazas = evento.max_participantes <= evento.total_participantes;
     const sexoIncompatible = evento.sexo_participantes !== 'indiferente' && evento.sexo_participantes !== usuarioLogueado.sexo;
     const edadIncompatible = evento.edad_min > usuarioLogueado.edad || evento.edad_max < usuarioLogueado.edad;
     const nivelIncompatible = evento.nivel > 0 && !usuarioLogueado.deportes.some(
         (deporte) => deporte.deporte_id === evento.deporte_id && deporte.nivel >= evento.nivel
     );
-    const soyParticipante = evento?.participantes?.some((participante) => participante.id === usuarioLogueado.id);
-    const soyCreador = evento?.creador_id === usuarioLogueado.id;
+
+
 
     useEffect(() => {
         cargarEvento();
@@ -85,12 +88,32 @@ function DetalleEvento() {
         }
     }
 
-    async function handleEditar() {
-
+    function handleEditar() {
+        navigate(`/evento/${id}`)
     }
 
     async function handleEliminar() {
+        let response = await fetch(`${API_URL}/eventos/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                //"Authorization": `Bearer ${token}`         //todo ACTIVAR TOKEN
+            }
+        });
+        if (!response.ok) {
+            setMensaje("Ha ocurrido un error");
+            setShow(true);
+        } else {
+            setTipoModal("eliminar");
+            setMensaje("Evento eliminado con exito");
+            setShow(true);
+        }
+    }
 
+    function handleEliminarButton() {
+        setShow(false);
+        setTipoModal("");
+        navigate('/');
     }
 
     if (cargando) {
@@ -104,7 +127,7 @@ function DetalleEvento() {
             <div className='d-flex justify-content-between m-5 row align-items-center'>
                 <div className='d-flex col-sm-9 justify-content-between'>
                     <h1 className='title'>{evento.nombre}</h1>
-                    < h4>Fecha: {evento.fecha}</h4>
+                    < h4>Fecha: {evento.fecha_form}</h4>
                 </div>
                 <div className='col-sm-2 mt-2'>
                     <Button variant="secondary" className="shadow" onClick={() => navigate(-1)}>Volver atrás</Button>
@@ -113,9 +136,8 @@ function DetalleEvento() {
             </div>
             <hr />
             <div className='row m-5'>
-                <div className='col-md-3 col-sm-6 col-12'>
+                <div className='col-md-4 col-sm-6 col-12'>
                     <img src={evento.foto_portada} alt="foto" className='w-100 img-fluid rounded' />
-
                 </div>
                 <div className='col-sm-2'></div>
                 <div className='col-sm-6'>
@@ -126,17 +148,19 @@ function DetalleEvento() {
                     <p className='mt-2'><strong>Género participantes: </strong> {evento.sexo_participantes}</p>
                     <p className='mt-2'><strong>Edad: </strong>entre {evento.edad_min} y {evento.edad_max} años</p>
                     <p className='mt-2'><strong>Descripción:</strong> {evento.descripcion}</p>
-                    {sinPlazas
-                        ? <h5 style={{ backgroundColor: "#fadbd8" }} className='rounded p-2 text-center'>No quedan plazas</h5>
-                        : sexoIncompatible || edadIncompatible || nivelIncompatible
-                            ? <h5 style={{ backgroundColor: "#fadbd8" }} className='rounded p-2 text-center'>No cumples los requisitos del evento</h5>
+                    {soyCreador && !eventoPasado
+                        ? <div className='d-flex'>
+                            <Button variant="secondary" className="rounded-pill shadow me-3" onClick={handleEditar}>Editar</Button>
+                            <Button variant="secondary" className="rounded-pill shadow" onClick={handleEliminar}>Eliminar</Button>
+                        </div>
+                        : eventoPasado
+                            ? ""
                             : soyParticipante
                                 ? <Button variant="secondary" className="rounded-pill shadow" onClick={handleDesapuntarse}>No asistiré</Button>
-                                : soyCreador && !eventoPasado
-                                        ? <div className='d-flex'>
-                                            <Button variant="secondary" className="rounded-pill shadow me-3" onClick={handleEditar}>Editar</Button>
-                                            <Button variant="secondary" className="rounded-pill shadow" onClick={handleEliminar}>Eliminar</Button>
-                                        </div>
+                                : sinPlazas
+                                    ? <h5 style={{ backgroundColor: "#fadbd8" }} className='rounded p-2 text-center'>No quedan plazas</h5>
+                                    : sexoIncompatible || edadIncompatible || nivelIncompatible
+                                        ? <h5 style={{ backgroundColor: "#fadbd8" }} className='rounded p-2 text-center'>No cumples los requisitos del evento</h5>
                                         : <Button variant="secondary" className="rounded-pill shadow" onClick={handleParticipar}>Participar</Button>
                     }
 
@@ -175,9 +199,15 @@ function DetalleEvento() {
 
                 <Modal.Body>{mensaje}</Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Aceptar
-                    </Button>
+                    {tipoModal === "eliminar"
+                        ? <Button variant="secondary" onClick={handleEliminarButton}>
+                            Aceptar
+                        </Button>
+                        : <Button variant="secondary" onClick={handleClose}>
+                            Aceptar
+                        </Button>
+                    }
+
                 </Modal.Footer>
             </Modal>
 

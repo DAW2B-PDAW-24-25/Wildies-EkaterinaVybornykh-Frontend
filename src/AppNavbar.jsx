@@ -33,9 +33,6 @@ function AppNavbar() {
   const [show, setShow] = useState(false);
   const [tipoModal, setTipoModal] = useState("");
   const [modalHeader, setModalHeader] = useState("");
-  //const [formData, setFormData] = useState({});
-  //const [opcion, setOpcion] = useState("");
-  //const [ageDisabled, setAgeDisabled] = useState(false);
   const navigate = useNavigate();
 
   const handleClose = () => setShow(false);
@@ -67,7 +64,7 @@ function AppNavbar() {
 
   function handleCrear(){
     setAccionEvento('crear');
-    navigate(`/crearEvento/${usuarioLogueado.id}`);
+    navigate(`/evento/${usuarioLogueado.id}`);
   }
 
   return (
@@ -86,13 +83,13 @@ function AppNavbar() {
             <Enlace as={Link} to="/">
               <LiaUserFriendsSolid style={{ fontSize: "25px", marginRight: "10px" }} /> <p className='d-none d-sm-block'>Mis wildies</p>
             </Enlace>
-            <Button variant="link" className='boton-link d-flex' onClick={handleCrear}  >
-              <FaRegCalendar style={{ fontSize: "25px", marginRight: "10px" }} /> <p className='d-none d-sm-block'>Próximas aventuras</p>
-            </Button>
+            <Enlace as={Link} to={`/proximosEventos/${usuarioLogueado.id}`}>
+              <FaRegCalendar style={{ fontSize: "25px", marginRight: "10px" }} className='d-none d-sm-block' /> <p className='d-none d-sm-block'>Mis próximas aventuras</p>
+            </Enlace>
             <Button variant="link" className='boton-link d-flex' onClick={handleCrear}>
               <FaRegSquarePlus style={{ fontSize: "25px", marginRight: "10px" }} /><p className='d-none d-sm-block'>Crear aventura</p>
             </Button>
-            <Enlace as={Link} to="/configuracion">
+            <Enlace as={Link} to={`/mapa/${usuarioLogueado.id}`}>
               <FiMapPin style={{ fontSize: "25px", marginRight: "10px" }} className='d-none d-sm-block' /> <p className='d-none d-sm-block'>Mapa</p>
             </Enlace>
           </div>

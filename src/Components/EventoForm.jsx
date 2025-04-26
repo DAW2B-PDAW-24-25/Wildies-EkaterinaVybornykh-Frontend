@@ -4,13 +4,14 @@ import { LuBadgePlus } from "react-icons/lu";
 import { AppContext } from '../Context/AppProvider';
 import BuscadorLocalidad from './BuscadorLocalidad';
 import { Button, Card, Form, Image, Modal, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { PiEyeClosedFill } from 'react-icons/pi';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { PiEnvelopeSimpleOpenThin, PiEyeClosedFill } from 'react-icons/pi';
 import { API_URL } from '../App';
 
 
 function EventoForm() {
-  const { usuarioLogueado, setEvento } = useContext(AppContext);
+  const { id } = useParams();
+  const { usuarioLogueado, setEvento, evento } = useContext(AppContext);
   const [formData, setFormData] = useState({
     deporte_id: "",
     nombre: "",
@@ -31,9 +32,56 @@ function EventoForm() {
   const { deportes } = useContext(AppContext);
   const [ageDisabled, setAgeDisabled] = useState(false);
   const [show, setShow] = useState(false);
+  const [modalHeader, setModalHeader] = useState("");
+  const [tipoModal, setTipoModal] = useState("");
+  const navigate = useNavigate();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  useEffect(() => {
+    if (id) {
+      setFormData({
+        deporte_id: evento.deporte_id,
+        nombre: evento.nombre,
+        fecha: evento.fecha,    //TODO FALLA EL FORMATO
+        sexo_participantes: evento.sexo_participantes,
+        longitud_domicilio: evento.longitud,
+        latitud_domicilio: evento.latitud,
+        nivel: evento.nivel,
+        edad_min: evento.edad_min,
+        edad_max: evento.edad_max,
+        max_participantes: evento.max_participantes,
+        descripcion: evento.descripcion,
+        foto_portada: evento.foto_portada,
+        localidad: evento.localidad
+
+      })
+
+    } else {
+      setFormData({
+        deporte_id: "",
+        nombre: "",
+        fecha: "",
+        sexo_participantes: "indiferente",
+        longitud_domicilio: "",
+        latitud_domicilio: "",
+        nivel: 0,
+        edad_min: 18,
+        edad_max: 100,
+        max_participantes: 2,
+        descripcion: "",
+        foto_portada: null,
+        localidad: ""
+
+      })
+    }
+  }, []);
+
+  async function cargarEvento() {            //TODO COMPLETAR
+    //setFormData 
+    //setEvento
+  }
 
   function handleFormChange(e) {
     setFormData({
@@ -56,15 +104,18 @@ function EventoForm() {
     };
   };
 
-  async function enviarDatos(e) {        
+  async function enviarDatos(e) {
+    e.preventDefault();
     const form = e.currentTarget.form;
     if (!formData.fecha || new Date(formData.fecha) < new Date()) {
+      console.log("No pasé validacion de fecha")
       e.preventDefault();
       e.stopPropagation();
       setValidated(true);
       return;
     }
-    if (form.checkValidity() === false) {
+    if (form.checkValidity() === false || !formData.deporte_id || !formData.localidad) {
+      console.log("No pasé validacion")
       e.preventDefault();
       e.stopPropagation();
       setValidated(true);
@@ -83,44 +134,86 @@ function EventoForm() {
     datos.append('edad_max', formData.edad_max);
     datos.append('max_participantes', formData.max_participantes);
     datos.append('descripcion', formData.descripcion);
-    datos.append('foto_portada', formData.foto_portada);
+    if (formData.foto_portada) {
+      data.append('foto_portada', formData.foto_portada);
+    }
 
     for (let [clave, valor] of datos.entries()) {
       console.log(`${clave}:`, valor);
     }
 
+    
     try {
-      let respuesta = await fetch(`${API_URL}/crearEvento/${usuarioLogueado.id}`, {
-        method: 'POST',
-        body: datos
-      });
+      let respuesta="";
+      if(id){
+        respuesta = await fetch(`${API_URL}/crearEvento/${usuarioLogueado.id}`, {
+          method: 'POST',
+          body: datos
+        });
+      }else{
+        respuesta = await fetch(`${API_URL}/eventos/${id}/${usuarioLogueado.id}`, {
+          method: 'PUT',
+          body: datos
+        });
+      }
+     
       if (!respuesta.ok) {
         console.log('Error al enviar los datos');
+      } else {
+        let data = await respuesta.json();
+        console.log('Respuesta de la API:', data);
+        setEvento(data.data)
+        setTipoModal("exito");
+        if(id){
+          setModalHeader("Evento editado con éxito!")
+        }else{
+          setModalHeader("Evento creado con éxito!")
+        }
+        
+        handleShow();
       }
-      let data = await respuesta.json();
-      console.log('Respuesta de la API:', data);
-      setEvento(data.data)
+
     } catch (error) {
       console.error('Error:', error);
     }
+  }
+
+  function handleSubirFoto() {
+    setTipoModal("form");
+    setModalHeader("Subir foto de portada");
+    handleShow();
   }
 
   function handleFoto(e) {
     const file = e.target.files ? e.target.files[0] : null;
     if (file) {
       setFormData({ ...formData, foto_portada: file })
-     
+
     }
   }
 
+  function handleExito() {
+    handleClose();
+    navigate(`/detalleEvento/${evento.id}`)
+  }
+
   useEffect(() => {
-    console.log(formData)
-  }, [formData])
+    console.log("Evento:", evento)
+  }, [evento])
+
+
 
   return (
     <div className='container-fluid'>
       <div className='row p-3 rounded shadow d-flex ms-3 me-3 mt-4 w-sm-75 mb-5'>
-        <h3 className='title'>Crea aventura</h3>
+        <div className='d-flex justify-content-between align-items-center'>
+          <div>
+            <h3 className='title'>Crea aventura</h3>
+          </div>
+          <div className='col-sm-2 mt-2 mb-3'>
+            <Button variant="secondary" className="shadow" onClick={() => navigate(-1)}>Volver atrás</Button>
+          </div>
+        </div>
         <hr />
         <Card className='rounded-0 p-3 border-0 bg-transparent'>
           <Form noValidate validated={false}>
@@ -129,7 +222,7 @@ function EventoForm() {
                 <div style={{ width: "250px", height: "150px" }}
                   className='bg-secondary rounded d-flex justify-content-center align-items-center'
                   role="button"
-                  onClick={handleShow}
+                  onClick={handleSubirFoto}
                 >
                   {formData.foto_portada
                     ? <Image src={formData.foto_portada instanceof File
@@ -160,24 +253,36 @@ function EventoForm() {
 
                   />
                   <Form.Control.Feedback type="invalid">
-                    Este campo es obligatorio.
+                    Nombre es obligatorio
                   </Form.Control.Feedback>
                 </Form.Group>
               </div>
             </div>
             <Modal show={show} onHide={handleClose}>
               <Modal.Header closeButton>
-                <Modal.Title>Subir foto de portada</Modal.Title>
+                <Modal.Title>{modalHeader}</Modal.Title>
               </Modal.Header>
-
-              <Modal.Body><Form.Control type="file" name='foto_portada' onChange={handleFoto} accept="image/*" /></Modal.Body>
+              <Modal.Body>
+                {
+                  tipoModal === "form" &&
+                  <Form.Control type="file" name='foto_portada' onChange={handleFoto} accept="image/*" />
+                }
+              </Modal.Body>
               <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
-                  Guardar
-                </Button>
+                {tipoModal === "form"
+                  ? <Button variant="secondary" onClick={handleClose}>
+                    Guardar
+                  </Button>
+                  : <Button variant="secondary" onClick={handleExito}>
+                    Aceptar
+                  </Button>
+                }
+
               </Modal.Footer>
 
             </Modal>
+
+
             <hr />
 
             <div className='row'>
@@ -191,23 +296,22 @@ function EventoForm() {
                     value={formData.deporte_id}
                     onChange={(val) => setFormData({ ...formData, deporte_id: val })}
                     className="d-flex flex-wrap row ms-2"
-                    required
-                    isInvalid={validated && !formData.deporte_id}
                   >
+
                     {deportes?.map((deporte) => {
-                      return <ToggleButton key={deporte.id} 
-                      id={`deporte-${deporte.id}`} 
-                      value={deporte.id} 
-                      className="me-1 mb-2 rounded-pill shadow col-3" 
-                      variant='outline-secondary'>
+                      return <ToggleButton key={deporte.id}
+                        id={`deporte-${deporte.id}`}
+                        value={deporte.id}
+                        className="me-1 mb-2 rounded-pill shadow col-3"
+                        variant='outline-secondary'>
                         {deporte.nombre}
                       </ToggleButton>
                     })}
                   </ToggleButtonGroup>
                 </Form.Group>
-                <Form.Control.Feedback type="invalid">
-                  Este campo es obligatorio.
-                </Form.Control.Feedback>
+                {validated && !formData.deporte_id && (
+                  <div className="invalid-feedback d-block">Elige un deporte</div>
+                )}
 
               </div>
               <div className='mb-4'>
@@ -225,8 +329,8 @@ function EventoForm() {
                 </Form.Group>
               </div>
               <hr />
-              <div className='col-sm-6 texto mb-3'>
-                <Form.Group className="mb-3 texto" controlId="fecha_nacimiento">
+              <div className='col-sm-6 texto'>
+                <Form.Group className="mb-3 texto" controlId="fecha">
                   <Form.Label>Cuando</Form.Label>
                   <Form.Control
                     type="date"
@@ -238,7 +342,7 @@ function EventoForm() {
                     isInvalid={validated && (!formData.fecha || new Date(formData.fecha) < new Date())}
                   />
                   <Form.Control.Feedback type="invalid">
-                    {formData.fecha ? 'La fecha de evento no puede ser inferior a la fecha actual' : 'Este campo es obligatorio.'}
+                    {formData.fecha ? 'La fecha de evento no puede ser inferior a la fecha actual' : 'Elige una fecha'}
                   </Form.Control.Feedback>
                 </Form.Group>
               </div>
@@ -247,12 +351,12 @@ function EventoForm() {
                   formData={formData}
                   setFormData={setFormData}
                   handleFormChange={handleFormChange}
-                  required
-                  isInvalid={validated && !formData.localidad}
+
                 />
-                <Form.Control.Feedback type="invalid">
-                  Este campo es obligatorio.
-                </Form.Control.Feedback>
+                {validated && !formData.localidad && (
+                  <div className="invalid-feedback d-block m-0">Ubicación es obligatoria</div>
+                )}
+
 
               </div>
 
@@ -265,26 +369,36 @@ function EventoForm() {
                   name='sexo_participantes'
                   value={formData.sexo_participantes}
                   onChange={handleFormChange}
+                  required
+                  isInvalid={validated && !formData.sexo_participantes}
                 >
                   <option>Selecciona...</option>
                   <option value="mujer">Mujer</option>
                   <option value="hombre">Hombre</option>
                   <option value="indiferente">Indiferente</option>
                 </Form.Select>
+                <Form.Control.Feedback type="invalid">
+                  Este campo es obligatorio.
+                </Form.Control.Feedback>
               </div>
 
               <div className='col-sm-6 texto mb-4 mt-3'>
                 <Form.Group controlId="edad-range">
                   <Form.Label>Número máximo de participantes</Form.Label>
-                  <Form.Control type='number' 
-                  max={1000} 
-                  min={2} 
-                  name='max_participantes'
-                  value={formData.max_participantes} 
-                  onChange={handleFormChange}>
+                  <Form.Control type='number'
+                    max={1000}
+                    min={2}
+                    name='max_participantes'
+                    value={formData.max_participantes}
+                    onChange={handleFormChange}
+                    required
+                    isInvalid={validated && !formData.max_participantes && formData.max_participantes < 2 && formData.max_participantes > 1000}
+                  >
                   </Form.Control>
-                 
                 </Form.Group>
+                <Form.Control.Feedback type="invalid">
+                  Este campo es obligatorio.
+                </Form.Control.Feedback>
               </div>
               <div className=' texto mb-4 mt-3'>
                 <Form.Group controlId="edad-range">
@@ -330,9 +444,9 @@ function EventoForm() {
                   </Form.Control.Feedback>
                 </Form.Group>
               </div>
-              <Link to={`/perfil/${usuarioLogueado.id}`} className='d-flex justify-content-center mt-3' style={{ textDecoration: "none" }}>
-                <Button className='col-4 border-0' style={{ backgroundColor: "#C8936Eff" }} type='submit' onClick={enviarDatos}>Crear</Button>
-              </Link>
+              <div className='d-flex justify-content-center mt-3'>
+                <Button className='col-4 border-0' style={{ backgroundColor: "#C8936Eff" }} type='submit' onClick={enviarDatos}>{id ? `Editar` : 'Crear'}</Button>
+              </div>
             </div>
           </Form>
 

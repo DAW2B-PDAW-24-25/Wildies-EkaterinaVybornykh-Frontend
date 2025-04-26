@@ -51,6 +51,10 @@ function AppProvider({ children }) {
         cargarUsuarioLogueado();
     }, []);
 
+    useEffect(()=>{
+        console.log(usuarioLogueado)
+    }, [usuarioLogueado])
+
     useEffect(() => {
         cargarDeportes();
     }, [])
