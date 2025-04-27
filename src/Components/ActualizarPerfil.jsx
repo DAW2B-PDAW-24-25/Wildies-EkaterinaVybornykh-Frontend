@@ -3,8 +3,9 @@ import { Button, Card, Form, Image, Modal } from 'react-bootstrap';
 import { AppContext } from '../Context/AppProvider';
 import { API_URL } from '../App';
 import BuscadorLocalidad from './BuscadorLocalidad';
-import { Link } from 'react-router-dom';
-
+import { Link, useNavigate } from 'react-router-dom';
+import default_chica from '../styles/images/profile_default_chica.png';
+import default_chico from '../styles/images/profile_default_chico.png';
 
 
 
@@ -13,7 +14,7 @@ function ActualizarPerfil() {
     const { usuarioLogueado, setUsuarioLogueado } = useContext(AppContext);
     const [fotoPerfil, setFotoPerfil] = useState(null);
     const [validated, setValidated] = useState(false);
-
+    const navigate = useNavigate();
     const [fotoUrl, setFotoUrl] = useState(null);
     const [show, setShow] = useState(false);
     const [formData, setFormData] = useState({
@@ -161,40 +162,50 @@ function ActualizarPerfil() {
 
     return (
         <div className='container-fluid min-vh-100'>
-            <div className='row p-3 rounded shadow d-flex ms-3 me-3 mt-4 w-sm-75 mb-5'>
+            <div className='row p-3 rounded shadow d-flex ms-3 me-3 mt-4 w-sm-75 mb-5 bg-light'>
                 <h3 className='title'>Editar perfil</h3>
                 <hr />
                 <Card className='rounded-0 p-0 border-0 bg-transparent'>
 
                     <div className='row p-3'>
-                        <div className='d-flex flex-column align-items-center col-5 col-md-4'>
-                            <div className='w-100 text-center'>
+                        <div className='d-flex justify-content-between'>
+                            <div className='d-flex flex-column align-items-center col-5 col-md-4'>
+
                                 {fotoPerfil
                                     ? <Image src={fotoPerfil instanceof File
                                         ? URL.createObjectURL(fotoPerfil)
                                         : fotoPerfil}
                                         className='avatar_big mb-3 '
                                     />
-                                    : <Image src={formData.foto_perfil}
-                                        className='avatar_big mb-3 '
-                                    />}
+                                    : formData.foto_perfil
+                                        ? <Image src={formData.foto_perfil}
+                                            className='avatar_big mb-3 ' />
+                                        : usuarioLogueado.sexo === 'mujer'
+                                            ? <Image src={default_chica}
+                                                className='avatar_big mb-3 ' />
+                                            : <Image src={default_chico}
+                                                className='avatar_big mb-3 ' />
+                                }
                                 <Button variant="link" className='text-decoration-none boton-link' onClick={handleShow}>Cambiar foto</Button>
-                            </div>
-                            <div></div>
-                            <Modal show={show} onHide={handleClose}>
-                                <Modal.Header closeButton>
-                                    <Modal.Title>Subir foto de perfil</Modal.Title>
-                                </Modal.Header>
-                                <Form>
-                                    <Modal.Body><Form.Control type="file" name='foto_perfil' onChange={handleFoto} accept="image/*" /></Modal.Body>
-                                    <Modal.Footer>
-                                        <Button variant="secondary" onClick={enviarFoto}>
-                                            Guardar
-                                        </Button>
-                                    </Modal.Footer>
-                                </Form>
-                            </Modal>
 
+                                <div></div>
+                                <Modal show={show} onHide={handleClose}>
+                                    <Modal.Header closeButton>
+                                        <Modal.Title>Subir foto de perfil</Modal.Title>
+                                    </Modal.Header>
+                                    <Form>
+                                        <Modal.Body><Form.Control type="file" name='foto_perfil' onChange={handleFoto} accept="image/*" /></Modal.Body>
+                                        <Modal.Footer>
+                                            <Button variant="secondary" onClick={enviarFoto}>
+                                                Guardar
+                                            </Button>
+                                        </Modal.Footer>
+                                    </Form>
+                                </Modal>
+                            </div>
+                            <div className='col-2'>
+                                <Button variant="secondary" className="shadow" onClick={() => navigate(-1)}>Volver</Button>
+                            </div>
                         </div>
                     </div>
                     <hr />

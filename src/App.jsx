@@ -47,10 +47,13 @@ function App() {
       libraries={["places"]}
       >
         <ThemeProvider theme={theme}>
+        <div className="background-image"></div>
           <div className='d-flex'>
+
             <AppSidebar />
             <div className="main w-100">
             <AppNavbar/>
+            
               <Routes>
                 <Route path='/inicioSesion' element={<InicioSesion />} />
                 <Route path="/" element={<Inicio />} />
@@ -60,7 +63,8 @@ function App() {
                 <Route path='/deportesUsuario/:id' element={<DeportesUsuario />} />
                 <Route path='/resultadosUsuarios/:id' element={<ResultadosUsuarios />} />
                 <Route path='/resultadosEventos/:id' element={<ResultadosEventos />} />
-                <Route path='/evento/:id' element={<EventoForm />} />
+                <Route path='/crearEvento' element={<EventoForm />} />
+                <Route path='/editarEvento/:id' element={<EventoForm />} />
                 <Route path='/mapa/:id' element={<Mapa />} />
                 <Route path='/proximosEventos/:id' element={<ProximosEventos/>}/>
                 <Route path='/misWildies/:id' element={<MisWildies/>}/>

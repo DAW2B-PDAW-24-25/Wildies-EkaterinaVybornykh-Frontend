@@ -3,7 +3,9 @@ import { API_URL } from '../App';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { AppContext } from '../Context/AppProvider';
 import SpinnerWave from './SpinnerWave';
-import { Button, Modal } from 'react-bootstrap';
+import { Button, Image, Modal } from 'react-bootstrap';
+import default_chica from '../styles/images/profile_default_chica.png';
+import default_chico from '../styles/images/profile_default_chico.png';
 
 function DetalleEvento() {
     const { setEvento, evento, usuarioLogueado } = useContext(AppContext);
@@ -89,7 +91,7 @@ function DetalleEvento() {
     }
 
     function handleEditar() {
-        navigate(`/evento/${id}`)
+        navigate(`/editarEvento/${id}`)
     }
 
     async function handleEliminar() {
@@ -130,7 +132,7 @@ function DetalleEvento() {
                     < h4>Fecha: {evento.fecha_form}</h4>
                 </div>
                 <div className='col-sm-2 mt-2'>
-                    <Button variant="secondary" className="shadow" onClick={() => navigate(-1)}>Volver atrás</Button>
+                    <Button variant="secondary" className="shadow" onClick={() => navigate(-1)}>Volver</Button>
                 </div>
 
             </div>
@@ -174,9 +176,15 @@ function DetalleEvento() {
                     {evento.participantes.map((participante, index) => {
                         return <Link key={index} to={`/perfil/${participante.id}`} className='text-decoration-none'>
                             <div className='d-flex mb-3'>
-                                <div className='me-3' style={{ width: "40px", height: "40px" }}>
-                                    <img src={participante.foto_perfil} alt="foto de perfil" className='img-fluid w-100 rounded-circle' />
-                                </div>
+                                {
+                                    participante.foto_perfil
+                                        ? <Image src={participante.foto_perfil} alt="foto de perfil" className='avatar_small me-2' />
+                                        : participante.sexo === "mujer"
+                                            ? <Image src={default_chica} alt="foto de perfil" className='avatar_small me-2' />
+                                            : <Image src={default_chico} alt="foto de perfil" className='avatar_small me-2' />
+                                }
+
+
                                 <div className='d-flex bg-seccion align-items-center justify-content-center rounded-pill shadow ps-4 pe-4 pt-0 pb-0'>
                                     <p className='m-0'>{participante.nombre} {participante.apellidos}
                                         {evento.creador_id === participante.id && " (creador/a)"}</p>

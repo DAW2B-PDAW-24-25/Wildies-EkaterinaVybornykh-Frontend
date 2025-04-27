@@ -44,7 +44,7 @@ function EventoForm() {
       setFormData({
         deporte_id: evento.deporte_id,
         nombre: evento.nombre,
-        fecha: evento.fecha,    //TODO FALLA EL FORMATO
+        fecha: evento.fecha,
         sexo_participantes: evento.sexo_participantes,
         longitud_domicilio: evento.longitud,
         latitud_domicilio: evento.latitud,
@@ -78,10 +78,9 @@ function EventoForm() {
     }
   }, []);
 
-  async function cargarEvento() {            //TODO COMPLETAR
-    //setFormData 
-    //setEvento
-  }
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   function handleFormChange(e) {
     setFormData({
@@ -135,28 +134,28 @@ function EventoForm() {
     datos.append('max_participantes', formData.max_participantes);
     datos.append('descripcion', formData.descripcion);
     if (formData.foto_portada) {
-      data.append('foto_portada', formData.foto_portada);
+      datos.append('foto_portada', formData.foto_portada);
     }
 
     for (let [clave, valor] of datos.entries()) {
       console.log(`${clave}:`, valor);
     }
 
-    
+
     try {
-      let respuesta="";
-      if(id){
+      let respuesta = "";
+      if (id) {
+        respuesta = await fetch(`${API_URL}/eventos/${id}/${usuarioLogueado.id}`, {
+          method: 'POST',
+          body: datos
+        });
+      } else {
         respuesta = await fetch(`${API_URL}/crearEvento/${usuarioLogueado.id}`, {
           method: 'POST',
           body: datos
         });
-      }else{
-        respuesta = await fetch(`${API_URL}/eventos/${id}/${usuarioLogueado.id}`, {
-          method: 'PUT',
-          body: datos
-        });
       }
-     
+
       if (!respuesta.ok) {
         console.log('Error al enviar los datos');
       } else {
@@ -164,12 +163,12 @@ function EventoForm() {
         console.log('Respuesta de la API:', data);
         setEvento(data.data)
         setTipoModal("exito");
-        if(id){
+        if (id) {
           setModalHeader("Evento editado con éxito!")
-        }else{
+        } else {
           setModalHeader("Evento creado con éxito!")
         }
-        
+
         handleShow();
       }
 
@@ -205,21 +204,21 @@ function EventoForm() {
 
   return (
     <div className='container-fluid'>
-      <div className='row p-3 rounded shadow d-flex ms-3 me-3 mt-4 w-sm-75 mb-5'>
+      <div className='row p-4 rounded shadow d-flex ms-3 me-3 mt-4 w-sm-75 mb-5 bg-light'>
         <div className='d-flex justify-content-between align-items-center'>
           <div>
             <h3 className='title'>Crea aventura</h3>
           </div>
           <div className='col-sm-2 mt-2 mb-3'>
-            <Button variant="secondary" className="shadow" onClick={() => navigate(-1)}>Volver atrás</Button>
+            <Button variant="secondary" className="shadow" onClick={() => navigate(-1)}>Volver</Button>
           </div>
         </div>
         <hr />
         <Card className='rounded-0 p-3 border-0 bg-transparent'>
           <Form noValidate validated={false}>
-            <div className='row p-3'>
-              <div className='col-sm-6'>
-                <div style={{ width: "250px", height: "150px" }}
+            <div className='row p-2 d-flex justify-content-center'>
+              <div className='col-lg-4 col-6'>
+                <div style={{ width: "100%", height: "150px" }}
                   className='bg-secondary rounded d-flex justify-content-center align-items-center'
                   role="button"
                   onClick={handleSubirFoto}
@@ -229,6 +228,7 @@ function EventoForm() {
                       ? URL.createObjectURL(formData.foto_portada)
                       : formData.foto_portada}
                       className='rounded'
+                      style={{ maxHeight: "100%", objectFit: "cover" }}
                     />
                     :
                     <div className='text-center'>
@@ -239,9 +239,9 @@ function EventoForm() {
                 </div>
               </div>
 
-              <div className='col-sm-6'>
-                <Form.Group className="mb-3 texto" controlId="nombre">
-                  <Form.Label className='mb-4 text-center w-100'>Dale nombre a tu aventura</Form.Label>
+              <div className='col-sm-6 col-lg-8'>
+                <Form.Group className=" mt-4 texto d-flex flex-column align-items-center" controlId="nombre">
+                  <Form.Label className='mb-sm-4 text-center w-100'>Dale nombre a tu aventura</Form.Label>
                   <Form.Control
                     className='texto'
                     type="text"
@@ -287,34 +287,36 @@ function EventoForm() {
 
             <div className='row'>
 
-              <div className='mt-3 mb-4 texto'>
+              <div className='mt-4 mb-4 texto'>
                 <Form.Group controlId="deportes">
                   <Form.Label>Elige un deporte</Form.Label>
                   <ToggleButtonGroup
                     type="radio"
-                    name='deporte'
+                    name="deporte"
                     value={formData.deporte_id}
                     onChange={(val) => setFormData({ ...formData, deporte_id: val })}
-                    className="d-flex flex-wrap row ms-2"
+                    className="d-flex flex-wrap gap-2 ms-2"
                   >
-
-                    {deportes?.map((deporte) => {
-                      return <ToggleButton key={deporte.id}
+                    {deportes?.map((deporte) => (
+                      <ToggleButton
+                        key={deporte.id}
                         id={`deporte-${deporte.id}`}
                         value={deporte.id}
-                        className="me-1 mb-2 rounded-pill shadow col-3"
-                        variant='outline-secondary'>
+                        className="rounded-pill shadow"
+                        variant="outline-secondary"
+                      >
                         {deporte.nombre}
                       </ToggleButton>
-                    })}
+                    ))}
                   </ToggleButtonGroup>
                 </Form.Group>
+
                 {validated && !formData.deporte_id && (
                   <div className="invalid-feedback d-block">Elige un deporte</div>
                 )}
 
               </div>
-              <div className='mb-4'>
+              <div className='mb-5 mt-2'>
                 <Form.Group controlId="nivel">
                   <Form.Label className='texto'>Nivel mínimo</Form.Label>
                   <ToggleButtonGroup type="radio" name="nivel" value={formData.nivel} onChange={(val) => setFormData({ ...formData, nivel: val })} className='d-flex justify-content-center'>
@@ -329,8 +331,8 @@ function EventoForm() {
                 </Form.Group>
               </div>
               <hr />
-              <div className='col-sm-6 texto'>
-                <Form.Group className="mb-3 texto" controlId="fecha">
+              <div className='col-sm-6 texto mt-4 mb-4'>
+                <Form.Group className="texto" controlId="fecha">
                   <Form.Label>Cuando</Form.Label>
                   <Form.Control
                     type="date"
@@ -346,7 +348,7 @@ function EventoForm() {
                   </Form.Control.Feedback>
                 </Form.Group>
               </div>
-              <div className='col-sm-6 texto'>
+              <div className='col-sm-6 texto mt-4 mb-4'>
                 <BuscadorLocalidad
                   formData={formData}
                   setFormData={setFormData}

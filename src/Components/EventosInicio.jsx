@@ -43,9 +43,10 @@ function EventosInicio() {
                             <div className='d-flex'>
                                 <h5 className='title me-1'>Fecha :</h5> <p>{evento.fecha_form}</p>
                             </div>
-                            <Card.Text>
-                                <h5 className='title'>Donde :</h5> {evento.localidad}
-                            </Card.Text>
+                            <div className='d-flex'>
+                                <h5 className='title me-1'>Donde : </h5> <p>{evento.localidad}</p>
+                            </div>
+
                         </Card.Body>
                     </Card>
                     </Link>

@@ -243,7 +243,7 @@ function DeportesUsuario() {
                         <h1>Deportes que practico</h1>
                     </div>
                     <div className='me-3'>
-                        <Button variant='outline-secondary' className='rounded-pill shadow' onClick={modalAgregarDeporte}>Añadir deporte</Button>
+                        <Button variant='outline-secondary' className='rounded-pill shadow' onClick={modalAgregarDeporte}>Añadir</Button>
                     </div>
                 </div>
                 <hr />
@@ -271,10 +271,10 @@ function DeportesUsuario() {
                            
                                 <div>
                                     {!deporte.nivel &&
-                                        <Button variant='outline-secondary' className='me-2 rounded-pill shadow' id={deporte.usuario_deporte_id} onClick={modalTest}>Realizar Test</Button>
+                                        <Button variant='outline-secondary' className='me-2 mb-2 rounded-pill shadow' id={deporte.usuario_deporte_id} onClick={modalTest}>Realizar Test</Button>
                                     }
-                                    <Button variant='outline-secondary' className='me-2 rounded-pill shadow' id={deporte.usuario_deporte_id} data-deporteid={deporte.deporte_id} onClick={modalEditar}>Editar</Button>
-                                    <Button variant='outline-secondary' id={deporte.usuario_deporte_id} className='me-2 rounded-pill shadow' onClick={modalEliminar}>Eliminar</Button>
+                                    <Button variant='outline-secondary' className='me-2 mb-2 rounded-pill shadow' id={deporte.usuario_deporte_id} data-deporteid={deporte.deporte_id} onClick={modalEditar}>Editar</Button>
+                                    <Button variant='outline-secondary' id={deporte.usuario_deporte_id} className='me-2 mb-2 rounded-pill shadow' onClick={modalEliminar}>Eliminar</Button>
                                 </div>
                             
                         </div>

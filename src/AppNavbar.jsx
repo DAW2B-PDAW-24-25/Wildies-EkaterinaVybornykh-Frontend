@@ -11,6 +11,7 @@ function AppNavbar() {
                 <Navbar.Brand href="#home"></Navbar.Brand>
                 <Navbar.Toggle />
                 <Navbar.Collapse className="justify-content-end">
+                    
                     <Dropdown>
                         <Dropdown.Toggle id="dropdown-basic" className="bg-transparent border-0 p-0 m-0 inline-flex">
                             <div className='d-flex flex-column align-items-center'>
@@ -30,7 +31,7 @@ function AppNavbar() {
 
                         </Dropdown.Toggle>
 
-                        <Dropdown.Menu className='m-0 border-0 shadow'>
+                        <Dropdown.Menu className='m-0 border-0 shadow opacity-75'>
                             <Dropdown.Item href={`/perfil/${usuarioLogueado.id}`} className='texto'>Perfil</Dropdown.Item>
                             <Dropdown.Item href="#/action-2" className='texto'>Cerrar sesión</Dropdown.Item>
 

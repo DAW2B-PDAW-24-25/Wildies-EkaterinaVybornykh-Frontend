@@ -20,6 +20,10 @@ function Mapa() {
         cargarEventosUsuario();
     }, [usuarioLogueado])
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     const center = useMemo(() => ({
         lat: Number(usuarioLogueado.latitud_domicilio),
         lng: Number(usuarioLogueado.longitud_domicilio),
@@ -56,7 +60,6 @@ function Mapa() {
     }
 
     return (
-
         <GoogleMap
             mapContainerStyle={{
                 width: "100%",
@@ -66,9 +69,10 @@ function Mapa() {
             zoom={10}
             mapTypeId="satellite"
             options={{
+                mapTypeId: "satellite", 
                 zoomControl: true,
                 streetViewControl: false,
-                mapTypeControl: true,
+                mapTypeControl: false,
                 fullscreenControl: true,
                 styles: [
                     {
@@ -94,6 +98,7 @@ function Mapa() {
                     onClick={() => navigate(`/detalleEvento/${evento.id}`)}
                     icon={{
                         url: "http://maps.google.com/mapfiles/ms/icons/orange-dot.png",
+                        scaledSize: new window.google.maps.Size(40, 40)
                     }}
 
                 >
@@ -120,6 +125,7 @@ function Mapa() {
                     onClick={() => navigate(`/detalleEvento/${evento.id}`)}
                     icon={{
                         url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
+                        scaledSize: new window.google.maps.Size(40, 40)
                     }}
 
 
