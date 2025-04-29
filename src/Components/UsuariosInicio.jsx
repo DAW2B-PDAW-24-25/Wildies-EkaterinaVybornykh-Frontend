@@ -4,7 +4,6 @@ import { FaMountain } from "react-icons/fa6";
 import { GiMountainClimbing } from "react-icons/gi";
 import { MdOutlineSurfing } from "react-icons/md";
 import { PiBicycleFill } from "react-icons/pi";
-import bikeImg from '../styles/icons/cycling.png';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../Context/AppProvider';
 import SpinnerWave from './SpinnerWave';
@@ -42,7 +41,7 @@ function UsuariosInicio() {
             <div className='row pt-3'>
                 {wildies.map((usuario) => {
                     return <Link to={`/perfil/${usuario.id}`} className='col-md-3 mb-3 me-5 text-decoration-none'>
-                        <Card key={usuario.id} className='rounded-0 p-0 border-0 bg-transparent'>
+                        <Card key={usuario.id} className='p-0 border-0 bg-transparent'>
                             <Card.Img variant="top" src={usuario.foto_perfil} className="img-fluid w-100 rounded-0">
 
                             </Card.Img>

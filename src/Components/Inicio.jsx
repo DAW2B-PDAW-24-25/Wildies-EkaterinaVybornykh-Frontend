@@ -48,7 +48,7 @@ function Inicio() {
                 <Buscador />
             </div> */}
 
-            <div className='bg-seccion p-3 rounded shadow d-flex ms-3 me-3 mb-4 flex-column' >
+            <div className='bg-seccion p-3 rounded shadow d-flex ms-3 me-3 mb-4 flex-column'>
                 <UsuariosInicio />
                 <Button variant="link" className='boton-link d-flex' onClick={handleUsuarios}>Descubrir mas...</Button>
             </div>

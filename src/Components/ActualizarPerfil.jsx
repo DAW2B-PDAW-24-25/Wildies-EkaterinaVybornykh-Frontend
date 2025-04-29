@@ -4,8 +4,6 @@ import { AppContext } from '../Context/AppProvider';
 import { API_URL } from '../App';
 import BuscadorLocalidad from './BuscadorLocalidad';
 import { Link, useNavigate } from 'react-router-dom';
-import default_chica from '../styles/images/profile_default_chica.png';
-import default_chico from '../styles/images/profile_default_chico.png';
 
 
 
@@ -177,14 +175,10 @@ function ActualizarPerfil() {
                                         : fotoPerfil}
                                         className='avatar_big mb-3 '
                                     />
-                                    : formData.foto_perfil
-                                        ? <Image src={formData.foto_perfil}
-                                            className='avatar_big mb-3 ' />
-                                        : usuarioLogueado.sexo === 'mujer'
-                                            ? <Image src={default_chica}
-                                                className='avatar_big mb-3 ' />
-                                            : <Image src={default_chico}
-                                                className='avatar_big mb-3 ' />
+
+                                    : <Image src={formData.foto_perfil}
+                                        className='avatar_big mb-3 ' />
+                                
                                 }
                                 <Button variant="link" className='text-decoration-none boton-link' onClick={handleShow}>Cambiar foto</Button>
 

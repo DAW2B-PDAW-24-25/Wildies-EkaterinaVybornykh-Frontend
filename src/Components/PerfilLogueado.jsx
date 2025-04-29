@@ -5,8 +5,7 @@ import { BiLeaf } from "react-icons/bi";
 import { GoBriefcase } from "react-icons/go";
 import { LuLanguages } from "react-icons/lu";
 import { Button, Image, Modal } from "react-bootstrap";
-import default_chica from '../styles/images/profile_default_chica.png';
-import default_chico from '../styles/images/profile_default_chico.png';
+
 
 
 function PerfilLogueado({ usuario, logout, eliminarPerfil, modalTipo, modalMensaje, setModalTipo, setModalMensaje }) {
@@ -30,13 +29,8 @@ function PerfilLogueado({ usuario, logout, eliminarPerfil, modalTipo, modalMensa
         <div className='container-fluid min-vh-100'>
             <div className='row m-3'>
                 <div className='col-4 d-flex flex-column align-items-center'>
-                    {
-                        usuario.foto_perfil
-                            ? <Image src={usuario.foto_perfil} className='avatar_big m-3' />
-                            : usuario.sexo == "mujer"
-                                ? <Image src={default_chica} className='avatar_big m-3' />
-                                : <Image src={default_chico} className='avatar_big m-3' />
-                    }
+                 <Image src={usuario.foto_perfil} className='avatar_big m-3' />
+                           
 
                     <p>{usuario.localidad}</p>
                 </div>

@@ -4,8 +4,6 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { AppContext } from '../Context/AppProvider';
 import SpinnerWave from './SpinnerWave';
 import { Button, Image, Modal } from 'react-bootstrap';
-import default_chica from '../styles/images/profile_default_chica.png';
-import default_chico from '../styles/images/profile_default_chico.png';
 
 function DetalleEvento() {
     const { setEvento, evento, usuarioLogueado } = useContext(AppContext);
@@ -176,15 +174,9 @@ function DetalleEvento() {
                     {evento.participantes.map((participante, index) => {
                         return <Link key={index} to={`/perfil/${participante.id}`} className='text-decoration-none'>
                             <div className='d-flex mb-3'>
-                                {
-                                    participante.foto_perfil
-                                        ? <Image src={participante.foto_perfil} alt="foto de perfil" className='avatar_small me-2' />
-                                        : participante.sexo === "mujer"
-                                            ? <Image src={default_chica} alt="foto de perfil" className='avatar_small me-2' />
-                                            : <Image src={default_chico} alt="foto de perfil" className='avatar_small me-2' />
-                                }
-
-
+                            
+                                         <Image src={participante.foto_perfil} alt="foto de perfil" className='avatar_small me-2' />
+                                       
                                 <div className='d-flex bg-seccion align-items-center justify-content-center rounded-pill shadow ps-4 pe-4 pt-0 pb-0'>
                                     <p className='m-0'>{participante.nombre} {participante.apellidos}
                                         {evento.creador_id === participante.id && " (creador/a)"}</p>

@@ -13,8 +13,8 @@ import UsuariosInicio from './Components/EventosInicio';
 import { GoHomeFill } from "react-icons/go";
 import { PiUsersBold } from "react-icons/pi";
 import { AppContext } from './Context/AppProvider';
-import logo from './styles/images/logo4.png';
-import logo_small from './styles/images/logo_small.png';
+import logo from '/images/logo4.png';
+import logo_small from '/images/logo_small.png';
 import ModalFiltro from './Components/ModalFiltro';
 import { API_URL } from './App';
 
@@ -78,10 +78,10 @@ function AppSidebar() {
         <Nav defaultActiveKey="/home" className="sidebar pt-sm-5 ps-2 ps-lg-5">
 
           <div className="d-none d-lg-block" role="button" onClick={handleInicio}>
-            <img src={logo} alt="logo" className="img-fluid w-75 opacity-75" />
+            <img src={logo} alt="logo" className="img-fluid w-75 " />
           </div>
           <div className="d-none d-sm-block d-lg-none ms-1 mb-4" role="button" onClick={handleInicio}>
-            <img src={logo_small} alt="logo" className="img-fluid w-75 opacity-75" />
+            <img src={logo_small} alt="logo" className="img-fluid w-75" />
           </div>
           <div className="linkContainer p-0 pb-sm-5 pt-sm-5">
             <Button variant="link" className="boton-link d-flex align-items-center pb-4 mb-3 mb-lg-0" onClick={handleBuscar}>
