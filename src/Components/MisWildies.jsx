@@ -63,7 +63,7 @@ function MisWildies() {
             )}
            
             {hayAmigos() && (
-                <div className='row p-3 rounded shadow d-flex ms-3 me-3 mt-4 mb-5 bg-seccion'>
+                <div className='row p-3 rounded shadow d-flex ms-3 me-3 mt-4 mb-5 bg-seccion w-sm-75'>
                     <Card className='rounded-0 p-0 border-0 bg-transparent'>
                         <div className='row mb-4 w-100'>
                             <div className="w-100 mt-4 mb-2">
