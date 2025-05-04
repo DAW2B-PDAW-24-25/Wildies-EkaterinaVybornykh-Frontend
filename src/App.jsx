@@ -23,10 +23,12 @@ import AppSidebar from './AppSidebar';
 import AppNavbar from './AppNavbar';
 import MisWildies from './Components/MisWildies';
 import { useEffect, useState } from 'react';
+import RegProvider from './Context/RegProvider';
 
 
 
 function App() {
+  const libraries = ["places"];
   const [hayToken, setHayToken] = useState(false);
 
   useEffect(() => {
@@ -50,45 +52,47 @@ function App() {
     <LoadScript
       googleMapsApiKey={GOOGLE_API_KEY}
       language="es"
-      libraries={["places"]}
+      libraries={libraries}
     >
       <BrowserRouter>
         <ThemeProvider theme={theme}>
-         {/*  {
-            !hayToken
-              ? (<Routes>
-                <Route path="/" element={<Navigate to="/inicioSesion" />} />
-                <Route path='/inicioSesion' element={<InicioSesion />} />
-              </Routes>
-              )
-              : ( */}
-                <AppProvider>
-                  <div className="background-image"></div>
-                  <div className='d-flex'>
-                    <AppSidebar />
-                    <div className="main w-100">
-                      <AppNavbar />
-                      <Routes>
-                        <Route path='/inicioSesion' element={<InicioSesion />} />
-                        <Route path="/" element={<Inicio />} />
-                        <Route path="/perfil/:id" element={<Perfil />} />
-                        <Route path='/editarPerfil/:id' element={<ActualizarPerfil />} />
-                        <Route path="/detalleEvento/:id" element={<DetalleEvento />} />
-                        <Route path='/deportesUsuario/:id' element={<DeportesUsuario />} />
-                        <Route path='/resultadosUsuarios/:id' element={<ResultadosUsuarios />} />
-                        <Route path='/resultadosEventos/:id' element={<ResultadosEventos />} />
-                        <Route path='/crearEvento' element={<EventoForm />} />
-                        <Route path='/editarEvento/:id' element={<EventoForm />} />
-                        <Route path='/mapa/:id' element={<Mapa />} />
-                        <Route path='/proximosEventos/:id' element={<ProximosEventos />} />
-                        <Route path='/misWildies/:id' element={<MisWildies />} />
-                      </Routes>
-                      <Footer />
+          <RegProvider>
+            {
+              !hayToken
+                ? (<Routes>
+                  <Route path="/" element={<Navigate to="/inicioSesion" />} />
+                  <Route path='/inicioSesion' element={<InicioSesion />} />
+                </Routes>
+                )
+                : (
+                  <AppProvider>
+                    <div className="background-image"></div>
+                    <div className='d-flex'>
+                      <AppSidebar />
+                      <div className="main w-100">
+                        <AppNavbar />
+                        <Routes>
+                          <Route path='/inicioSesion' element={<InicioSesion />} />
+                          <Route path="/" element={<Inicio />} />
+                          <Route path="/perfil/:id" element={<Perfil />} />
+                          <Route path='/editarPerfil/:id' element={<ActualizarPerfil />} />
+                          <Route path="/detalleEvento/:id" element={<DetalleEvento />} />
+                          <Route path='/deportesUsuario/:id' element={<DeportesUsuario />} />
+                          <Route path='/resultadosUsuarios/:id' element={<ResultadosUsuarios />} />
+                          <Route path='/resultadosEventos/:id' element={<ResultadosEventos />} />
+                          <Route path='/crearEvento' element={<EventoForm />} />
+                          <Route path='/editarEvento/:id' element={<EventoForm />} />
+                          <Route path='/mapa/:id' element={<Mapa />} />
+                          <Route path='/proximosEventos/:id' element={<ProximosEventos />} />
+                          <Route path='/misWildies/:id' element={<MisWildies />} />
+                        </Routes>
+                        <Footer />
+                      </div>
                     </div>
-                  </div>
-                </AppProvider>
-           {/*    )
-          } */}
+                  </AppProvider>
+                )
+            }
+          </RegProvider>
         </ThemeProvider>
       </BrowserRouter>
     </LoadScript>

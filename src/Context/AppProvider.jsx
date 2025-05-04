@@ -17,7 +17,6 @@ function AppProvider({ children }) {
     const [wildie, setWildie] = useState([]);
     const [eventos, setEventos] = useState([]);
     const [evento, setEvento] = useState({});
-    const [deportes, setDeportes] = useState([]);
     const [tipoUsuarios, setTipoUsuarios] = useState("inicio");
     const navigate = useNavigate();
     const [formData, setFormData] = useState({});          //filtro usuario, eventos //todo cuidad con usar en otros sitios
@@ -52,9 +51,7 @@ function AppProvider({ children }) {
         console.log(usuarioLogueado)
     }, [usuarioLogueado])
 
-    useEffect(() => {
-        cargarDeportes();
-    }, [])
+  
 
     useEffect(() => {
         cargarEventosInicio();
@@ -84,20 +81,6 @@ function AppProvider({ children }) {
         } else {
             let data = await response.json();
             setAmistades(data);
-        }
-    }
-
-    async function cargarDeportes() {
-        try {
-            let response = await fetch(`${API_URL}/deportes`);
-            if (!response.ok) {
-                throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
-            }
-            let data = await response.json();
-            setDeportes(data)
-        }
-        catch (error) {
-            console.error("Error usuarios:", error);
         }
     }
 
@@ -252,7 +235,6 @@ function AppProvider({ children }) {
             setWildies,
             eventos,
             setEventos,
-            deportes,
             tipoUsuarios,
             setTipoUsuarios,
             aplicarFiltros,

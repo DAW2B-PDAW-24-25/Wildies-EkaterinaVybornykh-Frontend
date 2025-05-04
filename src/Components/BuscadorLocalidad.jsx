@@ -26,8 +26,8 @@ function BuscadorLocalidad({ formData, setFormData, handleFormChange }) {
       onLoad={(autocomplete) => (autocompleteRef.current = autocomplete)}
       onPlaceChanged={handleLocalidad}
     >
-      <Form.Group className="mb-1" controlId="localidad">
-        <Form.Label>Ubicación</Form.Label>
+      <Form.Group className="mb-2" controlId="localidad">
+        <Form.Label>Localidad</Form.Label>
         <Form.Control
           type="text"
           name="localidad"

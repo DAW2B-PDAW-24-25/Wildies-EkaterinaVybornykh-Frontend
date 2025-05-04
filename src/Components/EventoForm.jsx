@@ -7,6 +7,7 @@ import { Button, Card, Form, Image, Modal, ToggleButtonGroup, ToggleButton } fro
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { PiEnvelopeSimpleOpenThin, PiEyeClosedFill } from 'react-icons/pi';
 import { API_URL } from '../App';
+import { RegContext } from '../Context/RegProvider';
 
 
 function EventoForm() {
@@ -29,7 +30,7 @@ function EventoForm() {
 
   });
   const [validated, setValidated] = useState(false);
-  const { deportes } = useContext(AppContext);
+  const { deportes } = useContext(RegContext);
   const [ageDisabled, setAgeDisabled] = useState(false);
   const [show, setShow] = useState(false);
   const [modalHeader, setModalHeader] = useState("");

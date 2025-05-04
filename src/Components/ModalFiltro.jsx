@@ -8,6 +8,7 @@ import { styled } from '@mui/material/styles';
 import { AppContext } from '../Context/AppProvider';
 import { useNavigate } from 'react-router-dom';
 import SpinnerWave from './SpinnerWave';
+import { RegContext } from '../Context/RegProvider';
 
 
 function ModalFiltro({
@@ -22,7 +23,7 @@ function ModalFiltro({
 
 }) {
 
-    const { deportes,
+    const {
         usuarioLogueado,
         setTipoUsuarios,
         formData,
@@ -34,6 +35,8 @@ function ModalFiltro({
         setTipoEventos,
         aplicarFiltros
     } = useContext(AppContext)
+
+    const { deportes } = useContext(RegContext);
 
     const navigate = useNavigate();
 
@@ -91,7 +94,7 @@ function ModalFiltro({
             setCargando(false);
             onHide();
             navigate(`/resultadosEventos/${usuarioLogueado.id}`)
-        } 
+        }
     }
 
     if (cargando) {
