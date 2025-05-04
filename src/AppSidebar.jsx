@@ -95,7 +95,7 @@ function AppSidebar() {
                   <span style={{
                     position: "absolute",
                     top: "-5px",
-                    right: "-5px",
+                    right: "5px",
                     backgroundColor: "#C8936Eff",
                     color: "white",
                     borderRadius: "50%",
@@ -144,8 +144,8 @@ function AppSidebar() {
             {amistades.total_pendientes > 0 && (
               <span style={{
                 position: "absolute",
-                top: "-5px",
-                right: "-5px",
+                top: "2px",
+                right: "0px",
                 backgroundColor: "#C8936Eff",
                 color: "white",
                 borderRadius: "50%",

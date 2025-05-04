@@ -7,12 +7,6 @@ const libraries = ['places'];
 function BuscadorLocalidad({ formData, setFormData, handleFormChange }) {
   const autocompleteRef = useRef(null);
 
-  /* const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: GOOGLE_API_KEY,
-    libraries,
-    language: 'es'
-  }); */
-
   const handleLocalidad = () => {
     const localidad = autocompleteRef.current.getPlace();
     if (localidad && localidad.geometry) {

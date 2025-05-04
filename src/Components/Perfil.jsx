@@ -16,14 +16,19 @@ function Perfil() {
   const { usuarioLogueado, logout, setIdPerfil, wildie, setWildie } = useContext(AppContext);
   const [modalMensaje, setModalMensaje] = useState("");
   const [modalTipo, setModalTipo] = useState("");
-  
   const [cargando, setCargando] = useState(true);
+
+  const esMiPerfil = usuarioLogueado?.id == id;
 
   useEffect(() => {
     setIdPerfil(id);
     console.log("id", id)
     console.log("idLogueado", usuarioLogueado.id)
   }, [id]);
+
+  useEffect(()=>{
+    console.log("UsuarioLogueado en perfil: ", usuarioLogueado.id)
+  }, [])
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -36,7 +41,7 @@ function Perfil() {
     //}
   }, [])
 
-  const esMiPerfil = usuarioLogueado?.id == id;
+
 
   async function eliminarPerfil() {
     setShow(false);

@@ -22,7 +22,6 @@ import ProximosEventos from './Components/ProximosEventos';
 import AppSidebar from './AppSidebar';
 import AppNavbar from './AppNavbar';
 import MisWildies from './Components/MisWildies';
-import Portada from './Components/Portada';
 import { useEffect, useState } from 'react';
 
 
@@ -48,24 +47,22 @@ function App() {
   });
 
   return (
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        {
-          !hayToken
-            ? (<Routes>
-              <Route path="/" element={<Navigate to="/inicioSesion" />} />
-              <Route path='/inicioSesion' element={<Portada />} />
-            </Routes>
-            )
-            : (
-              <AppProvider>
-                <LoadScript
-                  googleMapsApiKey={GOOGLE_API_KEY}
-                  language="es"
-                  libraries={["places"]}
-                >
-
-
+    <LoadScript
+      googleMapsApiKey={GOOGLE_API_KEY}
+      language="es"
+      libraries={["places"]}
+    >
+      <BrowserRouter>
+        <ThemeProvider theme={theme}>
+         {/*  {
+            !hayToken
+              ? (<Routes>
+                <Route path="/" element={<Navigate to="/inicioSesion" />} />
+                <Route path='/inicioSesion' element={<InicioSesion />} />
+              </Routes>
+              )
+              : ( */}
+                <AppProvider>
                   <div className="background-image"></div>
                   <div className='d-flex'>
                     <AppSidebar />
@@ -89,17 +86,12 @@ function App() {
                       <Footer />
                     </div>
                   </div>
-
-
-
-                </LoadScript>
-              </AppProvider>
-            )
-        }
-
-
-      </ThemeProvider>
-    </BrowserRouter>
+                </AppProvider>
+           {/*    )
+          } */}
+        </ThemeProvider>
+      </BrowserRouter>
+    </LoadScript>
 
   )
 }

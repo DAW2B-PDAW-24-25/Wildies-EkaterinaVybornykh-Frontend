@@ -207,7 +207,12 @@ function EventoForm() {
       <div className='row p-4 rounded shadow d-flex ms-3 me-3 mt-4 w-sm-75 mb-5 bg-light'>
         <div className='d-flex justify-content-between align-items-center'>
           <div>
-            <h3 className='title'>Crea aventura</h3>
+            {
+              id
+                ? <h3 className='title'>Edita aventura</h3>
+                : <h3 className='title'>Crea aventura</h3>
+            }
+
           </div>
           <div className='col-sm-2 mt-2 mb-3'>
             <Button variant="secondary" className="shadow" onClick={() => navigate(-1)}>Volver</Button>
@@ -228,7 +233,10 @@ function EventoForm() {
                       ? URL.createObjectURL(formData.foto_portada)
                       : formData.foto_portada}
                       className='rounded'
-                      style={{ maxHeight: "100%", objectFit: "cover" }}
+                      style={{ 
+                        width: '100%',
+                        height: '100%', 
+                        objectFit: "cover" }}
                     />
                     :
                     <div className='text-center'>
