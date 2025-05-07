@@ -2,9 +2,11 @@ import React, { useContext } from 'react'
 import { Card, Image } from 'react-bootstrap'
 import { AppContext } from '../Context/AppProvider'
 import { useNavigate } from 'react-router-dom';
+import { RegContext } from '../Context/RegProvider';
 
 function MisWildies() {
-    const { amistades, usuarioLogueado } = useContext(AppContext);
+    const { amistades } = useContext(AppContext);
+    const {usuarioLogueado}=useContext(RegContext);
     const navigate = useNavigate();
     const hayPendientes = () => {
         for (let amistad of amistades.data) {

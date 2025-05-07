@@ -31,12 +31,6 @@ function App() {
   const libraries = ["places"];
   const [hayToken, setHayToken] = useState(false);
 
-  useEffect(() => {
-    if (localStorage.getItem("tokenWildies")) {
-      setHayToken(true);
-    }
-  }, [])
-
   const theme = createTheme({
     typography: {
       fontFamily: '$font-text',
@@ -56,12 +50,12 @@ function App() {
     >
       <BrowserRouter>
         <ThemeProvider theme={theme}>
-          <RegProvider>
+          <RegProvider  setHayToken={setHayToken}>
             {
               !hayToken
                 ? (<Routes>
                   <Route path="/" element={<Navigate to="/inicioSesion" />} />
-                  <Route path='/inicioSesion' element={<InicioSesion />} />
+                  <Route path='/inicioSesion' element={<InicioSesion/>} />
                 </Routes>
                 )
                 : (

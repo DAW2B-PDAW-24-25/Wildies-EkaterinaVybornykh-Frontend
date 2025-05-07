@@ -9,10 +9,10 @@ import { PiEnvelopeSimpleOpenThin, PiEyeClosedFill } from 'react-icons/pi';
 import { API_URL } from '../App';
 import { RegContext } from '../Context/RegProvider';
 
-
 function EventoForm() {
   const { id } = useParams();
-  const { usuarioLogueado, setEvento, evento } = useContext(AppContext);
+  const { setEvento, evento } = useContext(AppContext);
+  const { usuarioLogueado } = useContext(RegContext);
   const [formData, setFormData] = useState({
     deporte_id: "",
     nombre: "",

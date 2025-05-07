@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useContext, useState } from 'react';
-import { AppContext } from '../Context/AppProvider';
+import { RegContext } from '../Context/RegProvider';
 import { Button } from 'react-bootstrap';
 import ModalDeportes from './ModalDeportes';
 import { API_URL } from '../App';
@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom';
 import DeportesWildie from './DeportesWildie';
 
 function DeportesUsuario() {
-    const { usuarioLogueado, setUsuarioLogueado } = useContext(AppContext);
+    const { usuarioLogueado, setUsuarioLogueado } = useContext(RegContext);
     const [modalShow, setModalShow] = useState(false);
     const [modalTipo, setModalTipo] = useState("");
     const [modalHeader, setModalHeader] = useState("");

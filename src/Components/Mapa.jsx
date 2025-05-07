@@ -2,13 +2,13 @@ import { React, useContext, useEffect, useMemo } from "react";
 import { GoogleMap, InfoWindow, Marker } from "@react-google-maps/api";
 import { GOOGLE_API_KEY } from "../App";
 import { useState, useRef } from "react";
-import { AppContext } from "../Context/AppProvider";
+import { RegContext } from "../Context/RegProvider";
 import { API_URL } from "../App";
 import SpinnerWave from "./SpinnerWave";
 import { useNavigate } from "react-router-dom";
 
 function Mapa() {
-    const { usuarioLogueado } = useContext(AppContext);
+    const { usuarioLogueado } = useContext(RegContext);
     const [cargando, setCargando] = useState(true);
     const [hovered, setHovered] = useState(null);
     const [eventosUsuario, setEventosUsuario] = useState({});

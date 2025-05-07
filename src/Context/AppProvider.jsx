@@ -1,18 +1,18 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { createContext } from 'react'
 import { useState } from 'react';
 import { CgSmartHomeBoiler } from 'react-icons/cg';
 export const AppContext = createContext();
 import { API_URL } from '../App';
 import { useNavigate } from 'react-router-dom';
+import { RegContext } from './RegProvider';
 
 
 
 function AppProvider({ children }) {
-    const [usuarioLogueado, setUsuarioLogueado] = useState("");
-    const [idUsuarioLogueado, setIdUsuarioLogueado] = useState(() => JSON.parse(localStorage.getItem('idUsuario')));
+    const {usuarioLogueado, token}=useContext(RegContext);
     const [idPerfil, setIdPerfil] = useState("");
-    const [token, setToken] = useState(() => localStorage.getItem('token'));
+
     const [wildies, setWildies] = useState([]);     //otros usuarios
     const [wildie, setWildie] = useState([]);
     const [eventos, setEventos] = useState([]);
@@ -26,30 +26,7 @@ function AppProvider({ children }) {
     const [accionEvento, setAccionEvento] = useState("");
     const [amistades, setAmistades] = useState({});
 
-    function login(datosUsuario, token) {
-        setIdUsuarioLogueado(datosUsuario.id);
-        setUsuarioLogueado(datosUsuario);
-        setToken(token);
-        localStorage.setItem('idUsuario', datosUsuario.id);
-        localStorage.setItem('token', token);
-    };
-
-    function logout() {
-        setIdUsuarioLogueado("");
-        setUsuarioLogueado("");
-        setToken("");
-        localStorage.removeItem('idUsuario');
-        localStorage.removeItem('token');
-        navigate("/inicioSesion");
-    }
-
-    useEffect(() => {
-        cargarUsuarioLogueado();
-    }, []);
-
-    useEffect(() => {
-        console.log(usuarioLogueado)
-    }, [usuarioLogueado])
+    
 
   
 
@@ -84,20 +61,7 @@ function AppProvider({ children }) {
         }
     }
 
-    async function cargarUsuarioLogueado() {             // TODO pasar al formulario de login
-        try {
-            let response = await fetch(`${API_URL}/usuarios/1`);
-            if (!response.ok) {
-                throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
-            }
-            let data = await response.json();
-            let usuario = await data.data;
-            login(usuario, "123");
-        }
-        catch (error) {
-            console.error("Error usuarios:", error);
-        }
-    }
+    
 
     async function cargarUsuariosInicio() {
         try {
@@ -116,7 +80,7 @@ function AppProvider({ children }) {
     }
     async function cargarEventosInicio() {
         try {
-            let response = await fetch(`${API_URL}/eventos/eventosCercaConLimite/1`);     //todo cambiar 1 por usuarioLogeado.id
+            let response = await fetch(`${API_URL}/eventos/eventosCercaConLimite/${usuarioLogueado.id}`);   
 
             if (!response.ok) {
                 throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
@@ -130,24 +94,10 @@ function AppProvider({ children }) {
         }
     }
 
-    async function cargarUsuario() {
-        try {
-            let respuesta = await fetch(`${API_URL}/usuarios/${idUsuarioLogueado}`);
-            if (!respuesta.ok) {
-                console.log("Error al cargar usuario registrado");
-            } else {
-                let data = await respuesta.json();
-                setUsuarioLogueado(data.data);
-            }
-        } catch (error) {
-            console.error("Error usuarios:", error);
-        }
-    }
-
     async function cargarUsuariosCerca() {
 
         try {
-            let response = await fetch(`${API_URL}/usuarios/usuariosCerca/1`);        //todo cambiar 1 por usuarioLogeado.id
+            let response = await fetch(`${API_URL}/usuarios/usuariosCerca/${usuarioLogueado.id}`);       
 
             if (!response.ok) {
                 throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
@@ -222,11 +172,6 @@ function AppProvider({ children }) {
 
     return (
         <AppContext.Provider value={{
-            usuarioLogueado,
-            setUsuarioLogueado,
-            login,
-            token,
-            logout,
             cargarUsuariosInicio,
             cargarEventosInicio,
             cargarUsuariosCerca,

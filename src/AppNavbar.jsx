@@ -1,11 +1,11 @@
 import React, { useContext, useEffect } from 'react'
 import { Container, Dropdown, Image } from 'react-bootstrap';
 import Navbar from 'react-bootstrap/Navbar';
-import { AppContext } from './Context/AppProvider';
+import { RegContext } from './Context/RegProvider';
 import { useNavigate } from 'react-router-dom';
 
 function AppNavbar() {
-    const { usuarioLogueado } = useContext(AppContext);
+    const { usuarioLogueado, logout } = useContext(RegContext);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -39,7 +39,7 @@ function AppNavbar() {
 
                         <Dropdown.Menu className='m-0 border-0 shadow opacity-75'>
                             <Dropdown.Item className='texto' onClick={() => navigate(`/perfil/${usuarioLogueado.id}`)}>Perfil</Dropdown.Item>
-                            <Dropdown.Item href="#/action-2" className='texto'>Cerrar sesión</Dropdown.Item>
+                            <Dropdown.Item href="#/action-2" className='texto' onClick={logout}>Cerrar sesión</Dropdown.Item>
 
                         </Dropdown.Menu>
                     </Dropdown>

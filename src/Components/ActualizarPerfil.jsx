@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Button, Card, Form, Image, Modal } from 'react-bootstrap';
-import { AppContext } from '../Context/AppProvider';
+import { RegContext } from '../Context/RegProvider';
 import { API_URL } from '../App';
 import BuscadorLocalidad from './BuscadorLocalidad';
 import { Link, useNavigate } from 'react-router-dom';
@@ -9,7 +9,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 function ActualizarPerfil() {
 
-    const { usuarioLogueado, setUsuarioLogueado } = useContext(AppContext);
+    const { usuarioLogueado, setUsuarioLogueado } = useContext(RegContext);
     const [fotoPerfil, setFotoPerfil] = useState(null);
     const [validated, setValidated] = useState(false);
     const navigate = useNavigate();

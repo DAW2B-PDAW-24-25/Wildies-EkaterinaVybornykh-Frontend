@@ -4,9 +4,11 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { AppContext } from '../Context/AppProvider';
 import SpinnerWave from './SpinnerWave';
 import { Button, Image, Modal } from 'react-bootstrap';
+import { RegContext } from '../Context/RegProvider';
 
 function DetalleEvento() {
-    const { setEvento, evento, usuarioLogueado } = useContext(AppContext);
+    const { setEvento, evento } = useContext(AppContext);
+    const { usuarioLogueado } = useContext(RegContext);
     const [cargando, setCargando] = useState(true);
     const { id } = useParams();
     const [eventoPasado, setEventoPasado] = useState(false);
@@ -174,9 +176,9 @@ function DetalleEvento() {
                     {evento.participantes.map((participante, index) => {
                         return <Link key={index} to={`/perfil/${participante.id}`} className='text-decoration-none'>
                             <div className='d-flex mb-3'>
-                            
-                                         <Image src={participante.foto_perfil} alt="foto de perfil" className='avatar_small me-2' />
-                                       
+
+                                <Image src={participante.foto_perfil} alt="foto de perfil" className='avatar_small me-2' />
+
                                 <div className='d-flex bg-seccion align-items-center justify-content-center rounded-pill shadow ps-4 pe-4 pt-0 pb-0'>
                                     <p className='m-0'>{participante.nombre} {participante.apellidos}
                                         {evento.creador_id === participante.id && " (creador/a)"}</p>

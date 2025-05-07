@@ -10,10 +10,12 @@ import { API_URL } from '../App';
 import SpinnerWave from './SpinnerWave';
 import PerfilWildie from './PerfilWildie';
 import PerfilLogueado from './PerfilLogueado';
+import { RegContext } from '../Context/RegProvider';
 
 function Perfil() {
   const { id } = useParams();
-  const { usuarioLogueado, logout, setIdPerfil, wildie, setWildie } = useContext(AppContext);
+  const { logout, setIdPerfil, wildie, setWildie } = useContext(AppContext);
+  const {usuarioLogueado}=useContext(RegContext);
   const [modalMensaje, setModalMensaje] = useState("");
   const [modalTipo, setModalTipo] = useState("");
   const [cargando, setCargando] = useState(true);

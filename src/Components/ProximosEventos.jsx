@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Card } from 'react-bootstrap'
 import SpinnerWave from './SpinnerWave';
-import { AppContext } from '../Context/AppProvider';
+import { RegContext } from '../Context/RegProvider';
 import { API_URL } from '../App';
 import { Link } from 'react-router-dom';
 
 function ProximosEventos() {
-    const { usuarioLogueado } = useContext(AppContext);
+    const { usuarioLogueado } = useContext(RegContext);
     const [cargando, setCargando] = useState(true);
     const [proximosEventos, setProximosEventos] = useState([]);
 

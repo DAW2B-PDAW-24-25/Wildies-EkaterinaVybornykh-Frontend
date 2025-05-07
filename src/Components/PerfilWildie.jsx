@@ -7,10 +7,12 @@ import { LuLanguages } from "react-icons/lu";
 import { Image } from "react-bootstrap"
 import { AppContext } from '../Context/AppProvider';
 import { API_URL } from '../App';
+import { RegContext } from '../Context/RegProvider';
 
 function PerfilWildie({ usuario }) {
 
-    const { amistades, setAmistades, usuarioLogueado } = useContext(AppContext);
+    const { amistades, setAmistades } = useContext(AppContext);
+    const {usuarioLogueado}=useContext(RegContext);
     const { id } = useParams();
     const navigate = useNavigate();
 

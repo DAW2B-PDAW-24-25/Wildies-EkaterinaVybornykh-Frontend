@@ -17,12 +17,12 @@ import logo from '/images/logo4.png';
 import logo_small from '/images/logo_small.png';
 import ModalFiltro from './Components/ModalFiltro';
 import { API_URL } from './App';
+import { RegContext } from './Context/RegProvider';
 
 
 function AppSidebar() {
 
   const { deportes,
-    usuarioLogueado,
     setUsuarios,
     setEventos,
     usuarios,
@@ -34,6 +34,8 @@ function AppSidebar() {
     amistades
 
   } = useContext(AppContext);
+
+  const { usuarioLogueado } = useContext(RegContext);
   const [show, setShow] = useState(false);
   const [tipoModal, setTipoModal] = useState("");
   const [modalHeader, setModalHeader] = useState("");
@@ -90,7 +92,7 @@ function AppSidebar() {
             </Button>
             <Enlace as={Link} to={`/misWildies/${usuarioLogueado.id}`} className="d-flex align-items-center pb-4 mb-3 mb-lg-0">
               <div className="position-relative d-flex align-items-center">
-                <PiUsersBold style={{ fontSize: "25px", marginRight: "15px"  }} />
+                <PiUsersBold style={{ fontSize: "25px", marginRight: "15px" }} />
                 {amistades.total_pendientes > 0 && (
                   <span style={{
                     position: "absolute",

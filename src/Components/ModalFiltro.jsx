@@ -24,7 +24,6 @@ function ModalFiltro({
 }) {
 
     const {
-        usuarioLogueado,
         setTipoUsuarios,
         formData,
         setFormData,
@@ -35,6 +34,8 @@ function ModalFiltro({
         setTipoEventos,
         aplicarFiltros
     } = useContext(AppContext)
+
+    const {usuarioLogueado}=useContext(RegContext);
 
     const { deportes } = useContext(RegContext);
 

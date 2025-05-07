@@ -9,10 +9,12 @@ import { BiLogIn } from 'react-icons/bi';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import SpinnerWave from './SpinnerWave.jsx';
+import { RegContext } from '../Context/RegProvider';
 
 function Inicio() {
 
-    const { usuarioLogueado, eventos, setTipoUsuarios, setTipoEventos, cargarEventosCerca, cargarUsuariosCerca, wildies } = useContext(AppContext);
+    const { eventos, setTipoUsuarios, setTipoEventos, cargarEventosCerca, cargarUsuariosCerca, wildies } = useContext(AppContext);
+    const { usuarioLogueado } = useContext(RegContext);
     let navigate = useNavigate();
     const [cargando, setCargando] = useState(false);
 
