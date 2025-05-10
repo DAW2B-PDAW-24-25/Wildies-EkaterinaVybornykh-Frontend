@@ -9,7 +9,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 function ActualizarPerfil() {
 
-    const { usuarioLogueado, setUsuarioLogueado } = useContext(RegContext);
+    const { usuarioLogueado, setUsuarioLogueado, token } = useContext(RegContext);
     const [fotoPerfil, setFotoPerfil] = useState(null);
     const [validated, setValidated] = useState(false);
     const navigate = useNavigate();
@@ -94,6 +94,7 @@ function ActualizarPerfil() {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify(datos),
             });
@@ -140,6 +141,9 @@ function ActualizarPerfil() {
         try {
             const response = await fetch(`${API_URL}/usuarios/foto/${usuarioLogueado.id}`, {
                 method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
                 body: formData,
             });
 
@@ -178,7 +182,7 @@ function ActualizarPerfil() {
 
                                     : <Image src={formData.foto_perfil}
                                         className='avatar_big mb-3 ' />
-                                
+
                                 }
                                 <Button variant="link" className='text-decoration-none boton-link' onClick={handleShow}>Cambiar foto</Button>
 

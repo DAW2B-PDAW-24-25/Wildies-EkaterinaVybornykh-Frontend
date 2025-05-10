@@ -12,7 +12,7 @@ import { RegContext } from '../Context/RegProvider';
 function EventoForm() {
   const { id } = useParams();
   const { setEvento, evento } = useContext(AppContext);
-  const { usuarioLogueado } = useContext(RegContext);
+  const { usuarioLogueado, token } = useContext(RegContext);
   const [formData, setFormData] = useState({
     deporte_id: "",
     nombre: "",
@@ -148,17 +148,24 @@ function EventoForm() {
       if (id) {
         respuesta = await fetch(`${API_URL}/eventos/${id}/${usuarioLogueado.id}`, {
           method: 'POST',
+          headers: {
+            "Authorization": `Bearer ${token}`
+          },
           body: datos
         });
       } else {
         respuesta = await fetch(`${API_URL}/crearEvento/${usuarioLogueado.id}`, {
           method: 'POST',
+          headers: {
+            "Authorization": `Bearer ${token}`
+          },
           body: datos
         });
       }
 
       if (!respuesta.ok) {
-        console.log('Error al enviar los datos');
+        let data = await respuesta.json();
+        console.log(data.message);
       } else {
         let data = await respuesta.json();
         console.log('Respuesta de la API:', data);
@@ -234,10 +241,11 @@ function EventoForm() {
                       ? URL.createObjectURL(formData.foto_portada)
                       : formData.foto_portada}
                       className='rounded'
-                      style={{ 
+                      style={{
                         width: '100%',
-                        height: '100%', 
-                        objectFit: "cover" }}
+                        height: '100%',
+                        objectFit: "cover"
+                      }}
                     />
                     :
                     <div className='text-center'>

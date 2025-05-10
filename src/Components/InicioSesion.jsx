@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Button, Form, Image, Modal, ToggleButton, ToggleButtonGroup } from 'react-bootstrap'
 import logo from '/images/logo4.png'
 import BuscadorLocalidad from './BuscadorLocalidad';
@@ -7,7 +7,7 @@ import { API_URL } from '../App';
 import { useNavigate } from 'react-router-dom';
 
 function InicioSesion() {
-    const { deportes, login } = useContext(RegContext);
+    const { deportes, login, token } = useContext(RegContext);
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState("");
     const [tipoModal, setTipoModal] = useState("");
@@ -29,11 +29,31 @@ function InicioSesion() {
     });
     const [header, setHeader] = useState("");
     const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
+    function handleClose() {
+        setErrorMessage("");
+        setShow(false);
+    }
     const handleShow = () => setShow(true);
     const [validated, setValidated] = useState(false);
 
+    useEffect(() => {
+        setFormData({
+            nombre: "",
+            apellidos: "",
+            email: "",
+            fecha_nacimiento: "",
+            sexo: "",
+            longitud_domicilio: "",
+            latitud_domicilio: "",
+            localidad: "",
+            descripcion: "",
+            por_que: "",
+            password: "",
+            // passwordConfirmation: "",
+            deportes: []
 
+        })
+    }, [])
 
     function handleFormChange(e) {
         setFormData({
@@ -55,7 +75,7 @@ function InicioSesion() {
 
     async function handleRegister(e) {
         e.preventDefault();
-        const form = e.currentTarget.form;
+        const form = e.currentTarget;
         if (!formData.fecha_nacimiento || calcularEdad(formData.fecha_nacimiento) < 18) {
             e.preventDefault();
             e.stopPropagation();
@@ -63,7 +83,7 @@ function InicioSesion() {
             return;
         }
         if (form.checkValidity() === false) {
-            e.preventDefault();
+            console.log("No he pasado validación")
             e.stopPropagation();
             setValidated(true);
             return;
@@ -82,12 +102,13 @@ function InicioSesion() {
             por_que: formData.por_que,
             deportes: formData.deportes
         };
-        
+
         try {
             let respuesta = await fetch(`${API_URL}/usuarios`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify(datos),
             });
@@ -119,8 +140,41 @@ function InicioSesion() {
         handleShow();
     }
 
-    function handleLogin() {
+    async function handleLogin(e) {
+        e.preventDefault();
+        const form = e.currentTarget;
+        if (form.checkValidity() === false) {
+            console.log("No he pasado validación")
+            e.stopPropagation();
+            setValidated(true);
+            return;
+        }
+        let datos = {
+            email: formData.email,
+            password: formData.password
+        }
 
+        try {
+            const response = await fetch(`${API_URL}/login`, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(datos)
+            })
+            if (!response.ok) {
+                let error = await response.json();
+                setErrorMessage(error.message)
+            } else {
+                setErrorMessage('');
+                let data = await response.json();
+                console.log('Respuesta de la API:', data);
+                login(data.usuario, data.token)
+            }
+        } catch (error) {
+            console.error("Error: ", error)
+        }
     }
 
     return (
@@ -157,7 +211,7 @@ function InicioSesion() {
                 <Modal.Body className='modal-body'>
                     {
                         tipoModal === "reg"
-                            ? <Form onSubmit={handleRegister}>
+                            ? <Form noValidate validated={validated} onSubmit={handleRegister}>
                                 <Form.Group controlId="nombre" className='mb-2'>
                                     <Form.Label>Nombre</Form.Label>
                                     <Form.Control
@@ -201,7 +255,7 @@ function InicioSesion() {
                                         isInvalid={validated && !formData.email}
                                     />
                                     <Form.Control.Feedback type="invalid">
-                                        Email es obligatorio
+                                        {formData.email ? 'Email incorrecto' : 'Este campo no puede estar vacío'}
                                     </Form.Control.Feedback>
                                 </Form.Group>
                                 <Form.Group controlId="password" className='mb-2'>
@@ -309,15 +363,15 @@ function InicioSesion() {
                                 }
 
                                 <div className='d-flex justify-content-end'>
-                                    <Button variant="secondary" type='submit' className='mt-4 me-3' onClick={handleRegister}>
+                                    <Button variant="secondary" type='submit' className='mt-4 me-3'>
                                         Aceptar
                                     </Button>
-                                    <Button variant="secondary" type='submit' className='mt-4' onClick={handleClose}>
+                                    <Button variant="secondary" className='mt-4' onClick={handleClose}>
                                         Cancelar
                                     </Button>
                                 </div>
                             </Form>
-                            : <Form onSubmit={handleLogin}>
+                            : <Form noValidate validated={validated} onSubmit={handleLogin}>
                                 <Form.Group controlId="email" className='mb-2'>
                                     <Form.Label>Email</Form.Label>
                                     <Form.Control
@@ -330,7 +384,7 @@ function InicioSesion() {
                                         isInvalid={validated && !formData.email}
                                     />
                                     <Form.Control.Feedback type="invalid">
-                                        Email es obligatorio
+                                        {formData.email ? 'Email incorrecto' : 'Este campo no puede estar vacío'}
                                     </Form.Control.Feedback>
                                 </Form.Group>
                                 <Form.Group controlId="password" className='mb-2'>
@@ -357,13 +411,12 @@ function InicioSesion() {
                                     <Button variant="secondary" type='submit' className='mt-4 me-3'>
                                         Aceptar
                                     </Button>
-                                    <Button variant="secondary" type='submit' className='mt-4' onClick={handleClose}>
+                                    <Button variant="secondary" className='mt-4' onClick={handleClose}>
                                         Cancelar
                                     </Button>
                                 </div>
                             </Form>
                     }
-
                 </Modal.Body>
             </Modal>
         </div>

@@ -33,8 +33,8 @@ function EventosInicio() {
             <h3 className='pb-3'>Eventos cerca</h3>
             <hr></hr>
             <div className='row pt-3'>
-                {eventos.map((evento) => {
-                    return <Link to={`/detalleEvento/${evento.id}`} className='col-md-3 mb-3 me-5 text-decoration-none'><Card key={evento.id} className='rounded-0 p-0 border-0 bg-transparent'>
+                {eventos.map((evento, index) => {
+                    return <Link key={index} to={`/detalleEvento/${evento.id}`} className='col-md-3 mb-3 me-5 text-decoration-none'><Card key={evento.id} className='rounded-0 p-0 border-0 bg-transparent'>
                         <Card.Img variant="top" src={evento.foto_portada} className="img-fluid w-100 rounded-0" />
                         <Card.Body>
                             <div>

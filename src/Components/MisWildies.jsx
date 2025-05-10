@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Card, Image } from 'react-bootstrap'
 import { AppContext } from '../Context/AppProvider'
 import { useNavigate } from 'react-router-dom';
@@ -6,24 +6,33 @@ import { RegContext } from '../Context/RegProvider';
 
 function MisWildies() {
     const { amistades } = useContext(AppContext);
-    const {usuarioLogueado}=useContext(RegContext);
+    const { usuarioLogueado } = useContext(RegContext);
     const navigate = useNavigate();
     const hayPendientes = () => {
-        for (let amistad of amistades.data) {
-            if (amistad.estado == "pendiente" && amistad.solicitante_id == amistad.amigo_id) {
-                return true;
+        if (amistades.length > 0) {
+            for (let amistad of amistades.data) {
+                if (amistad.estado == "pendiente" && amistad.solicitante_id == amistad.amigo_id) {
+                    return true;
+                }
             }
+            return false;
         }
-        return false;
     }
     const hayAmigos = () => {
-        for (let amistad of amistades.data) {
-            if (amistad.estado == "aceptado") {
-                return true;
+        if (amistades.length > 0) {
+            for (let amistad of amistades?.data) {
+                if (amistad.estado == "aceptado") {
+                    return true;
+                }
             }
+            return false;
         }
-        return false;
+
     }
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     function handlePerfil(id) {
         navigate(`/perfil/${id}`)
@@ -63,7 +72,7 @@ function MisWildies() {
                     </Card>
                 </div>
             )}
-           
+
             {hayAmigos() && (
                 <div className='row p-3 rounded shadow d-flex ms-3 me-3 mt-4 mb-5 bg-seccion w-sm-75'>
                     <Card className='rounded-0 p-0 border-0 bg-transparent'>
@@ -96,6 +105,13 @@ function MisWildies() {
                     </Card>
                 </div>
             )}
+
+            {
+                (!hayAmigos() && !hayPendientes()) && (
+                    <div className='m-5 text-center'>
+                        <h1 className='title'>Todavía no tienes wildies</h1>
+                    </div>
+                )}
 
         </div>
 

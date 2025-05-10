@@ -8,7 +8,7 @@ import { RegContext } from '../Context/RegProvider';
 
 function DetalleEvento() {
     const { setEvento, evento } = useContext(AppContext);
-    const { usuarioLogueado } = useContext(RegContext);
+    const { usuarioLogueado, token } = useContext(RegContext);
     const [cargando, setCargando] = useState(true);
     const { id } = useParams();
     const [eventoPasado, setEventoPasado] = useState(false);
@@ -43,7 +43,12 @@ function DetalleEvento() {
 
     async function cargarEvento() {
         setCargando(true);
-        const response = await fetch(`${API_URL}/eventos/${id}`);
+        const response = await fetch(`${API_URL}/eventos/${id}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
         if (!response.ok) {
             throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
         }
@@ -57,7 +62,7 @@ function DetalleEvento() {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                //"Authorization": `Bearer ${token}`         //todo ACTIVAR TOKEN
+                "Authorization": `Bearer ${token}`         
             }
         })
         if (!response.ok) {
@@ -76,7 +81,7 @@ function DetalleEvento() {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
-                //"Authorization": `Bearer ${token}`         //todo ACTIVAR TOKEN
+                "Authorization": `Bearer ${token}`         
             }
         })
         if (!response.ok) {
@@ -99,7 +104,7 @@ function DetalleEvento() {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
-                //"Authorization": `Bearer ${token}`         //todo ACTIVAR TOKEN
+                "Authorization": `Bearer ${token}`         
             }
         });
         if (!response.ok) {

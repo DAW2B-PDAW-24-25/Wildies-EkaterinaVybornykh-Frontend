@@ -7,6 +7,7 @@ import { LiaUserFriendsSolid } from "react-icons/lia";
 import { FaRegCalendar } from "react-icons/fa6";
 import { FaRegSquarePlus } from "react-icons/fa6";
 import { FiMapPin } from "react-icons/fi";
+import { GiAlliedStar } from "react-icons/gi";
 import { MdLogout } from "react-icons/md";
 import { CgBorderBottom, CgProfile } from "react-icons/cg";
 import UsuariosInicio from './Components/EventosInicio';
@@ -115,14 +116,24 @@ function AppSidebar() {
               <FaRegCalendar style={{ fontSize: "25px", marginRight: "15px" }} />
               <p className="d-none d-lg-inline m-0">Mis próximas aventuras</p>
             </Button>
-            <Button variant="link" className="boton-link d-flex align-items-center pb-4 mb-3 mb-lg-0" onClick={handleCrear}>
-              <FaRegSquarePlus style={{ fontSize: "25px", marginRight: "15px" }} />
-              <p className="d-none d-lg-inline m-0">Crear aventura</p>
-            </Button>
-            <Button variant="link" className="boton-link d-flex align-items-center pb-4" onClick={() => navigate(`/mapa/${usuarioLogueado.id}`)}>
-              <FiMapPin style={{ fontSize: "25px", marginRight: "15px" }} />
-              <p className="d-none d-lg-inline m-0">Mapa</p>
-            </Button>
+            {
+              (usuarioLogueado?.roles && usuarioLogueado.roles.includes('premium'))
+                ? <>
+                  <Button variant="link" className="boton-link d-flex align-items-center pb-4 mb-3 mb-lg-0" onClick={handleCrear}>
+                    <FaRegSquarePlus style={{ fontSize: "25px", marginRight: "15px" }} />
+                    <p className="d-none d-lg-inline m-0">Crear aventura</p>
+                  </Button>
+                  <Button variant="link" className="boton-link d-flex align-items-center pb-4" onClick={() => navigate(`/mapa/${usuarioLogueado.id}`)}>
+                    <FiMapPin style={{ fontSize: "25px", marginRight: "15px" }} />
+                    <p className="d-none d-lg-inline m-0">Mapa</p>
+                  </Button>
+                </>
+                : <Button variant="link" className="boton-link d-flex align-items-center pb-4" onClick={() => navigate(`/premium/${usuarioLogueado.id}`)}>
+                  <GiAlliedStar style={{ fontSize: "28px", marginRight: "15px" }} />
+                  <p className="d-none d-lg-inline m-0">Premium</p>
+                </Button>
+            }
+
           </div>
         </Nav>
 
@@ -164,11 +175,28 @@ function AppSidebar() {
               <FaRegCalendar style={{ fontSize: "25px" }} />
             </Enlace>
           </div>
-          <div className="d-flex justify-content-center align-items-center">
-            <Enlace as={Link} to={`/mapa/${usuarioLogueado.id}`}>
-              <FiMapPin style={{ fontSize: "25px" }} />
-            </Enlace>
-          </div>
+
+          {
+            (usuarioLogueado?.roles && usuarioLogueado.roles.includes('premium'))
+              ? <>
+                <div className="d-flex justify-content-center align-items-center">
+                  <Enlace as={Link} to={`/mapa/${usuarioLogueado.id}`}>
+                    <FaRegSquarePlus style={{ fontSize: "25px" }} />
+                  </Enlace>
+                </div>
+                <div className="d-flex justify-content-center align-items-center">
+                  <Enlace as={Link} to={`/mapa/${usuarioLogueado.id}`}>
+                    <FiMapPin style={{ fontSize: "25px" }} />
+                  </Enlace>
+                </div>
+              </>
+              : <div className="d-flex justify-content-center align-items-center">
+                <Enlace as={Link} to={`/premium/${usuarioLogueado.id}`}>
+                  <GiAlliedStar style={{ fontSize: "28px" }} />
+                </Enlace>
+              </div>
+          }
+
         </Nav>
       </Navbar>
 

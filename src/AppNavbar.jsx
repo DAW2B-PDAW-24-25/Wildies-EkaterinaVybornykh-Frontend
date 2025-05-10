@@ -1,22 +1,61 @@
-import React, { useContext, useEffect } from 'react'
-import { Container, Dropdown, Image } from 'react-bootstrap';
+import React, { useContext, useEffect, useState } from 'react'
+import { Button, Container, Dropdown, Image, Modal } from 'react-bootstrap';
 import Navbar from 'react-bootstrap/Navbar';
 import { RegContext } from './Context/RegProvider';
 import { useNavigate } from 'react-router-dom';
+import { AppContext } from './Context/AppProvider';
 
 function AppNavbar() {
     const { usuarioLogueado, logout } = useContext(RegContext);
+    const { cancelarPremium } = useContext(AppContext);
+    const [show, setShow] = useState(false);
+    const [tipoModal, setTipoModal] = useState("");
+    const [modalMessage, setModalMessage] = useState("");
     const navigate = useNavigate();
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     useEffect(() => {
         console.log("Usuario en Navbar: ", usuarioLogueado.id)
     }, [usuarioLogueado])
+
+    function handlePremiumButton() {
+        setTipoModal("cancelar");
+        setModalMessage("¿Quieres cancelar tu suscripción?")
+        handleShow();
+    }
+
+    function handleCancelarPremium() {
+          setTipoModal("");
+        let cancelado = cancelarPremium();
+        if (cancelado) {
+            setModalMessage("Suscripción cancelada con éxito")
+        } else {
+            setModalMessage("Error al cancelar suscripción. Ponte en contacto con nuestro equipo")
+        }
+        handleShow();
+    }
+
     return (
+
         <Navbar>
             <Container className='me-5 ms-4 mt-2 mb-0 p-0'>
-                <Navbar.Brand href="#home"></Navbar.Brand>
-                <Navbar.Toggle />
-                <Navbar.Collapse className="justify-content-end">
+
+                {/*   <Navbar.Brand href="#home"></Navbar.Brand> */}
+                {/*  <Navbar.Toggle /> */}
+                <Navbar.Collapse
+                    className={usuarioLogueado && usuarioLogueado.roles.includes("premium")
+                        ? "justify-content-between"
+                        : "justify-content-end"}>
+                    {
+                        usuarioLogueado && usuarioLogueado.roles.includes("premium") &&
+
+                        <Button variant="outline-secondary" className="rounded-pill shadow ms-4" onClick={handlePremiumButton}>
+                            Premium
+                        </Button>
+
+                    }
 
                     <Dropdown>
                         <Dropdown.Toggle id="dropdown-basic" className="bg-transparent border-0 p-0 m-0 inline-flex">
@@ -46,6 +85,24 @@ function AppNavbar() {
 
                 </Navbar.Collapse>
             </Container>
+            <Modal show={show}>
+                <Modal.Header>
+                    <Modal.Title className="title">Premium</Modal.Title>
+                </Modal.Header>
+                <Modal.Body className='texto'>{modalMessage}</Modal.Body>
+                <Modal.Footer>
+                    {
+                        tipoModal === "cancelar" &&
+                        <Button variant="secondary" onClick={handleCancelarPremium}>
+                            Aceptar
+                        </Button>
+                    }
+
+                    <Button variant="secondary" onClick={handleClose}>
+                        Cerrar
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </Navbar>
     )
 }

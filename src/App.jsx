@@ -24,12 +24,19 @@ import AppNavbar from './AppNavbar';
 import MisWildies from './Components/MisWildies';
 import { useEffect, useState } from 'react';
 import RegProvider from './Context/RegProvider';
-
+import Premium from './Components/Premium';
+const libraries = ["places"];
 
 
 function App() {
-  const libraries = ["places"];
+
   const [hayToken, setHayToken] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem('idWildie') && localStorage.getItem('tokenWildie')) {
+      setHayToken(true);
+    }
+  }, [])
 
   const theme = createTheme({
     typography: {
@@ -50,12 +57,12 @@ function App() {
     >
       <BrowserRouter>
         <ThemeProvider theme={theme}>
-          <RegProvider  setHayToken={setHayToken}>
+          <RegProvider setHayToken={setHayToken}>
             {
               !hayToken
                 ? (<Routes>
                   <Route path="/" element={<Navigate to="/inicioSesion" />} />
-                  <Route path='/inicioSesion' element={<InicioSesion/>} />
+                  <Route path='/inicioSesion' element={<InicioSesion />} />
                 </Routes>
                 )
                 : (
@@ -79,6 +86,7 @@ function App() {
                           <Route path='/mapa/:id' element={<Mapa />} />
                           <Route path='/proximosEventos/:id' element={<ProximosEventos />} />
                           <Route path='/misWildies/:id' element={<MisWildies />} />
+                          <Route path='/premium/:id' element={<Premium />} />
                         </Routes>
                         <Footer />
                       </div>

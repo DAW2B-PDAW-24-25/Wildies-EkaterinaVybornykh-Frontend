@@ -12,7 +12,7 @@ import { RegContext } from '../Context/RegProvider';
 function PerfilWildie({ usuario }) {
 
     const { amistades, setAmistades } = useContext(AppContext);
-    const {usuarioLogueado}=useContext(RegContext);
+    const {usuarioLogueado, token}=useContext(RegContext);
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -58,7 +58,7 @@ function PerfilWildie({ usuario }) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                //"Authorization": `Bearer ${token}`         //todo ACTIVAR TOKEN
+                "Authorization": `Bearer ${token}`        
             },
             body: JSON.stringify(data)
         })
@@ -75,7 +75,7 @@ function PerfilWildie({ usuario }) {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
-                //"Authorization": `Bearer ${token}`         //todo ACTIVAR TOKEN
+                "Authorization": `Bearer ${token}`        
             },
 
         })
@@ -92,7 +92,7 @@ function PerfilWildie({ usuario }) {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
-                //"Authorization": `Bearer ${token}`         //todo ACTIVAR TOKEN
+                "Authorization": `Bearer ${token}`         
             },
 
         })
@@ -109,7 +109,7 @@ function PerfilWildie({ usuario }) {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
-                //"Authorization": `Bearer ${token}`         //todo ACTIVAR TOKEN
+                "Authorization": `Bearer ${token}`       
             },
 
         })

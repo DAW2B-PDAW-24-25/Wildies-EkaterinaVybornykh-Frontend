@@ -15,7 +15,7 @@ import { RegContext } from '../Context/RegProvider';
 function Perfil() {
   const { id } = useParams();
   const { logout, setIdPerfil, wildie, setWildie } = useContext(AppContext);
-  const {usuarioLogueado}=useContext(RegContext);
+  const { usuarioLogueado, token } = useContext(RegContext);
   const [modalMensaje, setModalMensaje] = useState("");
   const [modalTipo, setModalTipo] = useState("");
   const [cargando, setCargando] = useState(true);
@@ -28,7 +28,7 @@ function Perfil() {
     console.log("idLogueado", usuarioLogueado.id)
   }, [id]);
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log("UsuarioLogueado en perfil: ", usuarioLogueado.id)
   }, [])
 
@@ -37,9 +37,9 @@ function Perfil() {
   }, []);
 
   useEffect(() => {
-   // if (!esMiPerfil) {
-   console.log("estoy en useEf cargar wildie")
-      cargarWildie();
+    // if (!esMiPerfil) {
+    console.log("estoy en useEf cargar wildie")
+    cargarWildie();
     //}
   }, [])
 
@@ -51,7 +51,7 @@ function Perfil() {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        //"Authorization": `Bearer ${token}`         //todo ACTIVAR TOKEN
+        "Authorization": `Bearer ${token}`         //todo ACTIVAR TOKEN
       }
     }
     );
@@ -71,7 +71,12 @@ function Perfil() {
   async function cargarWildie() {
     setCargando(true);
     try {
-      let response = await fetch(`${API_URL}/usuarios/${id}`);
+      let response = await fetch(`${API_URL}/usuarios/${id}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
       if (!response.ok) {
         throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
       }
@@ -100,8 +105,8 @@ function Perfil() {
       modalMensaje={modalMensaje}
       setModalTipo={setModalTipo}
       setModalMensaje={setModalMensaje}
-    /> 
-    : <PerfilWildie usuario={wildie} />
+    />
+      : <PerfilWildie usuario={wildie} />
   )
 }
 

@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom';
 import DeportesWildie from './DeportesWildie';
 
 function DeportesUsuario() {
-    const { usuarioLogueado, setUsuarioLogueado } = useContext(RegContext);
+    const { usuarioLogueado, setUsuarioLogueado, token } = useContext(RegContext);
     const [modalShow, setModalShow] = useState(false);
     const [modalTipo, setModalTipo] = useState("");
     const [modalHeader, setModalHeader] = useState("");
@@ -36,7 +36,7 @@ function DeportesUsuario() {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
-                // "Authorization": `Bearer ${token}`
+                "Authorization": `Bearer ${token}`
             },
 
         });
@@ -72,7 +72,7 @@ function DeportesUsuario() {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                // "Authorization": `Bearer ${token}`
+                "Authorization": `Bearer ${token}`
             },
         })
         if (!response.ok) {
@@ -127,10 +127,10 @@ function DeportesUsuario() {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    // "Authorization": `Bearer ${token}`
+                    "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify(datos)
-                //"Authorization": `Bearer ${token}` 
+
             });
         if (!response.ok) {
             mostrarModalError();
@@ -145,7 +145,12 @@ function DeportesUsuario() {
     }
 
     async function cargarParametrosDeporte() {
-        const response = await fetch(`${API_URL}/parametrosDeporteUsuario/${usuarioDeporteId}`);
+        const response = await fetch(`${API_URL}/parametrosDeporteUsuario/${usuarioDeporteId}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
         if (!response.ok) {
             mostrarModalError();
         } else {
@@ -179,7 +184,12 @@ function DeportesUsuario() {
     }
 
     async function cargarPreguntas() {
-        const response = await fetch(`${API_URL}/preguntas/${usuarioDeporteId}`);
+        const response = await fetch(`${API_URL}/preguntas/${usuarioDeporteId}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
         if (!response.ok) {
             mostrarModalError();
         } else {
@@ -212,7 +222,7 @@ function DeportesUsuario() {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
-                // "Authorization": `Bearer ${token}`
+                 "Authorization": `Bearer ${token}`
             },
             body: JSON.stringify(datos)
         });
@@ -268,15 +278,15 @@ function DeportesUsuario() {
                                     </div>
                                 })}
                             </div>
-                           
-                                <div>
-                                    {!deporte.nivel &&
-                                        <Button variant='outline-secondary' className='me-2 mb-2 rounded-pill shadow' id={deporte.usuario_deporte_id} onClick={modalTest}>Realizar Test</Button>
-                                    }
-                                    <Button variant='outline-secondary' className='me-2 mb-2 rounded-pill shadow' id={deporte.usuario_deporte_id} data-deporteid={deporte.deporte_id} onClick={modalEditar}>Editar</Button>
-                                    <Button variant='outline-secondary' id={deporte.usuario_deporte_id} className='me-2 mb-2 rounded-pill shadow' onClick={modalEliminar}>Eliminar</Button>
-                                </div>
-                            
+
+                            <div>
+                                {!deporte.nivel &&
+                                    <Button variant='outline-secondary' className='me-2 mb-2 rounded-pill shadow' id={deporte.usuario_deporte_id} onClick={modalTest}>Realizar Test</Button>
+                                }
+                                <Button variant='outline-secondary' className='me-2 mb-2 rounded-pill shadow' id={deporte.usuario_deporte_id} data-deporteid={deporte.deporte_id} onClick={modalEditar}>Editar</Button>
+                                <Button variant='outline-secondary' id={deporte.usuario_deporte_id} className='me-2 mb-2 rounded-pill shadow' onClick={modalEliminar}>Eliminar</Button>
+                            </div>
+
                         </div>
                     </div>
 
@@ -304,8 +314,8 @@ function DeportesUsuario() {
                     enviarResultados={enviarResultados}
                 />
             </div>
-            : <DeportesWildie/>
-)
+            : <DeportesWildie />
+    )
 }
 
 export default DeportesUsuario

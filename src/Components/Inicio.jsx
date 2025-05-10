@@ -18,6 +18,11 @@ function Inicio() {
     let navigate = useNavigate();
     const [cargando, setCargando] = useState(false);
 
+
+      useEffect(() => {
+        window.scrollTo(0, 0);
+      }, []);
+
     async function handleUsuarios() {
         window.scrollTo(0, 0);
         setCargando(true);

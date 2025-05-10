@@ -10,33 +10,34 @@ import { RegContext } from './RegProvider';
 
 
 function AppProvider({ children }) {
-    const {usuarioLogueado, token}=useContext(RegContext);
+    const { usuarioLogueado, setUsuarioLogueado, token } = useContext(RegContext);
     const [idPerfil, setIdPerfil] = useState("");
-
     const [wildies, setWildies] = useState([]);     //otros usuarios
     const [wildie, setWildie] = useState([]);
     const [eventos, setEventos] = useState([]);
     const [evento, setEvento] = useState({});
     const [tipoUsuarios, setTipoUsuarios] = useState("inicio");
     const navigate = useNavigate();
-    const [formData, setFormData] = useState({});          //filtro usuario, eventos //todo cuidad con usar en otros sitios
+    const [formData, setFormData] = useState({});          //filtro usuario, eventos: cuidado con usar en otros sitios
     const [opcion, setOpcion] = useState("");
     const [ageDisabled, setAgeDisabled] = useState(false);
     const [tipoEventos, setTipoEventos] = useState("inicio");
     const [accionEvento, setAccionEvento] = useState("");
     const [amistades, setAmistades] = useState({});
 
-    
+    useEffect(() => {
+        if (usuarioLogueado) {
+            cargarEventosInicio();
 
-  
+        }
+    }, [usuarioLogueado]);
 
     useEffect(() => {
-        cargarEventosInicio();
-    }, []);
+        if (usuarioLogueado) {
+            cargarUsuariosInicio();
+        }
 
-    useEffect(() => {
-        cargarUsuariosInicio();
-    }, []);
+    }, [usuarioLogueado]);
 
     useEffect(() => {
         if (usuarioLogueado) {
@@ -49,10 +50,15 @@ function AppProvider({ children }) {
 
     useEffect(() => {
         console.log("Amistades: ", amistades)
-    }, [amistades.data])
+    }, [amistades])
 
     async function cargarAmistades() {
-        let response = await fetch(`${API_URL}/amistades/${usuarioLogueado.id}`);
+        let response = await fetch(`${API_URL}/amistades/${usuarioLogueado.id}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
         if (!response.ok) {
             console.log("Error al cargar amistades")
         } else {
@@ -61,11 +67,14 @@ function AppProvider({ children }) {
         }
     }
 
-    
-
     async function cargarUsuariosInicio() {
         try {
-            let response = await fetch(`${API_URL}/usuarios/usuariosCercaConLimite/1`);        //todo cambiar 1 por usuarioLogeado.id
+            let response = await fetch(`${API_URL}/usuarios/usuariosCercaConLimite/${usuarioLogueado.id}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
 
             if (!response.ok) {
                 throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
@@ -80,7 +89,12 @@ function AppProvider({ children }) {
     }
     async function cargarEventosInicio() {
         try {
-            let response = await fetch(`${API_URL}/eventos/eventosCercaConLimite/${usuarioLogueado.id}`);   
+            let response = await fetch(`${API_URL}/eventos/eventosCercaConLimite/${usuarioLogueado.id}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
 
             if (!response.ok) {
                 throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
@@ -97,15 +111,22 @@ function AppProvider({ children }) {
     async function cargarUsuariosCerca() {
 
         try {
-            let response = await fetch(`${API_URL}/usuarios/usuariosCerca/${usuarioLogueado.id}`);       
+            let response = await fetch(`${API_URL}/usuarios/usuariosCerca/${usuarioLogueado.id}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
 
             if (!response.ok) {
                 throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
+            } else {
+                let data = await response.json();
+
+                setWildies(data.data);
+
             }
 
-            let data = await response.json();
-
-            setWildies(data.data);
 
         } catch (error) {
             console.error("Error usuarios:", error);
@@ -114,13 +135,20 @@ function AppProvider({ children }) {
 
     async function cargarEventosCerca() {
         try {
-            let response = await fetch(`${API_URL}/eventos/eventosCerca/1`);     //todo cambiar 1 por usuarioLogeado.id
+            let response = await fetch(`${API_URL}/eventos/eventosCerca/${usuarioLogueado.id}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
 
             if (!response.ok) {
                 throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
+            } else {
+                let data = await response.json();
+                setEventos(data.data);
             }
-            let data = await response.json();
-            setEventos(data.data);
+
 
         } catch (error) {
             console.error("Error usuarios:", error);
@@ -135,7 +163,7 @@ function AppProvider({ children }) {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    // "Authorization": `Bearer ${token}`
+                    "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify(datos)
             });
@@ -144,7 +172,7 @@ function AppProvider({ children }) {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    // "Authorization": `Bearer ${token}`
+                    "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify(datos)
             });
@@ -166,6 +194,25 @@ function AppProvider({ children }) {
         }
         setAgeDisabled(false);
         setOpcion("");
+    }
+
+    async function cancelarPremium() {
+
+        let response = await fetch(`${API_URL}/usuarios/cancelarPremium/${usuarioLogueado.id}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) {
+            return false;
+
+        } else {
+            let data = await response.json();
+            setUsuarioLogueado(data.data);
+            return true;
+        }
     }
 
 
@@ -200,7 +247,8 @@ function AppProvider({ children }) {
             accionEvento,
             setAccionEvento,
             amistades,
-            setAmistades
+            setAmistades,
+            cancelarPremium
         }}>
             {children}
         </AppContext.Provider>

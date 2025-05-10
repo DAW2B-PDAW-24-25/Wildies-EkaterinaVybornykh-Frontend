@@ -8,7 +8,7 @@ import SpinnerWave from "./SpinnerWave";
 import { useNavigate } from "react-router-dom";
 
 function Mapa() {
-    const { usuarioLogueado } = useContext(RegContext);
+    const { usuarioLogueado, token } = useContext(RegContext);
     const [cargando, setCargando] = useState(true);
     const [hovered, setHovered] = useState(null);
     const [eventosUsuario, setEventosUsuario] = useState({});
@@ -30,7 +30,12 @@ function Mapa() {
     }), [usuarioLogueado]);
 
     async function cargarEventosUsuario() {
-        let response = await fetch(`${API_URL}/eventosUsuario/${usuarioLogueado.id}`);
+        let response = await fetch(`${API_URL}/eventosUsuario/${usuarioLogueado.id}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
         if (!response.ok) {
             console.log("Error al cargar eventos de usuario")
         } else {
@@ -69,7 +74,7 @@ function Mapa() {
             zoom={10}
             mapTypeId="satellite"
             options={{
-                mapTypeId: "satellite", 
+                mapTypeId: "satellite",
                 zoomControl: true,
                 streetViewControl: false,
                 mapTypeControl: false,
