@@ -227,6 +227,14 @@ p {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+
+  @media (max-width: 576px) {
+    min-height: 100vh;
+    background-image: url('/images/portada_movil.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
 }
 
 
@@ -291,9 +299,17 @@ p {
   display: inline-block;
 }
 
-.fade-in-text-1 span:nth-child(1) { animation-delay: 0s; }
-.fade-in-text-1 span:nth-child(2) { animation-delay: 1s; }
-.fade-in-text-1 span:nth-child(3) { animation-delay: 2s; }
+.fade-in-text-1 span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.fade-in-text-1 span:nth-child(2) {
+  animation-delay: 1s;
+}
+
+.fade-in-text-1 span:nth-child(3) {
+  animation-delay: 2s;
+}
 
 .fade-in-text-2 span {
   opacity: 0;
@@ -301,15 +317,26 @@ p {
   display: inline-block;
 }
 
-.fade-in-text-2 span:nth-child(1) { animation-delay: 3s; }
-.fade-in-text-2 span:nth-child(2) { animation-delay: 3.5s; }
-.fade-in-text-2 span:nth-child(3) { animation-delay: 4s; }
-.fade-in-text-2 span:nth-child(4) { animation-delay: 4.5s; }
+.fade-in-text-2 span:nth-child(1) {
+  animation-delay: 3s;
+}
+
+.fade-in-text-2 span:nth-child(2) {
+  animation-delay: 3.5s;
+}
+
+.fade-in-text-2 span:nth-child(3) {
+  animation-delay: 4s;
+}
+
+.fade-in-text-2 span:nth-child(4) {
+  animation-delay: 4.5s;
+}
 
 .fade-in-boton {
   opacity: 0;
   animation: fadeIn 2s ease-in forwards;
-  animation-delay: 5s; 
+  animation-delay: 5s;
 }
 
 @keyframes fadeIn {
@@ -317,5 +344,3 @@ p {
     opacity: 1;
   }
 }
-
-

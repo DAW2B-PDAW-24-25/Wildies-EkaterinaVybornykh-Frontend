@@ -180,7 +180,7 @@ function InicioSesion() {
     return (
         <div className='container-fluid portada'>
             <div className='d-flex justify-content-between align-items-center p-4'>
-                <div className='ms-5'>
+                <div className='ms-sm-5'>
                     <Image src={logo} alt='logo' style={{ height: "80px" }} />
                 </div>
                 <div className='d-flex'>
@@ -320,7 +320,7 @@ function InicioSesion() {
                                                 key={deporte.id}
                                                 id={`deporte-${deporte.id}`}
                                                 value={deporte.id}
-                                                className="me-1 mb-2 rounded-pill shadow col-3 p-0"
+                                                className="me-1 mb-2 rounded-pill shadow col-3 p-0 text-nowrap"
                                                 variant='outline-secondary'>
                                                 {deporte.nombre}
                                             </ToggleButton>

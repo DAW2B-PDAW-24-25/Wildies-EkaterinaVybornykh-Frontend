@@ -24,11 +24,11 @@ function RegProvider({ children, setHayToken }) {
         }
     }, []);
 
-    useEffect(() => {
+  /*   useEffect(() => {
         if (usuarioLogueado) {
             navigate('/');
         }
-    }, [usuarioLogueado])
+    }, [usuarioLogueado]) */
 
     useEffect(() => {
         console.log(usuarioLogueado)
