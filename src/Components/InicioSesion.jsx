@@ -191,13 +191,13 @@ function InicioSesion() {
             </div>
             <div className="text-center mt-5 text-light">
                 <div className="text-center mt-5">
-                    {/* <h1 className="fade-in-text-1">
+                    <h1 className="fade-in-text-1">
                         <span>Explorar.</span> <span>Sentir.</span> <span>Conectar.</span>
                     </h1>
                     <h2 className="fade-in-text-2">
                         <span>Donde</span> <span>empieza</span> <span>la</span> <span>libertad...</span>
-                    </h2> */}
-                    <Button className="btn-montana rounded-pill px-4 py-2 text-light mt-2 " onClick={handleRegisterButton}> {/* Añadir fade-in-boton  */}
+                    </h2>
+                    <Button className="btn-montana rounded-pill px-4 py-2 text-light mt-2 Añadir fade-in-boton" onClick={handleRegisterButton}> {/* Añadir fade-in-boton  */}
                         Crea una cuenta
                     </Button>
                 </div>
