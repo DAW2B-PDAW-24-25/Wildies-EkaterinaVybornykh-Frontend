@@ -19,9 +19,9 @@ function Inicio() {
     const [cargando, setCargando] = useState(false);
 
 
-      useEffect(() => {
+    useEffect(() => {
         window.scrollTo(0, 0);
-      }, []);
+    }, []);
 
     async function handleUsuarios() {
         window.scrollTo(0, 0);
@@ -51,18 +51,27 @@ function Inicio() {
     return (
 
         <div className='container-fluid mt-3 min-vh-100'>
-           {/*  <div className='col-md-8 mx-auto'>
+            {/*  <div className='col-md-8 mx-auto'>
                 <Buscador />
             </div> */}
+            {
+                usuarioLogueado && usuarioLogueado.roles.includes("admin")
+                    ? <div className='m-5 text-center'>
+                        <h1 className='title'>Panel de administración</h1>
+                    </div>
+                    : <>
+                        <div className='bg-seccion p-3 rounded shadow d-flex ms-3 me-3 mb-4 flex-column'>
+                            <UsuariosInicio />
+                            <Button variant="link" className='boton-link d-flex' onClick={handleUsuarios}>Descubrir mas...</Button>
+                        </div>
+                        <div className='bg-seccion p-3 rounded shadow d-flex ms-3 me-3 flex-column'>
+                            <EventosInicio />
+                            <Button variant="link" className='boton-link d-flex' onClick={handleEventos}>Descubrir mas...</Button>
+                        </div>
+                    </>
+            }
 
-            <div className='bg-seccion p-3 rounded shadow d-flex ms-3 me-3 mb-4 flex-column'>
-                <UsuariosInicio />
-                <Button variant="link" className='boton-link d-flex' onClick={handleUsuarios}>Descubrir mas...</Button>
-            </div>
-            <div className='bg-seccion p-3 rounded shadow d-flex ms-3 me-3 flex-column'>
-                <EventosInicio />
-                <Button variant="link" className='boton-link d-flex' onClick={handleEventos}>Descubrir mas...</Button>
-            </div>
+
         </div>
     )
 }

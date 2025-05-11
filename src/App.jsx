@@ -25,6 +25,9 @@ import MisWildies from './Components/MisWildies';
 import { useEffect, useState } from 'react';
 import RegProvider from './Context/RegProvider';
 import Premium from './Components/Premium';
+import GestionUsuarios from './Components/GestionUsuarios';
+import GestionEventos from './Components/GestionEventos';
+import GestionDeportes from './Components/GestionDeportes';
 const libraries = ["places"];
 
 
@@ -87,6 +90,9 @@ function App() {
                           <Route path='/proximosEventos/:id' element={<ProximosEventos />} />
                           <Route path='/misWildies/:id' element={<MisWildies />} />
                           <Route path='/premium/:id' element={<Premium />} />
+                          <Route path='/gestionUsuarios' element={<GestionUsuarios />} />
+                          <Route path='/gestionEventos' element={<GestionEventos />} />
+                          <Route path='/gestionDeportes' element={<GestionDeportes />} />
                         </Routes>
                         <Footer />
                       </div>

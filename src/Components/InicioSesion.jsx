@@ -313,21 +313,21 @@ function InicioSesion() {
                                         name='deporte'
                                         value={formData.deportes}
                                         onChange={(val) => setFormData({ ...formData, deportes: val })}
-                                        className="d-flex flex-wrap row ms-3"
+                                        className="d-flex flex-wrap gap-2 ms-2"
                                     >
                                         {deportes?.map((deporte) => {
                                             return <ToggleButton
                                                 key={deporte.id}
                                                 id={`deporte-${deporte.id}`}
                                                 value={deporte.id}
-                                                className="me-1 mb-2 rounded-pill shadow col-3 p-0 text-nowrap"
+                                                className="rounded-pill shadow p-0"
                                                 variant='outline-secondary'>
                                                 {deporte.nombre}
                                             </ToggleButton>
                                         })}
                                     </ToggleButtonGroup>
                                 </Form.Group>
-                                <Form.Group className="mb-2" controlId="descripcion">
+                                <Form.Group className="mb-2 mt-2" controlId="descripcion">
                                     <Form.Label>Descríbete brevemente</Form.Label>
                                     <Form.Control
                                         type="textarea"

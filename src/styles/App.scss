@@ -5,6 +5,8 @@ body {
   background-color: $background-color;
   color: $text-color;
   line-height: 1.1;
+   overflow-x: hidden;
+  max-width: 100vw;
 
 }
 
@@ -228,15 +230,14 @@ p {
   background-position: center;
   background-repeat: no-repeat;
 
-  @media (max-width: 576px) {
-    min-height: 100vh;
+  @media (max-width: 430px) {
+    height: 100vh;
     background-image: url('/images/portada_movil.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
   }
 }
-
 
 .switch {
 

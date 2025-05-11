@@ -12,7 +12,7 @@ import { MdLogout } from "react-icons/md";
 import { CgBorderBottom, CgProfile } from "react-icons/cg";
 import UsuariosInicio from './Components/EventosInicio';
 import { GoHomeFill } from "react-icons/go";
-import { PiUsersBold } from "react-icons/pi";
+import { PiArrowSquareDownFill, PiUsersBold } from "react-icons/pi";
 import { AppContext } from './Context/AppProvider';
 import logo from '/images/logo4.png';
 import logo_small from '/images/logo_small.png';
@@ -87,18 +87,97 @@ function AppSidebar() {
             <img src={logo_small} alt="logo" className="img-fluid w-75" />
           </div>
           <div className="linkContainer p-0 pb-sm-5 pt-sm-5">
-            <Button variant="link" className="boton-link d-flex align-items-center pb-4 mb-3 mb-lg-0" onClick={handleBuscar}>
-              <IoSearch style={{ fontSize: "25px", marginRight: "15px" }} />
-              <p className="d-none d-lg-inline m-0">Buscar</p>
-            </Button>
-            <Enlace as={Link} to={`/misWildies/${usuarioLogueado.id}`} className="d-flex align-items-center pb-4 mb-3 mb-lg-0">
-              <div className="position-relative d-flex align-items-center">
-                <PiUsersBold style={{ fontSize: "25px", marginRight: "15px" }} />
+            {
+              usuarioLogueado && usuarioLogueado.roles.includes('admin')
+                ? <>
+                  <Button variant="link" className="boton-link d-flex align-items-center pb-4 mb-3 mb-lg-0" onClick={()=>navigate('/gestionUsuarios')}>
+                    Gestionar usuarios
+                  </Button>
+                  <Button variant="link" className="boton-link d-flex align-items-center pb-4 mb-3 mb-lg-0" onClick={()=>navigate('/gestionEventos')}>
+                    Gestionar eventos
+                  </Button>
+                  <Button variant="link" className="boton-link d-flex align-items-center pb-4 mb-3 mb-lg-0" onClick={()=>navigate('/gestionDeportes')}>
+                    Gestionar deportes
+                  </Button>
+                </>
+                : <>
+                  <Button variant="link" className="boton-link d-flex align-items-center pb-4 mb-3 mb-lg-0" onClick={handleBuscar}>
+                    <IoSearch style={{ fontSize: "25px", marginRight: "15px" }} />
+                    <p className="d-none d-lg-inline m-0">Buscar</p>
+                  </Button>
+                  <Enlace as={Link} to={`/misWildies/${usuarioLogueado.id}`} className="d-flex align-items-center pb-4 mb-3 mb-lg-0">
+                    <div className="position-relative d-flex align-items-center">
+                      <PiUsersBold style={{ fontSize: "25px", marginRight: "15px" }} />
+                      {amistades.total_pendientes > 0 && (
+                        <span style={{
+                          position: "absolute",
+                          top: "-5px",
+                          right: "5px",
+                          backgroundColor: "#C8936Eff",
+                          color: "white",
+                          borderRadius: "50%",
+                          padding: "2px 6px",
+                          fontSize: "10px",
+                          fontWeight: "bold",
+                        }}>
+                          {amistades.total_pendientes}
+                        </span>
+                      )}
+                    </div>
+                    <p className="d-none d-lg-inline m-0">Mis Wildies</p>
+                  </Enlace>
+                  <Button variant="link" className="boton-link d-flex align-items-center pb-4 mb-3 mb-lg-0" onClick={() => navigate(`/proximosEventos/${usuarioLogueado.id}`)}>
+                    <FaRegCalendar style={{ fontSize: "25px", marginRight: "15px" }} />
+                    <p className="d-none d-lg-inline m-0">Mis próximas aventuras</p>
+                  </Button>
+                  {
+                    (usuarioLogueado?.roles && usuarioLogueado.roles.includes('premium'))
+                      ? <>
+                        <Button variant="link" className="boton-link d-flex align-items-center pb-4 mb-3 mb-lg-0" onClick={handleCrear}>
+                          <FaRegSquarePlus style={{ fontSize: "25px", marginRight: "15px" }} />
+                          <p className="d-none d-lg-inline m-0">Crear aventura</p>
+                        </Button>
+                        <Button variant="link" className="boton-link d-flex align-items-center pb-4" onClick={() => navigate(`/mapa/${usuarioLogueado.id}`)}>
+                          <FiMapPin style={{ fontSize: "25px", marginRight: "15px" }} />
+                          <p className="d-none d-lg-inline m-0">Mapa</p>
+                        </Button>
+                      </>
+                      : <Button variant="link" className="boton-link d-flex align-items-center pb-4" onClick={() => navigate(`/premium/${usuarioLogueado.id}`)}>
+                        <GiAlliedStar style={{ fontSize: "28px", marginRight: "15px" }} />
+                        <p className="d-none d-lg-inline m-0">Premium</p>
+                      </Button>
+                  }
+                </>
+            }
+
+
+          </div>
+        </Nav>
+
+      </div>
+      {
+        usuarioLogueado && !usuarioLogueado.roles.includes("admin") && (
+          <Navbar bg="light" data-bs-theme="light" className="d-sm-none" fixed="bottom">
+            <Nav className="d-flex justify-content-around align-items-center w-100">
+              <div className="d-flex justify-content-center align-items-center">
+                <Enlace as={Link} to={`/`}>
+                  <GoHomeFill style={{ fontSize: "25px" }} />
+                </Enlace>
+              </div>
+              <div className="d-flex justify-content-center align-items-center">
+                <Button variant="link" className="boton-link p-0" onClick={handleBuscar}>
+                  <IoSearch style={{ fontSize: "25px" }} />
+                </Button>
+              </div>
+              <div className="d-flex justify-content-center align-items-center position-relative">
+                <Enlace as={Link} to={`/misWildies/${usuarioLogueado.id}`}>
+                  <PiUsersBold style={{ fontSize: "25px" }} />
+                </Enlace>
                 {amistades.total_pendientes > 0 && (
                   <span style={{
                     position: "absolute",
-                    top: "-5px",
-                    right: "5px",
+                    top: "2px",
+                    right: "0px",
                     backgroundColor: "#C8936Eff",
                     color: "white",
                     borderRadius: "50%",
@@ -110,95 +189,36 @@ function AppSidebar() {
                   </span>
                 )}
               </div>
-              <p className="d-none d-lg-inline m-0">Mis Wildies</p>
-            </Enlace>
-            <Button variant="link" className="boton-link d-flex align-items-center pb-4 mb-3 mb-lg-0" onClick={() => navigate(`/proximosEventos/${usuarioLogueado.id}`)}>
-              <FaRegCalendar style={{ fontSize: "25px", marginRight: "15px" }} />
-              <p className="d-none d-lg-inline m-0">Mis próximas aventuras</p>
-            </Button>
-            {
-              (usuarioLogueado?.roles && usuarioLogueado.roles.includes('premium'))
-                ? <>
-                  <Button variant="link" className="boton-link d-flex align-items-center pb-4 mb-3 mb-lg-0" onClick={handleCrear}>
-                    <FaRegSquarePlus style={{ fontSize: "25px", marginRight: "15px" }} />
-                    <p className="d-none d-lg-inline m-0">Crear aventura</p>
-                  </Button>
-                  <Button variant="link" className="boton-link d-flex align-items-center pb-4" onClick={() => navigate(`/mapa/${usuarioLogueado.id}`)}>
-                    <FiMapPin style={{ fontSize: "25px", marginRight: "15px" }} />
-                    <p className="d-none d-lg-inline m-0">Mapa</p>
-                  </Button>
-                </>
-                : <Button variant="link" className="boton-link d-flex align-items-center pb-4" onClick={() => navigate(`/premium/${usuarioLogueado.id}`)}>
-                  <GiAlliedStar style={{ fontSize: "28px", marginRight: "15px" }} />
-                  <p className="d-none d-lg-inline m-0">Premium</p>
-                </Button>
-            }
-
-          </div>
-        </Nav>
-
-      </div>
-      <Navbar bg="light" data-bs-theme="light" className="d-sm-none" fixed="bottom">
-        <Nav className="d-flex justify-content-around align-items-center w-100">
-          <div className="d-flex justify-content-center align-items-center">
-            <Enlace as={Link} to={`/`}>
-              <GoHomeFill style={{ fontSize: "25px" }} />
-            </Enlace>
-          </div>
-          <div className="d-flex justify-content-center align-items-center">
-            <Button variant="link" className="boton-link p-0" onClick={handleBuscar}>
-              <IoSearch style={{ fontSize: "25px" }} />
-            </Button>
-          </div>
-          <div className="d-flex justify-content-center align-items-center position-relative">
-            <Enlace as={Link} to={`/misWildies/${usuarioLogueado.id}`}>
-              <PiUsersBold style={{ fontSize: "25px" }} />
-            </Enlace>
-            {amistades.total_pendientes > 0 && (
-              <span style={{
-                position: "absolute",
-                top: "2px",
-                right: "0px",
-                backgroundColor: "#C8936Eff",
-                color: "white",
-                borderRadius: "50%",
-                padding: "2px 6px",
-                fontSize: "10px",
-                fontWeight: "bold",
-              }}>
-                {amistades.total_pendientes}
-              </span>
-            )}
-          </div>
-          <div className="d-flex justify-content-center align-items-center">
-            <Enlace as={Link} to={`/proximosEventos/${usuarioLogueado.id}`}>
-              <FaRegCalendar style={{ fontSize: "25px" }} />
-            </Enlace>
-          </div>
-
-          {
-            (usuarioLogueado?.roles && usuarioLogueado.roles.includes('premium'))
-              ? <>
-                <div className="d-flex justify-content-center align-items-center">
-                  <Enlace as={Link} to={`/mapa/${usuarioLogueado.id}`}>
-                    <FaRegSquarePlus style={{ fontSize: "25px" }} />
-                  </Enlace>
-                </div>
-                <div className="d-flex justify-content-center align-items-center">
-                  <Enlace as={Link} to={`/mapa/${usuarioLogueado.id}`}>
-                    <FiMapPin style={{ fontSize: "25px" }} />
-                  </Enlace>
-                </div>
-              </>
-              : <div className="d-flex justify-content-center align-items-center">
-                <Enlace as={Link} to={`/premium/${usuarioLogueado.id}`}>
-                  <GiAlliedStar style={{ fontSize: "28px" }} />
+              <div className="d-flex justify-content-center align-items-center">
+                <Enlace as={Link} to={`/proximosEventos/${usuarioLogueado.id}`}>
+                  <FaRegCalendar style={{ fontSize: "25px" }} />
                 </Enlace>
               </div>
-          }
 
-        </Nav>
-      </Navbar>
+              {
+                (usuarioLogueado?.roles && usuarioLogueado.roles.includes('premium'))
+                  ? <>
+                    <Button variant="link" className="boton-link d-flex justify-content-center align-items-center" onClick={handleCrear}>
+                      <FaRegSquarePlus style={{ fontSize: "25px" }} />
+                    </Button>
+                    <div className="d-flex justify-content-center align-items-center">
+                      <Enlace as={Link} to={`/mapa/${usuarioLogueado.id}`}>
+                        <FiMapPin style={{ fontSize: "25px" }} />
+                      </Enlace>
+                    </div>
+                  </>
+                  : <div className="d-flex justify-content-center align-items-center">
+                    <Enlace as={Link} to={`/premium/${usuarioLogueado.id}`}>
+                      <GiAlliedStar style={{ fontSize: "28px" }} />
+                    </Enlace>
+                  </div>
+              }
+
+            </Nav>
+          </Navbar>
+        )
+      }
+
 
       <ModalFiltro
         show={show}
