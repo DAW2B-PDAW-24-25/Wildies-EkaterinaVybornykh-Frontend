@@ -24,12 +24,6 @@ function RegProvider({ children, setHayToken }) {
         }
     }, []);
 
-  /*   useEffect(() => {
-        if (usuarioLogueado) {
-            navigate('/');
-        }
-    }, [usuarioLogueado]) */
-
     useEffect(() => {
         console.log(usuarioLogueado)
     }, [usuarioLogueado])
@@ -91,6 +85,7 @@ function RegProvider({ children, setHayToken }) {
         <RegContext.Provider
             value={{
                 deportes,
+                setDeportes,
                 usuarioLogueado,
                 setUsuarioLogueado,
                 token,

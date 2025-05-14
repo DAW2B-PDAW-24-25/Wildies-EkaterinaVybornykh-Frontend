@@ -19,6 +19,7 @@ function DetalleEvento() {
     const handleShow = () => setShow(true);
     const navigate = useNavigate();
     const soyCreador = evento?.creador_id === usuarioLogueado.id;
+    const soyAdmin = usuarioLogueado && usuarioLogueado.roles.includes('admin');
     const soyParticipante = evento?.participantes?.some((participante) => participante.id === usuarioLogueado.id) && !soyCreador;
     const sinPlazas = evento.max_participantes <= evento.total_participantes;
     const sexoIncompatible = evento.sexo_participantes !== 'indiferente' && evento.sexo_participantes !== usuarioLogueado.sexo;
@@ -26,8 +27,6 @@ function DetalleEvento() {
     const nivelIncompatible = evento.nivel > 0 && !usuarioLogueado.deportes.some(
         (deporte) => deporte.deporte_id === evento.deporte_id && deporte.nivel >= evento.nivel
     );
-
-
 
     useEffect(() => {
         cargarEvento();
@@ -62,7 +61,7 @@ function DetalleEvento() {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`         
+                "Authorization": `Bearer ${token}`
             }
         })
         if (!response.ok) {
@@ -81,7 +80,7 @@ function DetalleEvento() {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`         
+                "Authorization": `Bearer ${token}`
             }
         })
         if (!response.ok) {
@@ -100,11 +99,11 @@ function DetalleEvento() {
     }
 
     async function handleEliminar() {
-        let response = await fetch(`${API_URL}/eventos/${id}`, {
+        let response = await fetch(`${API_URL}/eventos/${id}/${usuarioLogueado.id}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`         
+                "Authorization": `Bearer ${token}`
             }
         });
         if (!response.ok) {
@@ -155,7 +154,7 @@ function DetalleEvento() {
                     <p className='mt-2'><strong>Género participantes: </strong> {evento.sexo_participantes}</p>
                     <p className='mt-2'><strong>Edad: </strong>entre {evento.edad_min} y {evento.edad_max} años</p>
                     <p className='mt-2'><strong>Descripción:</strong> {evento.descripcion}</p>
-                    {soyCreador && !eventoPasado
+                    {(soyCreador || soyAdmin) && !eventoPasado
                         ? <div className='d-flex'>
                             <Button variant="secondary" className="rounded-pill shadow me-3" onClick={handleEditar}>Editar</Button>
                             <Button variant="secondary" className="rounded-pill shadow" onClick={handleEliminar}>Eliminar</Button>

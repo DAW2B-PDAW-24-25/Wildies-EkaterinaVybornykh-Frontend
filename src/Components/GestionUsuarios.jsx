@@ -22,6 +22,11 @@ function GestionUsuarios() {
         rol: ""
     });
     const [usuarioCreado, setUsuarioCreado] = useState({});
+    
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     useEffect(() => {
         if (usuarioBuscado !== null) {
@@ -152,10 +157,6 @@ function GestionUsuarios() {
         console.log(formData)
     }, [formData])
 
-    function handleEliminarButton() {
-
-    }
-
     function handleEditarEmailButton() {
         setTipoModal("cambiarEmail");
         setHeader("Introduce email")
@@ -278,7 +279,6 @@ function GestionUsuarios() {
                         <>
 
                             <Table striped bordered hover>
-
                                 <tbody>
                                     <tr className='row'>
                                         <th className='col-3'>Id</th>
