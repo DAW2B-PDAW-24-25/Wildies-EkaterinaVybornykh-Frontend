@@ -131,7 +131,7 @@ function AppNavbar() {
                                     }
 
                                     <div className='m-0'>
-                                        <h5 className='m-0 texto'>{usuarioLogueado.nombre}, {usuarioLogueado.apellidos}</h5>
+                                        <h5 className='m-0 texto'>{usuarioLogueado.nombre} {usuarioLogueado.apellidos}</h5>
                                     </div>
                                 </div>
                                 {/*  <div className='text-center ms-2'>

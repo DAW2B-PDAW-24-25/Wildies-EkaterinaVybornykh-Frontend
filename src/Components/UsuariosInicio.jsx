@@ -42,7 +42,7 @@ function UsuariosInicio() {
                 {wildies.map((usuario) => {
                     return <Link to={`/perfil/${usuario.id}`} className='col-md-3 mb-3 me-5 text-decoration-none'>
                         <Card key={usuario.id} className='p-0 border-0 bg-transparent'>
-                            <Card.Img variant="top" src={usuario.foto_perfil} className="img-fluid w-100 rounded-0">
+                            <Card.Img variant="top" src={usuario.foto_perfil} className="img-fluid w-100 rounded-0" style={{ height: "250px", objectFit: "cover" }}>
 
                             </Card.Img>
                             <Card.ImgOverlay>

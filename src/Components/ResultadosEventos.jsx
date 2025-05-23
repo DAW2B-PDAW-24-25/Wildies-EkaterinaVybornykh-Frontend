@@ -78,7 +78,7 @@ function ResultadosEventos() {
                 <div className='row pt-3 m-5'>
                     {eventosPagina.map((evento) => {
                         return <Link to={`/detalleEvento/${evento.id}`} className='col-md-3 mb-3 me-5 text-decoration-none'><Card key={evento.id} className='rounded-0 p-0 border-0 bg-transparent'>
-                            <Card.Img variant="top" src={evento.foto_portada} className="img-fluid w-100 rounded-0" />
+                            <Card.Img variant="top" src={evento.foto_portada} className="img-fluid w-100 rounded-0" style={{ height: "250px", objectFit: "cover" }}/>
                             <Card.Body>
                                 <div>
                                     <h5 className='title'>{evento.deporte} (nivel {evento.nivel})</h5>

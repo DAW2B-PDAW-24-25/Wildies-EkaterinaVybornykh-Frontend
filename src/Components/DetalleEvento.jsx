@@ -143,7 +143,7 @@ function DetalleEvento() {
             <hr />
             <div className='row m-5'>
                 <div className='col-md-4 col-sm-6 col-12'>
-                    <img src={evento.foto_portada} alt="foto" className='w-100 img-fluid rounded' />
+                    <img src={evento.foto_portada} alt="foto" className='w-100 img-fluid rounded' style={{ height: "250px", objectFit: "cover" }}/>
                 </div>
                 <div className='col-sm-2'></div>
                 <div className='col-sm-6'>

@@ -45,30 +45,6 @@ function ResultadosUsuarios() {
     }, [paginaActual]);
 
 
-    /*  useEffect(() => {
-        cargar();
-    }, [wildies]);  */
-
-   /*  useEffect(() => {
-        if (tipoUsuarios === "filtro") {
-            setCargando(true);
-           aplicarFiltros();
-            setCargando(false);
-        }
-    }, [tipoUsuarios, wildies]); */
-
-    /* async function cargar() {
-        setCargando(true);
-        if (tipoUsuarios === "cerca") {
-            await cargarUsuariosCerca();
-        }
-        if (tipoUsuarios === "filtro") {
-            await aplicarFiltros();
-        }
-
-        setCargando(false);
-    } */
-
     if (cargando) {
 
         return <div className='container-fluid min-vh-100'>
@@ -83,7 +59,9 @@ function ResultadosUsuarios() {
                     {usuariosPagina.map((usuario) => {
                         return <Link to={`/perfil/${usuario.id}`} className='col-md-3 mb-3 me-5 text-decoration-none'>
                             <Card key={usuario.id} className='rounded-0 p-0 border-0 bg-transparent'>
-                                <Card.Img variant="top" src={usuario.foto_perfil} className="img-fluid w-100 rounded-0">
+                                <Card.Img variant="top" src={usuario.foto_perfil} 
+                                className="img-fluid w-100 rounded-0"
+                                style={{ height: "250px", objectFit: "cover" }}>
 
                                 </Card.Img>
                                 <Card.ImgOverlay>

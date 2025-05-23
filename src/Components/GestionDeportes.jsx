@@ -11,6 +11,7 @@ function GestionDeportes() {
     const { token, deportes, setDeportes } = useContext(RegContext);
     const [cargando, setCargando] = useState(false);
     const [elemento, setElemento] = useState("deportes");
+    const [modalTipo, setModalTipo] = useState("");
     const [header, setHeader] = useState("");
     const [show, setShow] = useState(false);
     const [validated, setValidated] = useState(false);
@@ -37,12 +38,54 @@ function GestionDeportes() {
     }
 
     function handleCrearDeporteButton() {
+        setErrorMessage("")
+        setHeader("Introduce nombre de deporte")
+        setModalTipo('crear')
+        handleShow();
+    }
 
+    async function crearDeporte(e) {
+        e.preventDefault();
+        const form = e.currentTarget;
+        if (form.checkValidity() === false) {
+            console.log("No he pasado validación")
+            e.stopPropagation();
+            setValidated(true);
+            return;
+        }
+        try {
+            let respuesta = await fetch(`${API_URL}/deportes`, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({ nombre: deporteForm.nombre }),
+            });
+            if (!respuesta.ok) {
+                const error = await respuesta.json();
+                setErrorMessage(error.message);
+                console.log('Error al crear deporte');
+            } else {
+                setErrorMessage("");
+                let data = await respuesta.json();
+                setDeportes(data);
+                console.log('Respuesta de la API:', data);
+                setDeporteForm({ idDeporte: "", nombre: "" })
+                 handleClose();
+            }
+            
+           
+
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
 
     function handleEditarDeporteButton(id) {
         let nombreDeporte = getNombreDeporte(id);
         setDeporteForm({ idDeporte: id, nombre: nombreDeporte })
+        setModalTipo('editar');
         setHeader("Modifica el nombre")
         handleShow();
     }
@@ -71,13 +114,12 @@ function GestionDeportes() {
                 console.log('Error al enviar los datos');
             } else {
                 setErrorMessage("");
-                //   setTipoModal("creadoExito")
-                //   setHeader("Usuario creado correctamente")
                 let data = await respuesta.json();
                 setDeportes(data);
 
                 console.log('Respuesta de la API:', data);
             }
+            setDeporteForm({ idDeporte: "", nombre: "" })
             handleClose();
 
         } catch (error) {
@@ -85,8 +127,36 @@ function GestionDeportes() {
         }
     }
 
-    function handleEliminarDeporte() {
+    function handleAceptarBorrar() {
+        setErrorMessage("");
+        handleClose();
+    }
 
+    async function handleEliminarDeporte(id) {
+        setModalTipo("eliminar")
+        try {
+            let respuesta = await fetch(`${API_URL}/deportes/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+            if (!respuesta.ok) {
+                const error = await respuesta.json();
+                setErrorMessage(error.message);
+                handleShow();
+                console.log('Error al eliminar deporte');
+            } else {
+                setErrorMessage("");
+                let data = await respuesta.json();
+                setDeportes(data);
+
+                console.log('Respuesta de la API:', data);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
 
     function handleMostrarPreguntas() {
@@ -100,7 +170,7 @@ function GestionDeportes() {
                 <hr />
                 <Card className='rounded-0 p-0 border-0 bg-transparent'>
                     <div className='d-flex justify-content-center m-3'>
-                        <Button variant='outline-secondary rounded-pill shadow me-3' onClick={handleMostrarDeportesButton}>Mostrar deportes</Button>
+                       {/*  <Button variant='outline-secondary rounded-pill shadow me-3' onClick={handleMostrarDeportesButton}>Mostrar deportes</Button> */}
                         <Button variant='outline-secondary rounded-pill shadow' onClick={handleCrearDeporteButton}>Crear deporte</Button>
                     </div>
                     {
@@ -133,9 +203,9 @@ function GestionDeportes() {
                                         <div>
                                             <Button variant='secondary rounded-pill shadow me-3' onClick={() => handleEliminarDeporte(deporte.id)}>Eliminar</Button>
                                         </div>
-                                        <div>
+                                        {/* <div>
                                             <Button variant='secondary rounded-pill shadow me-3' onClick={() => handleMostrarPreguntas(deporte.id)}>Mostrar preguntas</Button>
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </>
                             }
@@ -150,36 +220,62 @@ function GestionDeportes() {
                 backdrop="static"
             >
                 <Modal.Title className='m-3 title'>{header}</Modal.Title>
-                <Modal.Body className='modal-body'>
-                    <Form noValidate validated={validated} onSubmit={editarDeporte}>
-                        <Form.Group controlId="deporte" className='mb-2'>
-                            <Form.Control
-                                className='texto'
-                                type="text"
-                                name='teporte'
-                                value={deporteForm.nombre}
-                                onChange={(e) => setDeporteForm({ ...deporteForm, nombre: e.target.value })}
-                                required
-                                isInvalid={validated && !deporteForm.nombre}
-                            />
-                            <Form.Control.Feedback type="invalid">
-                                {deporteForm.nombre && 'Campo obligatorio'}
-                            </Form.Control.Feedback>
-                        </Form.Group>
-                        {
-                            errorMessage !== "" &&
-                            <div style={{ backgroundColor: "#fadbd8" }} className='mt-2 mb-2 rounded-pill shadow p-2 text-center'>{errorMessage}</div>
-                        }
+                {
+                    (modalTipo === "editar" || modalTipo === "crear") &&
+                    <Modal.Body className='modal-body'>
+                        <Form noValidate validated={validated} onSubmit={modalTipo === 'editar' ? editarDeporte : crearDeporte}>
+                            <Form.Group controlId="deporte" className='mb-2'>
+                                <Form.Control
+                                    className='texto'
+                                    type="text"
+                                    name='teporte'
+                                    value={deporteForm.nombre}
+                                    onChange={(e) => setDeporteForm({ ...deporteForm, nombre: e.target.value })}
+                                    required
+                                    isInvalid={validated && !deporteForm.nombre}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {deporteForm.nombre && 'Campo obligatorio'}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                            {
+                                errorMessage !== "" &&
+                                <div style={{ backgroundColor: "#fadbd8" }} className='mt-2 mb-2 rounded-pill shadow p-2 text-center'>{errorMessage}</div>
+                            }
+                            <div className='d-flex justify-content-end'>
+                                {
+                                    modalTipo === "editar" &&
+                                    <Button variant="secondary" type='submit' className='mt-4 me-3'>
+                                        Editar
+                                    </Button>
+                                }
+                                {
+                                    modalTipo === "crear" &&
+                                    <Button variant="secondary" type='submit' className='mt-4 me-3'>
+                                        Crear
+                                    </Button>
+                                }
+
+                                <Button variant="secondary" className='mt-4' onClick={handleClose}>
+                                    Cancelar
+                                </Button>
+                            </div>
+                        </Form>
+                    </Modal.Body>
+                }
+                {
+                    modalTipo === "eliminar" &&
+                    <div>
+                        <h5 style={{ backgroundColor: "#fadbd8" }} className='rounded-pill shadow p-2 text-center m-3'>{errorMessage}</h5>
                         <div className='d-flex justify-content-end'>
-                            <Button variant="secondary" type='submit' className='mt-4 me-3'>
-                                Editar
-                            </Button>
-                            <Button variant="secondary" className='mt-4' onClick={handleClose}>
-                                Cancelar
+                            <Button variant="secondary" className='mt-4 m-3' onClick={handleAceptarBorrar}>
+                                Aceptar
                             </Button>
                         </div>
-                    </Form>
-                </Modal.Body>
+                    </div>
+
+
+                }
             </Modal>
         </div>
 
