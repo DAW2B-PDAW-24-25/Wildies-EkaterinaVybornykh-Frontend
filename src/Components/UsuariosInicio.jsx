@@ -55,17 +55,16 @@ function UsuariosInicio() {
                                 <Card.Text>
                                     {usuario.localidad}
                                 </Card.Text>
-                                <div className='d-flex flex-wrap'>
-                                    <h5 className='title me-1'>Deportes: </h5>
+                                <div className='d-flex flex-wrap align-items-center'>
+                                    <h5 className='title me-1 mb-0'>Deportes: </h5>
                                     {usuario.deportes.map((deporte, index) => {
-                                        return <p key={index} className='me-1 texto'>{deporte.deporte} {index < usuario.deportes.length - 1 ? ',' : ''} </p>
+                                        return <p key={index} className='texto m-0'>{deporte.deporte} {index < usuario.deportes.length - 1 ? ',' : ''} </p>
                                     })}
 
                                 </div>
-
-                                <Card.Text>
-                                    {usuario.descripcion.split(' ').slice(0, 15).join(' ') + "..."}
-                                </Card.Text>
+                                <div className='d-flex flex-wrap mt-1'>
+                                    <p className='texto m-0'>{usuario?.descripcion?.split(' ').slice(0, 15).join(' ') + "..."}</p>
+                                </div>
                             </Card.Body>
                         </Card>
                     </Link>
