@@ -37,7 +37,7 @@ function Premium() {
             setModalBody("Ya puedes disfrutar de tus ventajas Premium");
             handleShow();
             setUsuarioLogueado(data.data);
-
+            
         }
     }
 
@@ -46,6 +46,11 @@ function Premium() {
         setModalHeader("Estás a un paso de Premium");
         setModalBody("Se te van a cobrar 19,99€");
         handleShow();
+    }
+
+    function handleExito(){
+        handleClose();
+        navigate('/');
     }
 
     return (
@@ -90,7 +95,7 @@ function Premium() {
                     }
                     {
                         tipoModal === "exito" &&
-                        <Button variant="secondary" className='me-2 shadow' onClick={handleClose}>
+                        <Button variant="secondary" className='me-2 shadow' onClick={handleExito}>
                             Aceptar
                         </Button>
                     }
