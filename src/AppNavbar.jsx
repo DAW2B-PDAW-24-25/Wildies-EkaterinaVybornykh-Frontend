@@ -38,7 +38,7 @@ function AppNavbar() {
         } else {
             setModalMessage("Error al cancelar suscripción. Ponte en contacto con nuestro equipo")
         }
-        handleShow();
+        handleClose();
     }
 
     function handlePasswordAdminButton() {
