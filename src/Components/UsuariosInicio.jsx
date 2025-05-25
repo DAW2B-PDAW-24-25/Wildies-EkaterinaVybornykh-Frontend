@@ -62,9 +62,12 @@ function UsuariosInicio() {
                                     })}
 
                                 </div>
-                                <div className='d-flex flex-wrap mt-1'>
-                                    <p className='texto m-0'>{usuario?.descripcion?.split(' ').slice(0, 15).join(' ') + "..."}</p>
-                                </div>
+                                {
+                                    usuario?.descripcion !== null &&
+                                    <div className='d-flex flex-wrap mt-1'>
+                                        <p className='texto m-0'>{usuario.descripcion.split(' ').slice(0, 15).join(' ') + "..."}</p>
+                                    </div>
+                                }
                             </Card.Body>
                         </Card>
                     </Link>
