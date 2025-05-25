@@ -23,10 +23,6 @@ function AppNavbar() {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    useEffect(() => {
-        console.log("Usuario en Navbar: ", usuarioLogueado)
-    }, [usuarioLogueado])
-
     function handlePremiumButton() {
         setTipoModal("cancelar");
         setModalHeader("Premium")

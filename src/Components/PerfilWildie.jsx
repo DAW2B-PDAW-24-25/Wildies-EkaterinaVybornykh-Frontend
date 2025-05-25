@@ -140,7 +140,7 @@ function PerfilWildie({ usuario }) {
                     <div className='d-md-flex justify-content-around  d-none'>
                         <div className='d-flex justify-content-center mb-md-5'>
                             <Link to={`/deportesUsuario/${usuario.id}`}><Button variant="outline-secondary" className=' me-2 rounded-pill shadow'>Deportes</Button></Link>
-                            <Button variant="outline-secondary" className=' me-2 rounded-pill shadow'>Fotos</Button>
+                           {/*  <Button variant="outline-secondary" className=' me-2 rounded-pill shadow'>Fotos</Button> */}
                         </div>
                         <div>
                             {

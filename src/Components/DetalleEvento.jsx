@@ -1,10 +1,13 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState, useCallback } from 'react'
 import { API_URL } from '../App';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { AppContext } from '../Context/AppProvider';
 import SpinnerWave from './SpinnerWave';
 import { Button, Form, Image, Modal } from 'react-bootstrap';
 import { RegContext } from '../Context/RegProvider';
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
+import Fullscreen from "yet-another-react-lightbox/plugins/fullscreen";
 
 function DetalleEvento() {
     const { setEvento, evento } = useContext(AppContext);
@@ -17,6 +20,7 @@ function DetalleEvento() {
     const [tipoModal, setTipoModal] = useState("");
     const [foto, setFoto] = useState("");
     const [fotos, setFotos] = useState([]);
+    const [indexLightbox, setIndexLightbox] = useState(-1);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const navigate = useNavigate();
@@ -49,6 +53,10 @@ function DetalleEvento() {
     useEffect(() => {
         setEventoPasado(new Date(evento.fecha) < new Date())
     }, [evento])
+
+    const handleOpenLightbox = useCallback((index) => {
+        setIndexLightbox(index);
+    }, []);
 
     async function cargarEvento() {
         setCargando(true);
@@ -256,8 +264,13 @@ function DetalleEvento() {
                     <div className='row m-3'>
                         {
                             fotos.map((foto, index) => {
-                                return <div key={index} className='col-lg-4 col-sm-6 m-0 p-4'>
-                                    <img src = {foto.url} className="img-fluid w-100 hover" style={{ height: "250px", objectFit: "cover" }} />
+                                return <div
+                                    key={index}
+                                    className='col-lg-4 col-sm-6 m-0 p-4'
+                                    onClick={() => handleOpenLightbox(index)}
+                                    style={{ cursor: "pointer" }}
+                                >
+                                    <img src={foto.url} className="img-fluid w-100 hover" style={{ height: "250px", objectFit: "cover" }} />
                                 </div>
                             })
                         }
@@ -327,7 +340,16 @@ function DetalleEvento() {
 
                 </Modal.Footer>
             </Modal>
-
+            <Lightbox
+                open={indexLightbox >= 0}
+                close={() => setIndexLightbox(-1)}
+                slides={fotos.map((foto) => ({ src: foto.url }))}
+                index={indexLightbox}
+                on={{
+                    view: ({ index }) => setIndexLightbox(index),
+                }}
+                plugins={[Fullscreen]}
+            />
         </div>
     )
 }

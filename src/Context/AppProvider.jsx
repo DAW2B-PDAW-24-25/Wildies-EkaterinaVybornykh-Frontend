@@ -28,7 +28,6 @@ function AppProvider({ children }) {
     useEffect(() => {
         if (usuarioLogueado) {
             cargarEventosInicio();
-
         }
     }, [usuarioLogueado]);
 
@@ -40,17 +39,13 @@ function AppProvider({ children }) {
     }, [usuarioLogueado]);
 
     useEffect(() => {
-        if (usuarioLogueado) {
+        if (usuarioLogueado && !usuarioLogueado.roles.includes("admin")) {
             cargarAmistades();
             const intervalId = setInterval(cargarAmistades, 10000);
             return () => clearInterval(intervalId);
         }
 
     }, [usuarioLogueado])
-
-    useEffect(() => {
-        console.log("Amistades: ", amistades)
-    }, [amistades])
 
     async function cargarAmistades() {
         let response = await fetch(`${API_URL}/amistades/${usuarioLogueado.id}`, {

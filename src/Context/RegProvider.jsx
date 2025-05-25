@@ -24,10 +24,6 @@ function RegProvider({ children, setHayToken }) {
         }
     }, []);
 
-    useEffect(() => {
-        console.log(usuarioLogueado)
-    }, [usuarioLogueado])
-
     function login(datosUsuario, token) {
         setUsuarioLogueado(datosUsuario);
         setToken(token);

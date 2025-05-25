@@ -1,6 +1,5 @@
 import { React, useContext, useEffect, useMemo } from "react";
 import { GoogleMap, InfoWindow, Marker } from "@react-google-maps/api";
-import { GOOGLE_API_KEY } from "../App";
 import { useState, useRef } from "react";
 import { RegContext } from "../Context/RegProvider";
 import { API_URL } from "../App";

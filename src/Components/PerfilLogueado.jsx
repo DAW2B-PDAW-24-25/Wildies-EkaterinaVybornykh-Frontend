@@ -38,7 +38,7 @@ function PerfilLogueado({ usuario, logout, eliminarPerfil, modalTipo, modalMensa
                     <h1 className='mt-2'>{usuario.nombre} {usuario.apellidos}</h1>
                     <div className='d-flex justify-content-center mb-md-5 d-none d-md-block'>
                         <Link to={`/deportesUsuario/${usuario.id}`}><Button variant="outline-secondary" className=' me-2 mb-2 rounded-pill shadow'>Deportes</Button></Link>
-                        <Button variant="outline-secondary" className=' me-2 mb-2 rounded-pill shadow'>Fotos</Button>
+                        {/* <Button variant="outline-secondary" className=' me-2 mb-2 rounded-pill shadow'>Fotos</Button> */}
                         <Link to={`/editarPerfil/${usuario.id}`}>
                             <Button variant="outline-secondary" className=' me-2 mb-2 rounded-pill shadow'>Editar Perfil</Button>
                         </Link>
@@ -47,7 +47,7 @@ function PerfilLogueado({ usuario, logout, eliminarPerfil, modalTipo, modalMensa
                 </div>
                 <div className='d-flex justify-content-center mb-md-5 d-md-none'>
                     <Link to={`/deportesUsuario/${usuario.id}`}><Button variant="outline-secondary" className=' me-2 rounded-pill shadow'>Deportes</Button></Link>
-                    <Button variant="outline-secondary" className=' me-2 rounded-pill shadow'>Fotos</Button>
+                    {/* <Button variant="outline-secondary" className=' me-2 rounded-pill shadow'>Fotos</Button> */}
                     <Link to={`/editarPerfil/${usuario.id}`}>
                         <Button variant="outline-secondary" className=' me-2 rounded-pill shadow'>Editar</Button>
                     </Link>

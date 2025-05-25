@@ -11,7 +11,8 @@ import InicioSesion from './Components/InicioSesion';
 import DeportesUsuario from './Components/DeportesUsuario';
 import ResultadosUsuarios from './Components/ResultadosUsuarios';
 export const API_URL = import.meta.env.VITE_BACKEND_URL;
-export const GOOGLE_API_KEY = "AIzaSyBLNBtVh6RVdXhPX2mPA5hQct1zv_axmkY";
+import { GOOGLE_API_KEY, GOOGLE_LIBRARIES } from './config';
+//export const GOOGLE_API_KEY = "AIzaSyBLNBtVh6RVdXhPX2mPA5hQct1zv_axmkY";
 import UsuariosInicio from './Components/UsuariosInicio';
 import ResultadosEventos from './Components/ResultadosEventos';
 import DetalleEvento from './Components/DetalleEvento';
@@ -56,7 +57,7 @@ function App() {
     <LoadScript
       googleMapsApiKey={GOOGLE_API_KEY}
       language="es"
-      libraries={libraries}
+      libraries={GOOGLE_LIBRARIES}
     >
       <BrowserRouter>
         <ThemeProvider theme={theme}>

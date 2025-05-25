@@ -29,19 +29,14 @@ function Perfil() {
   }, [id]);
 
   useEffect(() => {
-    console.log("UsuarioLogueado en perfil: ", usuarioLogueado.id)
-  }, [])
-
-  useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {
-    // if (!esMiPerfil) {
-    console.log("estoy en useEf cargar wildie")
-    cargarWildie();
-    //}
-  }, [])
+    if (usuarioLogueado) {
+      cargarWildie();
+    }
+  }, [usuarioLogueado])
 
 
 
