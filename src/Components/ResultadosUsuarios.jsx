@@ -59,9 +59,9 @@ function ResultadosUsuarios() {
                     {usuariosPagina.map((usuario) => {
                         return <Link to={`/perfil/${usuario.id}`} className='col-md-3 mb-3 me-5 text-decoration-none'>
                             <Card key={usuario.id} className='rounded-0 p-0 border-0 bg-transparent'>
-                                <Card.Img variant="top" src={usuario.foto_perfil} 
-                                className="img-fluid w-100 rounded-0"
-                                style={{ height: "250px", objectFit: "cover" }}>
+                                <Card.Img variant="top" src={usuario.foto_perfil}
+                                    className="img-fluid w-100 rounded-0"
+                                    style={{ height: "250px", objectFit: "cover" }}>
 
                                 </Card.Img>
                                 <Card.ImgOverlay>
@@ -74,17 +74,16 @@ function ResultadosUsuarios() {
                                     <Card.Text>
                                         {usuario.localidad}
                                     </Card.Text>
-                                    <div className='d-flex flex-wrap'>
-                                        <h5 className='title me-1'>Deportes: </h5>
+                                    <div className='d-flex flex-wrap align-items-center'>
+                                        <h5 className='title me-1 mb-0'>Deportes: </h5>
                                         {usuario.deportes.map((deporte, index) => {
-                                            return <p key={index} className='me-1 texto'>{deporte.deporte} {index < usuario.deportes.length - 1 ? ',' : ''} </p>
+                                            return <p key={index} className='texto m-0'>{deporte.deporte} {index < usuario.deportes.length - 1 ? ',' : ''} </p>
                                         })}
-
                                     </div>
-
-                                    <Card.Text>
-                                        {usuario.descripcion.split(' ').slice(0, 15).join(' ') + "..."}
-                                    </Card.Text>
+                                    <div className='d-flex flex-wrap mt-1'>
+                                       
+                                        <p className='texto m-0'>{usuario.descripcion.split(' ').slice(0, 15).join(' ') + "..."}</p>
+                                    </div>
                                 </Card.Body>
                             </Card>
                         </Link>
