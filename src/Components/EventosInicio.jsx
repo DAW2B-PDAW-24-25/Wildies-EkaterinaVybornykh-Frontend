@@ -44,11 +44,11 @@ function EventosInicio() {
                             <div>
                                 <h5 className='title'>{evento.deporte} (nivel {evento.nivel})</h5>
                             </div>
-                            <div className='d-flex'>
-                                <h5 className='title me-1'>Fecha :</h5> <p>{evento.fecha_form}</p>
+                            <div className='d-flex align-items-center'>
+                                <h5 className='title me-1 mt-0 mb-0'>Fecha :</h5> <p className='m-0'>{evento.fecha_form}</p>
                             </div>
-                            <div className='d-flex'>
-                                <h5 className='title me-1'>Donde : </h5> <p>{evento.localidad}</p>
+                            <div className='d-flex align-items-center'>
+                                <h5 className='title me-1 mt-2'>Donde : </h5> <p className='m-0'>{evento.localidad}</p>
                             </div>
 
                         </Card.Body>

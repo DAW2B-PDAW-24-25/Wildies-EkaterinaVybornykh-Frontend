@@ -96,7 +96,7 @@ function GestionEventos() {
                         <tr className='row'>
                           <th className='col-3'>Email creador</th>
                           <td className='col-9 text-start'>
-                            <div className='ms-3 me-3'>{evento.creador}</div>
+                            <div className='ms-3 me-3'>{evento.email_creador}</div>
                           </td>
                         </tr>
                         <tr className='row'>

@@ -78,17 +78,17 @@ function ResultadosEventos() {
                 <div className='row pt-3 m-5'>
                     {eventosPagina.map((evento) => {
                         return <Link to={`/detalleEvento/${evento.id}`} className='col-md-3 mb-3 me-5 text-decoration-none'><Card key={evento.id} className='rounded-0 p-0 border-0 bg-transparent'>
-                            <Card.Img variant="top" src={evento.foto_portada} className="img-fluid w-100 rounded-0" style={{ height: "250px", objectFit: "cover" }}/>
+                            <Card.Img variant="top" src={evento.foto_portada} className="img-fluid w-100 rounded-0" style={{ height: "250px", objectFit: "cover" }} />
                             <Card.Body>
                                 <div>
                                     <h5 className='title'>{evento.deporte} (nivel {evento.nivel})</h5>
                                 </div>
-                                <div className='d-flex'>
-                                    <h5 className='title me-1'>Fecha :</h5> <p>{evento.fecha_form}</p>
+                                <div className='d-flex align-items-center'>
+                                    <h5 className='title me-1 mt-0 mb-0'>Fecha :</h5> <p className='m-0'>{evento.fecha_form}</p>
                                 </div>
-                                <Card.Text>
-                                    <h5 className='title'>Donde :</h5> {evento.localidad}
-                                </Card.Text>
+                                <div className='d-flex align-items-center'>
+                                    <h5 className='title me-1 mt-2'>Donde : </h5> <p className='m-0'>{evento.localidad}</p>
+                                </div>
                             </Card.Body>
                         </Card>
                         </Link>

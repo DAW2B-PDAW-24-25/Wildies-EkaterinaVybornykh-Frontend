@@ -240,7 +240,7 @@ function DetalleEvento() {
                     <p className='mt-2'><strong>Género participantes: </strong> {evento.sexo_participantes}</p>
                     <p className='mt-2'><strong>Edad: </strong>entre {evento.edad_min} y {evento.edad_max} años</p>
                     <p className='mt-2'><strong>Descripción:</strong> {evento.descripcion}</p>
-                    {(soyCreador || soyAdmin) && !eventoPasado
+                    {(soyCreador || soyAdmin) 
                         ? <div className='d-flex'>
                             <Button variant="secondary" className="rounded-pill shadow me-3" onClick={handleEditar}>Editar</Button>
                             <Button variant="secondary" className="rounded-pill shadow" onClick={handleEliminar}>Eliminar</Button>
