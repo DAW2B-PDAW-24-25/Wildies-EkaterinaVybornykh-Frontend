@@ -81,7 +81,7 @@ function ResultadosUsuarios() {
                                         })}
                                     </div>
                                     {
-                                        usuario?.descripcion !== null &&
+                                        typeof usuario?.descripcion === 'string' &&
                                         <div className='d-flex flex-wrap mt-1'>
                                             <p className='texto m-0'>{usuario.descripcion.split(' ').slice(0, 15).join(' ') + "..."}</p>
                                         </div>
