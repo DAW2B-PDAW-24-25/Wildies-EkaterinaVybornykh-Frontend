@@ -29,13 +29,12 @@ import Premium from './Components/Premium';
 import GestionUsuarios from './Components/GestionUsuarios';
 import GestionEventos from './Components/GestionEventos';
 import GestionDeportes from './Components/GestionDeportes';
+import About from './Components/About';
+import Contact from './Components/Contact';
 const libraries = ["places"];
 
 
 function App() {
-
-console.log("API Key que usa la app:", GOOGLE_API_KEY);
-
 
   const [hayToken, setHayToken] = useState(false);
 
@@ -97,6 +96,8 @@ console.log("API Key que usa la app:", GOOGLE_API_KEY);
                           <Route path='/gestionUsuarios' element={<GestionUsuarios />} />
                           <Route path='/gestionEventos' element={<GestionEventos />} />
                           <Route path='/gestionDeportes' element={<GestionDeportes />} />
+                          <Route path='/about' element={<About/>}/>
+                          <Route path='/contact' element={<Contact/>}/>
                         </Routes>
                         <Footer />
                       </div>

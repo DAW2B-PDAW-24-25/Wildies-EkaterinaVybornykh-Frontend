@@ -9,7 +9,7 @@ function MisWildies() {
     const { usuarioLogueado } = useContext(RegContext);
     const navigate = useNavigate();
     const hayPendientes = () => {
-        if (amistades.length > 0) {
+        if (amistades?.data?.length > 0) {
             for (let amistad of amistades.data) {
                 if (amistad.estado == "pendiente" && amistad.solicitante_id == amistad.amigo_id) {
                     return true;
@@ -17,9 +17,10 @@ function MisWildies() {
             }
             return false;
         }
+        return false;
     }
     const hayAmigos = () => {
-        if (amistades.length > 0) {
+        if (amistades?.data?.length > 0) {
             for (let amistad of amistades?.data) {
                 if (amistad.estado == "aceptado") {
                     return true;
@@ -27,8 +28,12 @@ function MisWildies() {
             }
             return false;
         }
-
+        return false;
     }
+
+    useEffect(() => {
+        console.log(hayAmigos())
+    }, [amistades.data])
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -111,7 +116,8 @@ function MisWildies() {
                     <div className='m-5 text-center'>
                         <h1 className='title'>Todavía no tienes wildies</h1>
                     </div>
-                )}
+                )
+            }
 
         </div>
 

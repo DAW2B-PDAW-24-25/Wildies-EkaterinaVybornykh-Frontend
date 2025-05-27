@@ -217,11 +217,13 @@ function DetalleEvento() {
     return (
         <div className='container-fluid min-vh-100 mb-5'>
             <div className='d-flex justify-content-between m-5 row align-items-center'>
-                <div className='d-flex col-sm-9 justify-content-between'>
-                    <h1 className='title'>{evento.nombre}</h1>
-                    < h4>Fecha: {evento.fecha_form}</h4>
+                <div className='d-flex col-sm-6'>
+                    <h1 className='title m-0'>{evento.nombre}</h1>
                 </div>
-                <div className='col-sm-2 mt-2'>
+                <div className='d-flex col-sm-3'>
+                    < h4 className='m-0'>Fecha: {evento.fecha_form}</h4>
+                </div>
+                <div className='col-sm-2 mt-2 mb-0'>
                     <Button variant="secondary" className="shadow" onClick={() => navigate(-1)}>Volver</Button>
                 </div>
 
@@ -240,7 +242,7 @@ function DetalleEvento() {
                     <p className='mt-2'><strong>Género participantes: </strong> {evento.sexo_participantes}</p>
                     <p className='mt-2'><strong>Edad: </strong>entre {evento.edad_min} y {evento.edad_max} años</p>
                     <p className='mt-2'><strong>Descripción:</strong> {evento.descripcion}</p>
-                    {(soyCreador || soyAdmin) 
+                    {(soyCreador || soyAdmin)
                         ? <div className='d-flex'>
                             <Button variant="secondary" className="rounded-pill shadow me-3" onClick={handleEditar}>Editar</Button>
                             <Button variant="secondary" className="rounded-pill shadow" onClick={handleEliminar}>Eliminar</Button>
