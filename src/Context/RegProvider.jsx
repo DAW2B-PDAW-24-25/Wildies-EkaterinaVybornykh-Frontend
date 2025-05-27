@@ -53,7 +53,9 @@ function RegProvider({ children, setHayToken }) {
                 }
             });
             if (!response.ok) {
-                throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
+                logout();
+                
+               
             }
             let data = await response.json();
             setUsuarioLogueado(data.data);
@@ -68,7 +70,7 @@ function RegProvider({ children, setHayToken }) {
         try {
             let response = await fetch(`${API_URL}/deportes`);
             if (!response.ok) {
-                throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
+               
             }
             let data = await response.json();
             setDeportes(data)

@@ -72,7 +72,7 @@ function AppProvider({ children }) {
             });
 
             if (!response.ok) {
-                throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
+                
             }
 
             let data = await response.json();
@@ -92,7 +92,7 @@ function AppProvider({ children }) {
             });
 
             if (!response.ok) {
-                throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
+                
             }
 
             let data = await response.json();
@@ -114,7 +114,7 @@ function AppProvider({ children }) {
             });
 
             if (!response.ok) {
-                throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
+                
             } else {
                 let data = await response.json();
 
@@ -138,7 +138,7 @@ function AppProvider({ children }) {
             });
 
             if (!response.ok) {
-                throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
+                
             } else {
                 let data = await response.json();
                 setEventos(data.data);

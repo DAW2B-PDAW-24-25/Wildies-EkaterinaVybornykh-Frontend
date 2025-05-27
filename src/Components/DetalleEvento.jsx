@@ -67,7 +67,7 @@ function DetalleEvento() {
             }
         });
         if (!response.ok) {
-            throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
+           
         }
         let data = await response.json();
         setEvento(data.data);
@@ -83,7 +83,7 @@ function DetalleEvento() {
             }
         });
         if (!response.ok) {
-            throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
+           
         }
         let data = await response.json();
         setFotos(data);

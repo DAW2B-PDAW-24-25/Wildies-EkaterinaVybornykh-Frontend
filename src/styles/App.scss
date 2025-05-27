@@ -118,7 +118,6 @@ p {
   position: fixed;
   height: 100vh;
   flex-direction: column;
-  // border-right: 1px solid $border-color;
   align-content: start;
   flex-wrap: nowrap;
   z-index: 10;
@@ -127,15 +126,6 @@ p {
 
   @media (max-width: 992px) {
     width: 70px;
-    /* position: fixed;
-  height: 100vh;
-  flex-direction: column;
- // border-right: 1px solid $border-color;
-  align-content: start;
-  flex-wrap: nowrap;
-  z-index: 10;
-  background-color: $background-color;
- opacity: 0.9; */
 
   }
 }

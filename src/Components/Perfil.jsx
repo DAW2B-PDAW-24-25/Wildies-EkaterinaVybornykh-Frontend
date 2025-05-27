@@ -73,7 +73,7 @@ function Perfil() {
         }
       });
       if (!response.ok) {
-        throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
+
       }
       let data = await response.json();
       setWildie(data.data);
