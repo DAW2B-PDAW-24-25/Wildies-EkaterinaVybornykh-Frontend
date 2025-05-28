@@ -98,7 +98,7 @@ function AppNavbar() {
     return (
 
         <Navbar>
-            <Container className='me-5 ms-4 mt-2 mb-0 p-0'>
+            <Container className='me-3 ms-3 me-md-5 ms-md-4 mt-2 mb-0 p-0'>
 
                 {/*   <Navbar.Brand href="#home"></Navbar.Brand> */}
                 {/*  <Navbar.Toggle /> */}
@@ -109,8 +109,8 @@ function AppNavbar() {
                     {
                         usuarioLogueado && usuarioLogueado.roles.includes("premium") && !usuarioLogueado.roles.includes("admin") &&
 
-                        <Button variant="outline-secondary" className="rounded-pill shadow ms-4" onClick={handlePremiumButton}>
-                            Premium
+                        <Button variant="outline-secondary" className="rounded-pill shadow ms-md-4" onClick={handlePremiumButton}>
+                            Cancelar Premium
                         </Button>
 
                     }

@@ -38,6 +38,10 @@ function AppProvider({ children }) {
 
     }, [usuarioLogueado]);
 
+     useEffect(() => {
+            console.log("amistades en appprovider: ", amistades)
+        }, [amistades])
+
     useEffect(() => {
         if (usuarioLogueado && !usuarioLogueado.roles.includes("admin")) {
             cargarAmistades();

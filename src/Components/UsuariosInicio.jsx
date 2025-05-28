@@ -9,9 +9,9 @@ function UsuariosInicio() {
 
     const { wildies, cargarUsuariosInicio, tipoUsuarios } = useContext(AppContext);
     const { usuarioLogueado } = useContext(RegContext);
-    const [cargando, setCargando] = useState(true);
+    const [cargando, setCargando] = useState(false);
 
-    useEffect(() => {
+/*     useEffect(() => {
         if (usuarioLogueado) {
             cargar();
         }
@@ -31,7 +31,7 @@ function UsuariosInicio() {
         return <div className='container-fluid min-vh-100'>
             <SpinnerWave />
         </div>
-    }
+    } */
 
     return (
 
@@ -47,7 +47,7 @@ function UsuariosInicio() {
                             </Card.Img>
                             <Card.ImgOverlay>
                                 <div >
-                                    <h5 className='text-light opacity-75'>{usuario.nombre}</h5>
+                                    <h5 className='title opacity-75'>{usuario.nombre}</h5>
                                 </div>
                             </Card.ImgOverlay>
 

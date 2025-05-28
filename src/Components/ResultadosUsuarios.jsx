@@ -8,7 +8,7 @@ import Pagination from 'react-bootstrap/Pagination';
 import '../styles/Paginacion.scss'
 
 function ResultadosUsuarios() {
-    const { wildies, cargarUsuariosCerca, tipoUsuarios, aplicarFiltros } = useContext(AppContext);
+    const { wildies} = useContext(AppContext);
     const [cargando, setCargando] = useState(false);
     const [paginaActual, setPaginaActual] = useState(1);
     const [usuariosPorPagina] = useState(12);
@@ -27,13 +27,12 @@ function ResultadosUsuarios() {
 
     const paginacion = [];
 
-    // Generamos los botones de la paginación
     for (let number = 1; number <= totalPaginas; number++) {
         paginacion.push(
             <Pagination.Item
                 key={number}
                 active={number === paginaActual}
-                onClick={() => setPaginaActual(number)} // Cambia la página activa
+                onClick={() => setPaginaActual(number)} 
             >
                 {number}
             </Pagination.Item>
@@ -66,7 +65,7 @@ function ResultadosUsuarios() {
                                 </Card.Img>
                                 <Card.ImgOverlay>
                                     <div >
-                                        <h5 className='text-light opacity-75'>{usuario.nombre}</h5>
+                                        <h5 className='title opacity-75'>{usuario.nombre}</h5>
                                     </div>
                                 </Card.ImgOverlay>
 

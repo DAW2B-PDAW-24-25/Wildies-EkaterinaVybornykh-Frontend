@@ -222,7 +222,7 @@ function DeportesUsuario() {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
-                 "Authorization": `Bearer ${token}`
+                "Authorization": `Bearer ${token}`
             },
             body: JSON.stringify(datos)
         });
@@ -252,9 +252,13 @@ function DeportesUsuario() {
                     <div>
                         <h1>Deportes que practico</h1>
                     </div>
-                    <div className='me-3'>
-                        <Button variant='outline-secondary' className='rounded-pill shadow' onClick={modalAgregarDeporte}>Añadir</Button>
-                    </div>
+                    {
+                        (usuarioLogueado?.no_practica?.length > 0) &&
+                        <div className='me-3'>
+                            <Button variant='outline-secondary' className='rounded-pill shadow' onClick={modalAgregarDeporte}>Añadir</Button>
+                        </div>
+                    }
+
                 </div>
                 <hr />
                 {usuarioLogueado?.deportes?.length === 0 &&
@@ -279,12 +283,12 @@ function DeportesUsuario() {
                                 })}
                             </div>
 
-                            <div>
+                            <div className='d-flex flex-column align-content-end'>
                                 {!deporte.nivel &&
-                                    <Button variant='outline-secondary' className='me-2 mb-2 rounded-pill shadow' id={deporte.usuario_deporte_id} onClick={modalTest}>Realizar Test</Button>
+                                    <Button variant='outline-secondary' className='me-2 mb-2 rounded-pill shadow pt-0 pb-0 ps-2 pe-2' id={deporte.usuario_deporte_id} onClick={modalTest}>Test</Button>
                                 }
-                                <Button variant='outline-secondary' className='me-2 mb-2 rounded-pill shadow' id={deporte.usuario_deporte_id} data-deporteid={deporte.deporte_id} onClick={modalEditar}>Editar</Button>
-                                <Button variant='outline-secondary' id={deporte.usuario_deporte_id} className='me-2 mb-2 rounded-pill shadow' onClick={modalEliminar}>Eliminar</Button>
+                                <Button variant='outline-secondary' className='me-2 mb-2 rounded-pill shadow pt-0 pb-0 ps-2 pe-2' id={deporte.usuario_deporte_id} data-deporteid={deporte.deporte_id} onClick={modalEditar}>Editar</Button>
+                                <Button variant='outline-secondary' id={deporte.usuario_deporte_id} className='me-2 mb-2 rounded-pill shadow pt-0 pb-0 ps-2 pe-2' onClick={modalEliminar}>Eliminar</Button>
                             </div>
 
                         </div>

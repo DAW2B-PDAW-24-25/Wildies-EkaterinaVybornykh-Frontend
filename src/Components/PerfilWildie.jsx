@@ -12,7 +12,7 @@ import { RegContext } from '../Context/RegProvider';
 function PerfilWildie({ usuario }) {
 
     const { amistades, setAmistades } = useContext(AppContext);
-    const {usuarioLogueado, token}=useContext(RegContext);
+    const { usuarioLogueado, token } = useContext(RegContext);
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -23,18 +23,21 @@ function PerfilWildie({ usuario }) {
 
     useEffect(() => {
         console.log("amistades en perfil: ", amistades)
-    }, [])
+    }, [amistades])
 
     function getIdAmistad() {
-        for (let amistad of amistades.data) {
-            if (amistad.amigo_id == id) {
-                return amistad.amistad_id;
+        if (amistades?.data) {
+            for (let amistad of amistades?.data) {
+                if (amistad.amigo_id == id) {
+                    return amistad.amistad_id;
+                }
             }
         }
+
     }
 
     function getTipoAmistad() {
-        if (amistades && amistades.data.length !== 0) {
+        if (amistades?.data && amistades?.data?.length !== 0) {
             for (const amistad of amistades.data) {
                 if (amistad.solicitante_id == id && amistad.amigo_id == id && amistad.estado === "pendiente") {
                     return "pendienteYo";
@@ -58,7 +61,7 @@ function PerfilWildie({ usuario }) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`        
+                "Authorization": `Bearer ${token}`
             },
             body: JSON.stringify(data)
         })
@@ -75,7 +78,7 @@ function PerfilWildie({ usuario }) {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`        
+                "Authorization": `Bearer ${token}`
             },
 
         })
@@ -92,7 +95,7 @@ function PerfilWildie({ usuario }) {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`         
+                "Authorization": `Bearer ${token}`
             },
 
         })
@@ -109,7 +112,7 @@ function PerfilWildie({ usuario }) {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`       
+                "Authorization": `Bearer ${token}`
             },
 
         })
@@ -123,12 +126,16 @@ function PerfilWildie({ usuario }) {
 
     return (
         <div className='container-fluid min-vh-100'>
-            <div className='row m-3'>
-                <div className='col-4 text-center'>
+            <div className='row m-md-3 align-items-center'>
+                <div className='col-12 col-md-4 text-center'>
                     <Image src={usuario.foto_perfil} className='avatar_big' />
+                    <div className='d-block d-md-none mt-2'>
+                        <h1 className='mt-2'>{usuario.nombre} {usuario.apellidos}</h1>
+                    </div>
                     <p>{usuario.localidad}</p>
                 </div>
-                <div className='d-flex flex-column col-8 text-center justify-content-between'>
+
+                <div className='d-none d-md-flex flex-column col-md-8 text-center justify-content-between'>
                     <div className='d-flex justify-content-between align-items-center'>
                         <div className="me-2">
                             <h1 className='mt-2'>{usuario.nombre} {usuario.apellidos}</h1>
@@ -137,10 +144,11 @@ function PerfilWildie({ usuario }) {
                             <Button variant="secondary" className=' me-2  shadow' onClick={() => navigate(-1)}>Volver</Button>
                         </div>
                     </div>
-                    <div className='d-md-flex justify-content-around  d-none'>
-                        <div className='d-flex justify-content-center mb-md-5'>
-                            <Link to={`/deportesUsuario/${usuario.id}`}><Button variant="outline-secondary" className=' me-2 rounded-pill shadow'>Deportes</Button></Link>
-                           {/*  <Button variant="outline-secondary" className=' me-2 rounded-pill shadow'>Fotos</Button> */}
+
+                    <div className='d-md-flex align-items-end d-none mt-3 ms-5'>
+                        <div>
+                            <Button variant="outline-secondary" className='rounded-pill shadow me-2' onClick={() => navigate(`/deportesUsuario/${usuario.id}`)}>Deportes</Button>
+                            {/*  <Button variant="outline-secondary" className=' me-2 rounded-pill shadow'>Fotos</Button> */}
                         </div>
                         <div>
                             {
@@ -149,9 +157,9 @@ function PerfilWildie({ usuario }) {
                                     : tipoAmistad === "rechazado"
                                         ? <h5 style={{ backgroundColor: "#fadbd8" }} className='rounded-pill shadow p-2 text-center'>Amistad rechazada</h5>
                                         : tipoAmistad === "aceptado"
-                                            ? <div>
-                                                <Button variant="outline-secondary" className=' me-2 rounded-pill shadow' onClick={handleEliminarAmistad}>Eliminar amistad</Button>
-                                            </div>
+                                            ?
+                                            <Button variant="outline-secondary" className=' me-2 rounded-pill shadow' onClick={handleEliminarAmistad}>Eliminar amistad</Button>
+
                                             : tipoAmistad === "pendienteYo"
                                                 ? <div className="d-flex me-2">
 
@@ -171,37 +179,35 @@ function PerfilWildie({ usuario }) {
 
                 </div>
             </div>
-            <div className='d-md-none d-flex justify-content-around'>
-                        <div className='d-flex justify-content-center mb-md-5'>
-                            <Link to={`/deportesUsuario/${usuario.id}`}><Button variant="outline-secondary" className=' me-2 rounded-pill shadow'>Deportes</Button></Link>
-                            <Button variant="outline-secondary" className=' me-2 rounded-pill shadow'>Fotos</Button>
-                        </div>
-                        <div>
-                            {
-                                tipoAmistad === "pendienteAmigo"
-                                    ? <h5 style={{ backgroundColor: "#bfff8a" }} className='rounded-pill shadow pt-2 pb-2 ps-3 pe-3 text-center'>Pendiente</h5>
-                                    : tipoAmistad === "rechazado"
-                                        ? <h5 style={{ backgroundColor: "#fadbd8" }} className='rounded-pill shadow p-2 text-center'>Amistad rechazada</h5>
-                                        : tipoAmistad === "aceptado"
-                                            ? <div>
-                                                <Button variant="outline-secondary" className=' me-2 rounded-pill shadow' onClick={handleEliminarAmistad}>Eliminar amistad</Button>
-                                            </div>
-                                            : tipoAmistad === "pendienteYo"
-                                                ? <div className="d-flex me-2">
+            <div className='d-md-none d-flex flex-column align-items-center mt-3'>
+                
 
-                                                    <Button variant="outline-secondary" className=' me-2 rounded-pill shadow' onClick={handleAceptarAmistad}>Aceptar amistad</Button>
+                <div className='d-flex flex-wrap justify-content-center mt-3'>
+                    <Button variant="outline-secondary" className='me-2 mb-2 rounded-pill shadow' onClick={() => navigate(`/deportesUsuario/${usuario.id}`)}>Deportes</Button>
 
-                                                    <Button variant="outline-secondary" className=' me-2 rounded-pill shadow' onClick={handleRechazarAmistad}>Rechazar amistad</Button>
+                    {tipoAmistad === "pendienteAmigo" && (
+                        <h5 style={{ backgroundColor: "#bfff8a" }} className='rounded-pill shadow pt-2 pb-2 ps-3 pe-3 text-center mb-2'>Pendiente</h5>
+                    )}
 
-                                                </div>
+                    {tipoAmistad === "rechazado" && (
+                        <h5 style={{ backgroundColor: "#fadbd8" }} className='rounded-pill shadow p-2 text-center mb-2'>Amistad rechazada</h5>
+                    )}
 
-                                                : <div>
-                                                    <Button variant="outline-secondary" className=' me-2 rounded-pill shadow' onClick={handleSolicitarAmistad}>Solicitar amistad</Button>
-                                                </div>
-                            }
-                        </div>
+                    {tipoAmistad === "aceptado" && (
+                        <Button variant="outline-secondary" className='me-2 mb-2 rounded-pill shadow' onClick={handleEliminarAmistad}>Eliminar amistad</Button>
+                    )}
 
-                    </div>
+                    {tipoAmistad === "pendienteYo" && (
+                        <>
+                            <Button variant="outline-secondary" className='me-2 mb-2 rounded-pill shadow' onClick={handleAceptarAmistad}>Aceptar amistad</Button>
+                            <Button variant="outline-secondary" className='me-2 mb-2 rounded-pill shadow' onClick={handleRechazarAmistad}>Rechazar amistad</Button>
+                        </>
+                    )}
+
+
+                </div>
+            </div>
+
             <hr />
             <div className='row bg-seccion p-3 rounded shadow d-flex ms-3 me-3'>
                 <div className='d-flex flex-column justify-content-center col-md-6'>
@@ -217,7 +223,7 @@ function PerfilWildie({ usuario }) {
                 </div>
                 <div className='col-md-6'>
                     <div>
-                        {usuario.deportes.map((deporte, index) => {
+                        {usuario?.deportes?.map((deporte, index) => {
 
                             return <p key={index}>
                                 <strong>{deporte.deporte}</strong> {deporte.nivel && `: nivel ${deporte.nivel}`}

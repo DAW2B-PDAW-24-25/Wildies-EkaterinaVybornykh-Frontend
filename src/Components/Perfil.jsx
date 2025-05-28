@@ -6,19 +6,19 @@ import { BiLeaf } from "react-icons/bi";
 import { GoBriefcase } from "react-icons/go";
 import { LuLanguages } from "react-icons/lu";
 import { Link, useParams } from 'react-router-dom';
-import { API_URL } from '../App';
 import SpinnerWave from './SpinnerWave';
 import PerfilWildie from './PerfilWildie';
 import PerfilLogueado from './PerfilLogueado';
 import { RegContext } from '../Context/RegProvider';
+import { API_URL } from '../App';
 
 function Perfil() {
   const { id } = useParams();
-  const { logout, setIdPerfil, wildie, setWildie } = useContext(AppContext);
-  const { usuarioLogueado, token } = useContext(RegContext);
+  const { setIdPerfil, wildie, setWildie } = useContext(AppContext);
+  const { usuarioLogueado, token, logout } = useContext(RegContext);
   const [modalMensaje, setModalMensaje] = useState("");
   const [modalTipo, setModalTipo] = useState("");
-  const [cargando, setCargando] = useState(true);
+  const [cargando, setCargando] = useState(false);
 
   const esMiPerfil = usuarioLogueado?.id == id;
 
@@ -37,31 +37,6 @@ function Perfil() {
       cargarWildie();
     }
   }, [usuarioLogueado])
-
-
-
-  async function eliminarPerfil() {
-    setShow(false);
-    const respuesta = await fetch(`${API_URL}/usuarios/${usuarioLogueado.id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`         //todo ACTIVAR TOKEN
-      }
-    }
-    );
-    if (!respuesta.ok) {
-      setModalTipo("error");
-      setModalMensaje("Error al eliminar la cuenta. Ponte en contacto con nuestro equipo.");
-      setShow(true);
-    } else {
-      let data = await respuesta.json();
-      console.log(data);
-      setModalTipo("exito");
-      setModalMensaje("Cuenta eliminada con éxito");
-      setShow(true);
-    }
-  }
 
   async function cargarWildie() {
     setCargando(true);
@@ -94,12 +69,13 @@ function Perfil() {
   return (
     esMiPerfil ? <PerfilLogueado
       usuario={usuarioLogueado}
-      eliminarPerfil={eliminarPerfil}
       logout={logout}
       modalTipo={modalTipo}
       modalMensaje={modalMensaje}
       setModalTipo={setModalTipo}
       setModalMensaje={setModalMensaje}
+      usuarioLogueado={usuarioLogueado}
+      token={token}
     />
       : <PerfilWildie usuario={wildie} />
   )

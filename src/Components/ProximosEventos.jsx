@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 function ProximosEventos() {
     const { usuarioLogueado, token } = useContext(RegContext);
-    const [cargando, setCargando] = useState(true);
+    const [cargando, setCargando] = useState(false);
     const [proximosEventos, setProximosEventos] = useState([]);
 
     useEffect(() => {
@@ -15,6 +15,7 @@ function ProximosEventos() {
     }, [usuarioLogueado])
 
     async function cargarProximosEventos() {
+        setCargando(true);
         let response = await fetch(`${API_URL}/futurosEventos/${usuarioLogueado.id}`, {
             method: 'GET',
             headers: {
@@ -26,8 +27,9 @@ function ProximosEventos() {
         } else {
             let data = await response.json();
             setProximosEventos(data.data);
-            setCargando(false)
+            
         }
+        setCargando(false)
     }
 
     if (cargando) {

@@ -265,7 +265,7 @@ function GestionUsuarios() {
     }
 
     return (
-        <div className='container-fluid min-vh-100'>
+        <div className='container-fluid-lg min-vh-100'>
             <div className='row p-3 rounded shadow d-flex ms-3 me-3 mt-4 mb-5 bg-light text-center'>
                 <h3 className='title'>Gestión de usuarios</h3>
                 <hr />

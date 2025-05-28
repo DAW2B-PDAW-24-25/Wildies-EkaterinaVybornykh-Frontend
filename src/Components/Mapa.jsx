@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 function Mapa() {
     const { usuarioLogueado, token } = useContext(RegContext);
-    const [cargando, setCargando] = useState(true);
+    const [cargando, setCargando] = useState(false);
     const [hovered, setHovered] = useState(null);
     const [eventosUsuario, setEventosUsuario] = useState({});
     const timeoutRef = useRef(null);
@@ -29,6 +29,7 @@ function Mapa() {
     }), [usuarioLogueado]);
 
     async function cargarEventosUsuario() {
+        setCargando(true);
         let response = await fetch(`${API_URL}/eventosUsuario/${usuarioLogueado.id}`, {
             method: 'GET',
             headers: {
@@ -40,8 +41,9 @@ function Mapa() {
         } else {
             let data = await response.json();
             setEventosUsuario(data.data);
-            setCargando(false)
+            
         }
+        setCargando(false)
     }
 
     function handleMouseOver(id) {

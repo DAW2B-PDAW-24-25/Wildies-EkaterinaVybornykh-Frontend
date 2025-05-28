@@ -52,7 +52,7 @@ function ModalDeportes({
             setValidated(true);
             return;
         }
-         enviarResultados();
+        enviarResultados();
     }
 
 
@@ -63,7 +63,7 @@ function ModalDeportes({
             size="md"
             aria-labelledby="contained-modal-title-vcenter"
             centered
-            scrollable 
+            scrollable
             backdrop="static"
         >
             <Modal.Header closeButton>
@@ -79,15 +79,16 @@ function ModalDeportes({
                         name="opciones"
                         value={idDeporte}
                         onChange={cambiarDeporte}
-                        className="d-flex flex-wrap row"
+                        className="d-flex flex-wrap"
                     >
                         {
                             usuarioLogueado?.no_practica?.map((deporte) => {
                                 return <ToggleButton
+                                    key={deporte.id}
                                     id={deporte.id}
                                     value={deporte.id}
                                     variant='outline-secondary'
-                                    className="me-2 mb-2 rounded-pill shadow col-3"
+                                    className="me-2 mb-2 rounded-pill shadow p-1"
                                 >
                                     {deporte.nombre}
                                 </ToggleButton>
@@ -134,8 +135,8 @@ function ModalDeportes({
                                 </div>
                             </div>
                         ))}
-                        <div className='d-flex justify-content-between ms-4 me-4 mt-3'>
-                            <Button type='submit' variant='outline-secondary'>Obtener resultado</Button>
+                        <div className='d-flex justify-content-end ms-4 me-4 mt-3'>
+                            <Button className='me-2' type='submit' variant='outline-secondary'>Resultado</Button>
                             <Button variant='outline-secondary' onClick={onHide}>Cancelar</Button>
                         </div>
 

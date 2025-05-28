@@ -170,39 +170,32 @@ function ActualizarPerfil() {
                 <Card className='rounded-0 p-0 border-0 bg-transparent'>
 
                     <div className='row p-3'>
-                        <div className='d-flex justify-content-between'>
-                            <div className='d-flex flex-column align-items-center col-5 col-md-4'>
-
+                        <div className='d-flex justify-content-between flex-wrap flex-md-nowrap'>
+                            <div className='col-12 col-md-4 d-flex flex-column align-items-center'>
                                 {fotoPerfil
                                     ? <Image src={fotoPerfil instanceof File
                                         ? URL.createObjectURL(fotoPerfil)
                                         : fotoPerfil}
-                                        className='avatar_big mb-3 '
-                                    />
-
+                                        className='avatar_big mb-3' />
                                     : <Image src={formData.foto_perfil}
-                                        className='avatar_big mb-3 ' />
-
+                                        className='avatar_big mb-3' />
                                 }
+
                                 <Button variant="link" className='text-decoration-none boton-link' onClick={handleShow}>Cambiar foto</Button>
 
-                                <div></div>
                                 <Modal show={show} onHide={handleClose}>
                                     <Modal.Header closeButton>
                                         <Modal.Title>Subir foto de perfil</Modal.Title>
                                     </Modal.Header>
                                     <Form>
-                                        <Modal.Body><Form.Control type="file" name='foto_perfil' onChange={handleFoto} accept="image/*" /></Modal.Body>
+                                        <Modal.Body>
+                                            <Form.Control type="file" name='foto_perfil' onChange={handleFoto} accept="image/*" />
+                                        </Modal.Body>
                                         <Modal.Footer>
-                                            <Button variant="secondary" onClick={enviarFoto}>
-                                                Guardar
-                                            </Button>
+                                            <Button variant="secondary" onClick={enviarFoto}>Guardar</Button>
                                         </Modal.Footer>
                                     </Form>
                                 </Modal>
-                            </div>
-                            <div className='col-2'>
-                                <Button variant="secondary" className="shadow" onClick={() => navigate(-1)}>Volver</Button>
                             </div>
                         </div>
                     </div>

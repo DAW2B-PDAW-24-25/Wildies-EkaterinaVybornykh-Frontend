@@ -9,7 +9,7 @@ import '../styles/Paginacion.scss'
 
 function ResultadosEventos() {
     const { eventos, cargarEventosCerca, tipoEventos, aplicarFiltros } = useContext(AppContext);
-    const [cargando, setCargando] = useState(true);
+    const [cargando, setCargando] = useState(false);
     const [paginaActual, setPaginaActual] = useState(1);
     const [eventosPorPagina] = useState(12);
 
