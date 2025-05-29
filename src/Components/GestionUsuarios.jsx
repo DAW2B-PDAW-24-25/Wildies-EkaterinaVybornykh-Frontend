@@ -334,7 +334,7 @@ function GestionUsuarios() {
                                     <tr className='row'>
                                         <th className='col-3'>Foto perfil</th>
                                         <td className='col-9 text-start'>
-                                            <div className='ms-3 me-3'>{usuarioBuscado.foto_perfil}</div>
+                                            <img src={usuarioBuscado.foto_perfil} className='w-25 image-fluid ms-3 me-3'/>
                                         </td>
                                     </tr>
                                     <tr className='row'>

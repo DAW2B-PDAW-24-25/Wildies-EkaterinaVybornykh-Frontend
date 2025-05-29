@@ -53,7 +53,7 @@ function GestionEventos() {
   }
 
   return (
-    <div className='container-fluid min-vh-100'>
+    <div className='container-fluid-lg min-vh-100'>
       <div className='row p-3 rounded shadow d-flex ms-3 me-3 mt-4 mb-5 bg-light'>
         <h3 className='title'>Gestión de eventos</h3>
         <hr />
@@ -114,7 +114,7 @@ function GestionEventos() {
                         <tr className='row'>
                           <th className='col-3'>Foto portada</th>
                           <td className='col-9 text-start'>
-                            <div className='ms-3 me-3'>{evento.foto_portada}</div>
+                            <img src={evento.foto_portada} className='img-fluid w-25 ms-3 me-3 rounded'></img>
                           </td>
                         </tr>
                       </tbody>

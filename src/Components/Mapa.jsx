@@ -95,7 +95,7 @@ function Mapa() {
             }}
 
         >
-            {eventosUsuario.eventos_pasados.map((evento) => (
+            {eventosUsuario?.eventos_pasados?.map((evento) => (
                 <Marker
                     key={evento.id}
                     position={{ lat: Number(evento.latitud), lng: Number(evento.longitud) }}
@@ -122,7 +122,7 @@ function Mapa() {
                     )}
                 </Marker>
             ))}
-            {eventosUsuario.eventos_futuros.map((evento) => (
+            {eventosUsuario?.eventos_futuros?.map((evento) => (
                 <Marker
                     key={evento.id}
                     position={{ lat: Number(evento.latitud), lng: Number(evento.longitud) }}
