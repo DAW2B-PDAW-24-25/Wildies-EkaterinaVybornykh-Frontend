@@ -11,7 +11,7 @@ function UsuariosInicio() {
     const { usuarioLogueado } = useContext(RegContext);
     const [cargando, setCargando] = useState(false);
 
-/*     useEffect(() => {
+     useEffect(() => {
         if (usuarioLogueado) {
             cargar();
         }
@@ -26,7 +26,7 @@ function UsuariosInicio() {
 
     }
 
-    if (cargando) {
+   /* if (cargando) {
 
         return <div className='container-fluid min-vh-100'>
             <SpinnerWave />

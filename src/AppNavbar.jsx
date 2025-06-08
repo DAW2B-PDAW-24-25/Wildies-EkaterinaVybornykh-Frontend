@@ -41,8 +41,8 @@ function AppNavbar() {
         handleClose();
     }
 
-    function handlePasswordAdminButton() {
-        setTipoModal("passwordAdmin")
+    function handlePassword() {
+        setTipoModal("password")
         setModalHeader("Introduce nueva contraseña")
         handleShow();
     }
@@ -54,7 +54,7 @@ function AppNavbar() {
         });
     }
 
-    async function handleEditarPasswordAdmin(e) {
+    async function handleEditarPassword(e) {
         e.preventDefault();
         const form = e.currentTarget;
         if (form.checkValidity() === false) {
@@ -108,11 +108,14 @@ function AppNavbar() {
                         : "justify-content-end"}>
                     {
                         usuarioLogueado && usuarioLogueado.roles.includes("premium") && !usuarioLogueado.roles.includes("admin") &&
+                        <div>
+                            <Button variant="outline-secondary" className="rounded-pill shadow ms-md-4 d-none d-sm-block" onClick={handlePremiumButton}>
+                                Cancelar Premium
+                            </Button>
+                            <div className='d-sm-none'>
 
-                        <Button variant="outline-secondary" className="rounded-pill shadow ms-md-4" onClick={handlePremiumButton}>
-                            Cancelar Premium
-                        </Button>
-
+                            </div>
+                        </div>
                     }
 
                     <Dropdown>
@@ -138,13 +141,16 @@ function AppNavbar() {
 
                         </Dropdown.Toggle>
 
-                        <Dropdown.Menu className='m-0 border-0 shadow opacity-75 dropdown-menu-end'>
+                        <Dropdown.Menu className='m-0 border-0 shadow dropdown-menu-end'>
                             {
-                                (usuarioLogueado && usuarioLogueado.roles.includes("admin"))
-                                    ? <Dropdown.Item className='texto' onClick={handlePasswordAdminButton}>Cambiar contraseña</Dropdown.Item>
-                                    : <Dropdown.Item className='texto' onClick={() => navigate(`/perfil/${usuarioLogueado.id}`)}>Perfil</Dropdown.Item>
+                                (usuarioLogueado && !usuarioLogueado.roles.includes("admin")) &&
+                                <Dropdown.Item className='texto' onClick={() => navigate(`/perfil/${usuarioLogueado.id}`)}>Perfil</Dropdown.Item>
                             }
-
+                            <Dropdown.Item className='texto' onClick={handlePassword}>Cambiar contraseña</Dropdown.Item>
+                            {
+                                 (usuarioLogueado && usuarioLogueado.roles.includes("premium")) &&
+                                <Dropdown.Item href="#/action-2" className='texto d-sm-none' onClick={handlePremiumButton}>Cancelar Premium</Dropdown.Item>
+                            }
                             <Dropdown.Item href="#/action-2" className='texto' onClick={logout}>Cerrar sesión</Dropdown.Item>
 
                         </Dropdown.Menu>
@@ -159,12 +165,12 @@ function AppNavbar() {
                 <Modal.Body className='texto'>
                     {
                         (tipoModal === "cancelar" || tipoModal === "exito") &&
-                         modalMessage 
+                        modalMessage
                     }
 
                     {
-                        tipoModal === "passwordAdmin" &&
-                        <Form noValidate validated={validated} onSubmit={handleEditarPasswordAdmin}>
+                        tipoModal === "password" &&
+                        <Form noValidate validated={validated} onSubmit={handleEditarPassword}>
                             <Form.Group controlId="password" className='mb-2'>
                                 <Form.Label>Nueva contraseña</Form.Label>
                                 <Form.Control
@@ -196,21 +202,23 @@ function AppNavbar() {
                         </Form>
                     }
                 </Modal.Body>
-                <Modal.Footer>
-                    {
-                        tipoModal === "cancelar" &&
-                        <Button variant="secondary" onClick={handleCancelarPremium}>
-                            Aceptar
-                        </Button>
-                    }
-                    {
-                        tipoModal !== "passwordAdmin" &&
+
+                {
+                    tipoModal !== "password" &&
+                    <Modal.Footer>
+                        {
+                            tipoModal === "cancelar" &&
+                            <Button variant="secondary" onClick={handleCancelarPremium}>
+                                Aceptar
+                            </Button>
+                        }
                         <Button variant="secondary" onClick={handleClose}>
                             Cerrar
                         </Button>
-                    }
 
-                </Modal.Footer>
+                    </Modal.Footer>
+                }
+
             </Modal>
         </Navbar>
     )

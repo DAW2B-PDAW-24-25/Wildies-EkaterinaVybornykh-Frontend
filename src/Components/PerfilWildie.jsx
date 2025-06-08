@@ -145,17 +145,17 @@ function PerfilWildie({ usuario }) {
                         </div>
                     </div>
 
-                    <div className='d-md-flex align-items-end d-none mt-3 ms-5'>
+                    <div className='d-md-flex align-items-end d-none mt-5 ms-5 justify-content-between'>
                         <div>
-                            <Button variant="outline-secondary" className='rounded-pill shadow me-2' onClick={() => navigate(`/deportesUsuario/${usuario.id}`)}>Deportes</Button>
+                            <Button variant="outline-secondary" className='rounded-pill shadow me-3' onClick={() => navigate(`/deportesUsuario/${usuario.id}`)}>Deportes</Button>
                             {/*  <Button variant="outline-secondary" className=' me-2 rounded-pill shadow'>Fotos</Button> */}
                         </div>
                         <div>
                             {
                                 tipoAmistad === "pendienteAmigo"
-                                    ? <h5 style={{ backgroundColor: "#bfff8a" }} className='rounded-pill shadow pt-2 pb-2 ps-3 pe-3 text-center'>Pendiente</h5>
+                                    ? <h5 style={{ backgroundColor: "#bfff8a" }} className='rounded-pill shadow pt-2 pb-2 ps-3 pe-3 text-center m-0'>Pendiente</h5>
                                     : tipoAmistad === "rechazado"
-                                        ? <h5 style={{ backgroundColor: "#fadbd8" }} className='rounded-pill shadow p-2 text-center'>Amistad rechazada</h5>
+                                        ? <h5 style={{ backgroundColor: "#fadbd8" }} className='rounded-pill shadow p-2 text-center m-0'>Amistad rechazada</h5>
                                         : tipoAmistad === "aceptado"
                                             ?
                                             <Button variant="outline-secondary" className=' me-2 rounded-pill shadow' onClick={handleEliminarAmistad}>Eliminar amistad</Button>
@@ -180,9 +180,9 @@ function PerfilWildie({ usuario }) {
                 </div>
             </div>
             <div className='d-md-none d-flex flex-column align-items-center mt-3'>
-                
 
-                <div className='d-flex flex-wrap justify-content-center mt-3'>
+
+                <div className='d-flex flex-wrap justify-content-between mt-3'>
                     <Button variant="outline-secondary" className='me-2 mb-2 rounded-pill shadow' onClick={() => navigate(`/deportesUsuario/${usuario.id}`)}>Deportes</Button>
 
                     {tipoAmistad === "pendienteAmigo" && (
@@ -197,12 +197,15 @@ function PerfilWildie({ usuario }) {
                         <Button variant="outline-secondary" className='me-2 mb-2 rounded-pill shadow' onClick={handleEliminarAmistad}>Eliminar amistad</Button>
                     )}
 
-                    {tipoAmistad === "pendienteYo" && (
-                        <>
+                    {tipoAmistad === "pendienteYo"
+                        ? <div>
                             <Button variant="outline-secondary" className='me-2 mb-2 rounded-pill shadow' onClick={handleAceptarAmistad}>Aceptar amistad</Button>
                             <Button variant="outline-secondary" className='me-2 mb-2 rounded-pill shadow' onClick={handleRechazarAmistad}>Rechazar amistad</Button>
-                        </>
-                    )}
+                        </div>
+                        : <div>
+                            <Button variant="outline-secondary" className=' me-2 rounded-pill shadow' onClick={handleSolicitarAmistad}>Solicitar amistad</Button>
+                        </div>
+                    }
 
 
                 </div>

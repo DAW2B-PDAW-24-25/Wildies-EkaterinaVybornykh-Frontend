@@ -9,9 +9,9 @@ function EventosInicio() {
 
     const { eventos, cargarEventosCerca, cargarEventosInicio, tipoEventos } = useContext(AppContext);
     const { usuarioLogueado } = useContext(RegContext);
-    const [cargando, setCargando] = useState(true);
+    const [cargando, setCargando] = useState(false);
 
-    useEffect(() => {
+     useEffect(() => {
         if (usuarioLogueado) {
             cargar();
         }
@@ -23,14 +23,14 @@ function EventosInicio() {
             await cargarEventosInicio();
             setCargando(false);
         }
-    }
-
+    } 
+/* 
     if (cargando) {
 
         return <div className='container-fluid min-vh-100'>
             <SpinnerWave />
         </div>
-    }
+    } */
     return (
 
         <div className='container-fluid'>

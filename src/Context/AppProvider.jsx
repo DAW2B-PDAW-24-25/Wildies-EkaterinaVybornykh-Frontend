@@ -39,8 +39,8 @@ function AppProvider({ children }) {
     }, [usuarioLogueado]);
 
      useEffect(() => {
-            console.log("amistades en appprovider: ", amistades)
-        }, [amistades])
+            console.log("eventos en appprovider: ", eventos)
+        }, [eventos])
 
     useEffect(() => {
         if (usuarioLogueado && !usuarioLogueado.roles.includes("admin")) {
@@ -74,11 +74,6 @@ function AppProvider({ children }) {
                     'Authorization': `Bearer ${token}`
                 }
             });
-
-            if (!response.ok) {
-                
-            }
-
             let data = await response.json();
             setWildies(data.data);
 
@@ -94,10 +89,6 @@ function AppProvider({ children }) {
                     'Authorization': `Bearer ${token}`
                 }
             });
-
-            if (!response.ok) {
-                
-            }
 
             let data = await response.json();
             setEventos(data.data);
