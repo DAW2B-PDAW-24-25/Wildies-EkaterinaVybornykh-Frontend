@@ -46,9 +46,9 @@ function RutasProtegidas() {
                         <Route path='/premium/:id' element={<Premium />} />
                         <Route path='/proximosEventos/:id' element={<ProximosEventos />} />
                         <Route path='/misWildies/:id' element={<MisWildies />} />
-                        <Route path='/crearEvento' element={soyPremium ? <EventoForm /> : <Navigate to={`/premium/${usuarioLogueado.id}`} />} />
-                        <Route path='/editarEvento/:id' element={soyPremium ? <EventoForm /> : <Navigate to={`/premium/${usuarioLogueado.id}`} />} />
-                        <Route path='/mapa/:id' element={soyPremium ? <Mapa /> : <Navigate to={`/premium/${usuarioLogueado.id}`} />} />
+                        <Route path='/crearEvento' element={(soyPremium || soyAdmin) ? <EventoForm /> : <Navigate to={`/premium/${usuarioLogueado.id}`} />} />
+                        <Route path='/editarEvento/:id' element={(soyPremium || soyAdmin) ? <EventoForm /> : <Navigate to={`/premium/${usuarioLogueado.id}`} />} />
+                        <Route path='/mapa/:id' element={(soyPremium || soyAdmin) ? <Mapa /> : <Navigate to={`/premium/${usuarioLogueado.id}`} />} />
                         <Route path='/gestionUsuarios' element={soyAdmin ? <GestionUsuarios /> : <Navigate to={`/`} />} />
                         <Route path='/gestionEventos' element={soyAdmin ? <GestionEventos /> : <Navigate to={`/`} />} />
                         <Route path='/gestionDeportes' element={soyAdmin ? <GestionDeportes /> : <Navigate to={`/`} />} />
