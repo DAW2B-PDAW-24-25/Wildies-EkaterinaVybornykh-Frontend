@@ -31,6 +31,7 @@ import GestionEventos from './Components/GestionEventos';
 import GestionDeportes from './Components/GestionDeportes';
 import About from './Components/About';
 import Contact from './Components/Contact';
+import RutasProtegidas from './Components/RutasProtegidas';
 const libraries = ["places"];
 
 
@@ -78,27 +79,7 @@ function App() {
                       <AppSidebar />
                       <div className="main w-100">
                         <AppNavbar />
-                        <Routes>
-                          <Route path='/inicioSesion' element={<InicioSesion />} />
-                          <Route path="/" element={<Inicio />} />
-                          <Route path="/perfil/:id" element={<Perfil />} />
-                          <Route path='/editarPerfil/:id' element={<ActualizarPerfil />} />
-                          <Route path="/detalleEvento/:id" element={<DetalleEvento />} />
-                          <Route path='/deportesUsuario/:id' element={<DeportesUsuario />} />
-                          <Route path='/resultadosUsuarios/:id' element={<ResultadosUsuarios />} />
-                          <Route path='/resultadosEventos/:id' element={<ResultadosEventos />} />
-                          <Route path='/crearEvento' element={<EventoForm />} />
-                          <Route path='/editarEvento/:id' element={<EventoForm />} />
-                          <Route path='/mapa/:id' element={<Mapa />} />
-                          <Route path='/proximosEventos/:id' element={<ProximosEventos />} />
-                          <Route path='/misWildies/:id' element={<MisWildies />} />
-                          <Route path='/premium/:id' element={<Premium />} />
-                          <Route path='/gestionUsuarios' element={<GestionUsuarios />} />
-                          <Route path='/gestionEventos' element={<GestionEventos />} />
-                          <Route path='/gestionDeportes' element={<GestionDeportes />} />
-                          <Route path='/about' element={<About/>}/>
-                          <Route path='/contact' element={<Contact/>}/>
-                        </Routes>
+                        <RutasProtegidas />
                         <Footer />
                       </div>
                     </div>
