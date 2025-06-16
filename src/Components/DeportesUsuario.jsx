@@ -102,10 +102,7 @@ function DeportesUsuario() {
         if (deporte) {
             const form = {};
             deporte.parametros.forEach(parametro => {
-                if (modalTipo === "editar") {
-                    let parametroDeporte = parametrosDeporte.find(p => p.parametro_id === parametro.id);
-                    form[parametro.id] = parametroDeporte ? parametroDeporte.valor : "";
-                } else {
+                if (modalTipo !== "editar") {
                     form[parametro.id] = "";
                 }
             });
@@ -113,6 +110,16 @@ function DeportesUsuario() {
         }
 
     }, [deporte]);
+
+    useEffect(() => {
+        const form = {};
+        deporte?.parametros?.forEach(parametro => {
+            let parametroDeporte = parametrosDeporte.find(p => p.parametro_id === parametro.id);
+            form[parametro.id] = parametroDeporte ? parametroDeporte.valor : "";
+        });
+        setParametros(form);
+
+    }, [parametrosDeporte])
 
     async function enviarParametros() {
         const datos = [];
@@ -156,6 +163,7 @@ function DeportesUsuario() {
         } else {
             const data = await response.json();
             setParametrosDeporte(data);
+            
         }
     }
 
@@ -180,7 +188,7 @@ function DeportesUsuario() {
         let idDep = e.currentTarget.getAttribute("data-deporteid");
         setIdDeporte(idDep)
         setModalHeader("Edita tu deporte");
-        setModalShow(true);
+         setModalShow(true);
     }
 
     async function cargarPreguntas() {
