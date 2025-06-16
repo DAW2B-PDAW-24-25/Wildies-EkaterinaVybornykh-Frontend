@@ -169,7 +169,6 @@ function InicioSesion() {
             } else {
                 setErrorMessage('');
                 let data = await response.json();
-                console.log('Respuesta de la API:', data);
                 login(data.usuario, data.token)
             }
         } catch (error) {
