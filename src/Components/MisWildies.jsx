@@ -98,7 +98,7 @@ function MisWildies() {
                                                     <Image src={amistad.foto_perfil} alt="Foto perfil" className="avatar_small" />
                                                 </div>
                                                 <div className='m-0'>
-                                                    <h5 className='m-0 texto'>{amistad.nombre} {usuarioLogueado.apellidos}</h5>
+                                                    <h5 className='m-0 texto'>{amistad.nombre} {amistad.apellidos}</h5>
                                                 </div>
                                             </div>
                                         );
