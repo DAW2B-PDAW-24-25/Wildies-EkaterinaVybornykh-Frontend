@@ -319,7 +319,7 @@ function InicioSesion() {
                                                 key={deporte.id}
                                                 id={`deporte-${deporte.id}`}
                                                 value={deporte.id}
-                                                className="rounded-pill shadow p-0"
+                                                className="rounded-pill shadow ps-1 pe-1 pt-0 pb-0"
                                                 variant='outline-secondary'>
                                                 {deporte.nombre}
                                             </ToggleButton>
